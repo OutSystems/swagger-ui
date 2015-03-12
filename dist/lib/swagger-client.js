@@ -934,7 +934,8 @@ var Operation = function(parent, scheme, operationId, httpMethod, path, args, de
     defaultResponseCode = 'default';
   }
 
-  if(response && response.schema) {
+	// OutSystems change: don't make a distinction between responses
+  /*if(response && response.schema) {
     var resolvedModel = this.resolveModel(response.schema, definitions);
     delete responses[defaultResponseCode];
     if(resolvedModel) {
@@ -946,7 +947,7 @@ var Operation = function(parent, scheme, operationId, httpMethod, path, args, de
       this.successResponse[defaultResponseCode] = response.schema.type;
     }
     this.type = response;
-  }
+  }*/
 
   if (errors.length > 0) {
     if(this.resource && this.resource.api && this.resource.api.fail)
@@ -1091,6 +1092,29 @@ Operation.prototype.getHeaderParams = function (args) {
   }
   return headers;
 };
+
+Operation.prototype.getRequestUrl = function() {
+	var requestUrl = this.path;
+	var querystring = '';
+	for(var i = 0; i < this.parameters.length; i++){
+    var param = this.parameters[i];
+		if(param.in === 'query'){
+			if( querystring === '' ){
+				querystring += '?';
+			} else {
+				querystring += '&';
+			}
+			querystring += this.encodeQueryParam(param.name) + '={' + this.encodeQueryParam(param.name) + '}';
+		}
+	}
+	var url = this.scheme + '://' + this.host;
+
+  if(this.basePath !== '/'){
+    url += this.basePath;
+	}
+
+  return url + requestUrl + querystring;
+}
 
 Operation.prototype.urlify = function (args) {
   var formParams = {};

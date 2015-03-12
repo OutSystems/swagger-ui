@@ -119,7 +119,14 @@ class OperationView extends Backbone.View
       $('.model-signature', $(@el)).append responseSignatureView.render().el
     else
       @model.responseClassSignature = 'string'
-      $('.model-signature', $(@el)).html(@model.type)
+      # OutSystems change: the reponse type information being shown in case it's not a model
+      if @model.type != null
+        if @model.produces != null and @model.produces.length == 1 and @model.produces[0] = "application/octet-stream"
+          $('.model-signature', $(@el)).html("binary")
+        else
+          $('.model-signature', $(@el)).html(@model.type.schema.type)
+      else
+        $('.model-signature', $(@el)).html("nothing")
 
     contentTypeModel =
       isParam: false
@@ -150,6 +157,10 @@ class OperationView extends Backbone.View
 
     # Render each response code
     @addStatusCode statusCode for statusCode in @model.responseMessages
+
+    # OutSystems change: Fill request URL
+    $(".request_url", $(@el)).html('<pre style="overflow-y:auto"></pre>')
+    $(".request_url pre", $(@el)).text(@model.getRequestUrl());
 
     @
 

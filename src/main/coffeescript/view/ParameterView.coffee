@@ -19,7 +19,11 @@ class ParameterView extends Backbone.View
         else
           type = ref
 
-    @model.type = type
+    # OutSystems change: included dataType binary
+    if ((not @model.consumes) or (@model.consumes and @model.consumes.length == 0)) and @model.signature == "string" and @model.in == "body"
+      @model.type = @model.signature = "binary"
+    else
+      @model.type = type
     @model.paramType = @model.in || @model.paramType
     @model.isBody = true if @model.paramType == 'body' or @model.in == 'body'
     @model.isFile = true if type and type.toLowerCase() == 'file'

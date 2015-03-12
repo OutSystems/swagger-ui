@@ -15,8 +15,7 @@ class SignatureView extends Backbone.View
 
     @isParam = @model.isParam
 
-    if @isParam
-      $('.notice', $(@el)).text('Click to set as parameter value')
+		# OutSystems change: remove notice to click to set as parameter value
 
     @
 

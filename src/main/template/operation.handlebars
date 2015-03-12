@@ -17,8 +17,11 @@
         </ul>
       </div>
       <div class='content' id='{{parentId}}_{{nickname}}_content' style='display:none'>
+				<!-- OutSytems change: Added request URL -->
+			  <h4>Request URL</h4>
+				<div class='block request_url'></div>
         {{#if deprecated}}
-            <h4>Warning: Deprecated</h4>
+           	<h4>Warning: Deprecated</h4>
         {{/if}}
         {{#if description}}
         <h4>Implementation Notes</h4>
@@ -40,12 +43,6 @@
           <span class="api-ic ic-off" title="click to authenticate"></span>
         </div>
         {{/oauth}}
-        {{#if type}}
-          <h4>Response Class (Status {{successCode}})</h4>
-          <p><span class="model-signature" /></p>
-          <br/>
-          <div class="response-content-type" />
-        {{/if}}
         <form accept-charset='UTF-8' class='sandbox'>
           <div style='margin:0;padding:0;display:inline'></div>
           {{#if parameters}}
@@ -54,7 +51,7 @@
           <thead>
             <tr>
             <th style="width: 100px; max-width: 100px">Parameter</th>
-            <th style="width: 310px; max-width: 310px">Value</th>
+						<!-- OutSystems change: removed Value -->
             <th style="width: 200px; max-width: 200px">Description</th>
             <th style="width: 100px; max-width: 100px">Parameter Type</th>
             <th style="width: 220px; max-width: 230px">Data Type</th>
@@ -79,27 +76,28 @@
             <tbody class="operation-status">
             
             </tbody>
-          </table>
-          {{/if}}
-          {{#if isReadOnly}}
-          {{else}}
-          <div class='sandbox_header'>
-            <input class='submit' name='commit' type='button' value='Try it out!' />
-            <a href='#' class='response_hider' style='display:none'>Hide Response</a>
-            <span class='response_throbber' style='display:none'></span>
-          </div>
-          {{/if}}
-        </form>
-        <div class='response' style='display:none'>
-          <h4>Request URL</h4>
-          <div class='block request_url'></div>
-          <h4>Response Body</h4>
-          <div class='block response_body'></div>
-          <h4>Response Code</h4>
-          <div class='block response_code'></div>
-          <h4>Response Headers</h4>
-          <div class='block response_headers'></div>
-        </div>
-      </div>
-    </li>
-  </ul>
+					</table>
+					{{/if}}
+					<!-- OutSystems change: position of the response -->
+					{{#if type}}
+					<!-- OutSystems change: remove success code -->
+					<h4>Response</h4>
+					<p><span class="model-signature" /></p>
+					<br/>
+					<div class="response-content-type" />
+					{{/if}}
+					<!-- OutSystems change: removed Try it out button -->
+						</form>
+						<div class='response' style='display:none'>
+							<h4>Request URL</h4>
+							<div class='block request_url'></div>
+							<h4>Response Body</h4>
+							<div class='block response_body'></div>
+							<h4>Response Code</h4>
+							<div class='block response_code'></div>
+							<h4>Response Headers</h4>
+							<div class='block response_headers'></div>
+						</div>
+					</div>
+					</li>
+				</ul>
