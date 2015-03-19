@@ -83,14 +83,9 @@ gulp.task('dist', ['clean'], function() {
  * Processes less files into CSS files
  */
 gulp.task('less', ['clean'], function() {
-
-  return gulp
-    .src([
-      './src/main/less/screen.less',
-      './src/main/less/reset.less'
-    ])
-    .pipe(less())
-    .on('error', gutil.log)
+// OutSystems change: use only one main.css that cames from the main.less additional file
+return gulp.src('./src/main/less/main.less')
+    .pipe(less()).on('error', gutil.log)
     .pipe(gulp.dest('./src/main/html/css/'))
     .pipe(connect.reload());
 });
@@ -101,12 +96,41 @@ gulp.task('less', ['clean'], function() {
  */
 gulp.task('copy', ['less'], function() {
 
-  // copy JavaScript files inside lib folder
+  // OutSystems change: merge jquery related JavaScript files inside lib folder
+  es.merge(
+      gulp.src(['./lib/jquery-1.8.0.min.js',
+                './lib/jquery.slideto.min.js',
+                './lib/jquery.wiggle.min.js',
+                './lib/jquery.ba-bbq.min.js']))
+    .pipe(concat('jquery.js'))
+    .pipe(gulp.dest('./dist/lib'))
+    .on('error', gutil.log);
+
+  // OutSystems change: copy shred/content.js JavaScript files inside lib folder
   gulp
-    .src(['./lib/**/*.js'])
+    .src(['./lib/shred/content.js'])
+    .pipe(gulp.dest('./dist/lib/shred'))
+    .on('error', gutil.log);
+  
+  // OutSystems change: merge swagger dependencies JavaScript files inside lib folder
+  es.merge(
+      gulp.src(['./lib/handlebars-2.0.0.js',
+                './lib/swagger-client.js',
+                './lib/swagger-oauth.js',
+                './lib/highlight.7.3.pack.js',
+                './lib/marked.js']))
+    .pipe(concat('swagger.utils.js'))
+    .pipe(gulp.dest('./dist/lib'))
+    .on('error', gutil.log);
+    
+  // OutSystems change: copy other JavaScript files inside lib folder
+  gulp
+    .src(['./lib/backbone-min.js',
+          './lib/shred.bundle.js',
+          './lib/underscore-min.js'])
     .pipe(gulp.dest('./dist/lib'))
     .on('error', gutil.log)
-
+  
   // copy all files inside html folder
   gulp
     .src(['./src/main/html/**/*'])
