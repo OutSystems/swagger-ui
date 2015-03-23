@@ -1,10 +1,8 @@
-<label for="responseContentType"></label>
-<pre>
+<!--OutSystems change: removed label, pre and fixed {{{this}}} to {{this}}-->
 {{#if produces}}
   {{#each produces}}
-{{{this}}} 
+{{this}}
   {{/each}}
 {{else}}
-application/json 
+application/json
 {{/if}}
-</pre>

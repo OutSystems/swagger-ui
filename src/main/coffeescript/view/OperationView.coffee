@@ -173,8 +173,13 @@ class OperationView extends Backbone.View
   addStatusCode: (statusCode) ->
     # Render status codes
     statusCodeView = new StatusCodeView({model: statusCode, tagName: 'tr'})
+    #OutSystems change: Response Content Type is now displayed in Response Messages
+    responseContentTypeView = new ResponseContentTypeView({model: @model, tagName: 'div'})
     $('.operation-status', $(@el)).append statusCodeView.render().el
-
+    #OutSystems change: Response Content Type is now displayed in Response Messages
+    $('.content-type', @$el).append responseContentTypeView.render().el
+      
+    
   submitOperation: (e) ->
     e?.preventDefault()
     # Check for errors
