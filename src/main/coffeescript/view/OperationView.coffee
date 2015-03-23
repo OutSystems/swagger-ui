@@ -81,13 +81,17 @@ class OperationView extends Backbone.View
     if typeof @model.responses isnt 'undefined'
       @model.responseMessages = []
       for code, value of @model.responses
+        # OutSystems change: send non-object schema information to be rendered
         schema = null
+        nonObjectSchema = null;
         schemaObj = @model.responses[code].schema
         if schemaObj and schemaObj['$ref']
           schema = schemaObj['$ref']
           if schema.indexOf('#/definitions/') is 0
             schema = schema.substring('#/definitions/'.length)
-        @model.responseMessages.push {code: code, message: value.description, responseModel: schema }
+        else
+          nonObjectSchema = new Property("nonObject", @model.responses[code].schema, false);
+        @model.responseMessages.push {code: code, message: value.description, responseModel: schema, responseSchema: nonObjectSchema }
 
     if typeof @model.responseMessages is 'undefined'
       @model.responseMessages = []

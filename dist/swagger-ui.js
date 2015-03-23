@@ -475,61 +475,6 @@ this["Handlebars"]["templates"]["content_type"] = Handlebars.template({"1":funct
   if (stack1 != null) { buffer += stack1; }
   return buffer + "</select>\n";
 },"useData":true});
-var BasicAuthButton,
-  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
-  hasProp = {}.hasOwnProperty;
-
-BasicAuthButton = (function(superClass) {
-  extend(BasicAuthButton, superClass);
-
-  function BasicAuthButton() {
-    return BasicAuthButton.__super__.constructor.apply(this, arguments);
-  }
-
-  BasicAuthButton.prototype.initialize = function() {};
-
-  BasicAuthButton.prototype.render = function() {
-    var template;
-    template = this.template();
-    $(this.el).html(template(this.model));
-    return this;
-  };
-
-  BasicAuthButton.prototype.events = {
-    "click #basic_auth_button": "togglePasswordContainer",
-    "click #apply_basic_auth": "applyPassword"
-  };
-
-  BasicAuthButton.prototype.applyPassword = function() {
-    var elem, password, username;
-    username = $(".input_username").val();
-    password = $(".input_password").val();
-    window.authorizations.add(this.model.type, new PasswordAuthorization("basic", username, password));
-    window.swaggerUi.load();
-    return elem = $('#basic_auth_container').hide();
-  };
-
-  BasicAuthButton.prototype.togglePasswordContainer = function() {
-    var elem;
-    if ($('#basic_auth_container').length > 0) {
-      elem = $('#basic_auth_container').show();
-      if (elem.is(':visible')) {
-        return elem.slideUp();
-      } else {
-        $('.auth_container').hide();
-        return elem.show();
-      }
-    }
-  };
-
-  BasicAuthButton.prototype.template = function() {
-    return Handlebars.templates.basic_auth_button_view;
-  };
-
-  return BasicAuthButton;
-
-})(Backbone.View);
-
 this["Handlebars"]["templates"]["main"] = Handlebars.template({"1":function(depth0,helpers,partials,data) {
   var stack1, lambda=this.lambda, escapeExpression=this.escapeExpression, buffer = "  <div class=\"info_title\">"
     + escapeExpression(lambda(((stack1 = (depth0 != null ? depth0.info : depth0)) != null ? stack1.title : stack1), depth0))
@@ -613,32 +558,58 @@ this["Handlebars"]["templates"]["main"] = Handlebars.template({"1":function(dept
   if (stack1 != null) { buffer += stack1; }
   return buffer + "    </h4>\n    </div>\n</div>\n";
 },"useData":true});
-var ContentTypeView,
+var BasicAuthButton,
   extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
   hasProp = {}.hasOwnProperty;
 
-ContentTypeView = (function(superClass) {
-  extend(ContentTypeView, superClass);
+BasicAuthButton = (function(superClass) {
+  extend(BasicAuthButton, superClass);
 
-  function ContentTypeView() {
-    return ContentTypeView.__super__.constructor.apply(this, arguments);
+  function BasicAuthButton() {
+    return BasicAuthButton.__super__.constructor.apply(this, arguments);
   }
 
-  ContentTypeView.prototype.initialize = function() {};
+  BasicAuthButton.prototype.initialize = function() {};
 
-  ContentTypeView.prototype.render = function() {
+  BasicAuthButton.prototype.render = function() {
     var template;
     template = this.template();
     $(this.el).html(template(this.model));
-    $('label[for=contentType]', $(this.el)).text('Response Content Type');
     return this;
   };
 
-  ContentTypeView.prototype.template = function() {
-    return Handlebars.templates.content_type;
+  BasicAuthButton.prototype.events = {
+    "click #basic_auth_button": "togglePasswordContainer",
+    "click #apply_basic_auth": "applyPassword"
   };
 
-  return ContentTypeView;
+  BasicAuthButton.prototype.applyPassword = function() {
+    var elem, password, username;
+    username = $(".input_username").val();
+    password = $(".input_password").val();
+    window.authorizations.add(this.model.type, new PasswordAuthorization("basic", username, password));
+    window.swaggerUi.load();
+    return elem = $('#basic_auth_container').hide();
+  };
+
+  BasicAuthButton.prototype.togglePasswordContainer = function() {
+    var elem;
+    if ($('#basic_auth_container').length > 0) {
+      elem = $('#basic_auth_container').show();
+      if (elem.is(':visible')) {
+        return elem.slideUp();
+      } else {
+        $('.auth_container').hide();
+        return elem.show();
+      }
+    }
+  };
+
+  BasicAuthButton.prototype.template = function() {
+    return Handlebars.templates.basic_auth_button_view;
+  };
+
+  return BasicAuthButton;
 
 })(Backbone.View);
 
@@ -737,6 +708,35 @@ this["Handlebars"]["templates"]["operation"] = Handlebars.template({"1":function
   if (stack1 != null) { buffer += stack1; }
   return buffer + "					<!-- OutSystems change: removed Try it out button -->\r\n						</form>\r\n						<div class='response' style='display:none'>\r\n							<h4>Request URL</h4>\r\n							<div class='block request_url'></div>\r\n							<h4>Response Body</h4>\r\n							<div class='block response_body'></div>\r\n							<h4>Response Code</h4>\r\n							<div class='block response_code'></div>\r\n							<h4>Response Headers</h4>\r\n							<div class='block response_headers'></div>\r\n						</div>\r\n					</div>\r\n					</li>\r\n				</ul>\r\n";
 },"useData":true});
+var ContentTypeView,
+  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+  hasProp = {}.hasOwnProperty;
+
+ContentTypeView = (function(superClass) {
+  extend(ContentTypeView, superClass);
+
+  function ContentTypeView() {
+    return ContentTypeView.__super__.constructor.apply(this, arguments);
+  }
+
+  ContentTypeView.prototype.initialize = function() {};
+
+  ContentTypeView.prototype.render = function() {
+    var template;
+    template = this.template();
+    $(this.el).html(template(this.model));
+    $('label[for=contentType]', $(this.el)).text('Response Content Type');
+    return this;
+  };
+
+  ContentTypeView.prototype.template = function() {
+    return Handlebars.templates.content_type;
+  };
+
+  return ContentTypeView;
+
+})(Backbone.View);
+
 this["Handlebars"]["templates"]["param"] = Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
   var stack1, helper, functionType="function", helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression, buffer = "<td class='code'>"
     + escapeExpression(((helper = (helper = helpers.name || (depth0 != null ? depth0.name : depth0)) != null ? helper : helperMissing),(typeof helper === functionType ? helper.call(depth0, {"name":"name","hash":{},"data":data}) : helper)))
@@ -1015,7 +1015,7 @@ OperationView = (function(superClass) {
   };
 
   OperationView.prototype.render = function() {
-    var a, auth, auths, code, contentTypeModel, isMethodSubmissionSupported, k, key, l, len, len1, len2, len3, len4, m, modelAuths, n, o, p, param, q, ref, ref1, ref2, ref3, ref4, ref5, responseContentTypeView, responseSignatureView, schema, schemaObj, scopeIndex, signatureModel, statusCode, successResponse, type, v, value;
+    var a, auth, auths, code, contentTypeModel, isMethodSubmissionSupported, k, key, l, len, len1, len2, len3, len4, m, modelAuths, n, nonObjectSchema, o, p, param, q, ref, ref1, ref2, ref3, ref4, ref5, responseContentTypeView, responseSignatureView, schema, schemaObj, scopeIndex, signatureModel, statusCode, successResponse, type, v, value;
     isMethodSubmissionSupported = jQuery.inArray(this.model.method, this.model.supportedSubmitMethods()) >= 0;
     if (!isMethodSubmissionSupported) {
       this.model.isReadOnly = true;
@@ -1077,17 +1077,21 @@ OperationView = (function(superClass) {
       for (code in ref2) {
         value = ref2[code];
         schema = null;
+        nonObjectSchema = null;
         schemaObj = this.model.responses[code].schema;
         if (schemaObj && schemaObj['$ref']) {
           schema = schemaObj['$ref'];
           if (schema.indexOf('#/definitions/') === 0) {
             schema = schema.substring('#/definitions/'.length);
           }
+        } else {
+          nonObjectSchema = new Property("nonObject", this.model.responses[code].schema, false);
         }
         this.model.responseMessages.push({
           code: code,
           message: value.description,
-          responseModel: schema
+          responseModel: schema,
+          responseSchema: nonObjectSchema
         });
       }
     }
@@ -2005,7 +2009,18 @@ StatusCodeView = (function(superClass) {
       });
       $('.model-signature', this.$el).append(responseModelView.render().el);
     } else {
-      $('.model-signature', this.$el).html('');
+      if (this.model.responseSchema) {
+        responseModel = {
+          sampleJSON: JSON.stringify(this.model.responseSchema.getSampleValue({}, {}), null, 2),
+          isParam: false,
+          signature: getStringSignature(this.model.responseSchema.schema)
+        };
+        responseModelView = new SignatureView({
+          model: responseModel,
+          tagName: 'div'
+        });
+        $('.model-signature', this.$el).append(responseModelView.render().el);
+      }
     }
     return this;
   };
