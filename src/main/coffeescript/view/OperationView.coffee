@@ -90,8 +90,12 @@ class OperationView extends Backbone.View
           if schema.indexOf('#/definitions/') is 0
             schema = schema.substring('#/definitions/'.length)
         else
-          nonObjectSchema = new Property("nonObject", @model.responses[code].schema, false);
-        @model.responseMessages.push {code: code, message: value.description, responseModel: schema, responseSchema: nonObjectSchema }
+          if not @model.responses[code].schema
+            nonObjectSchema = 
+              getSampleValue : () -> null
+          else
+            nonObjectSchema = new Property("nonObject", @model.responses[code].schema, false);
+        @model.responseMessages.push {code: code, message: value.description, responseModel: schema, responseSchema: nonObjectSchema, produces: @model.produces  }
 
     if typeof @model.responseMessages is 'undefined'
       @model.responseMessages = []

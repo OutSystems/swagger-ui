@@ -35,16 +35,27 @@ class ParameterView extends Backbone.View
     template = @template()
     $(@el).html(template(@model))
 
+    # OutSystems change: parameter data-type information
+    if @model.in != "body"
+      @model.sampleJSON = (new Property("xpto", @model, false)).getSampleValue({}, {})
+    else if not @model.sampleJSON and @model.schema
+      if @model.consumes.length > 0 and @model.consumes[0] == "text/plain"
+        @model.sampleJSON = (new Property("xpto", @model.schema, false)).getSampleValue({}, {})
+      else if @model.consumes.length == 0
+        @model.sampleJSON = "binary"
+      else
+        @model.sampleJSON = JSON.stringify((new Property("xpto", @model.schema, false)).getSampleValue({}, {}))
+
     signatureModel =
       sampleJSON: @model.sampleJSON
       isParam: true
       signature: @model.signature
 
-    if @model.sampleJSON
-      signatureView = new SignatureView({model: signatureModel, tagName: 'div'})
-      $('.model-signature', $(@el)).append signatureView.render().el
-    else
-      $('.model-signature', $(@el)).html(@model.signature)
+    #if @model.sampleJSON
+    signatureView = new SignatureView({model: signatureModel, tagName: 'div'})
+    $('.model-signature', $(@el)).append signatureView.render().el
+    #else
+    #  $('.model-signature', $(@el)).html(@model.signature)
 
     isParam = false
 

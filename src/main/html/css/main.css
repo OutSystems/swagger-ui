@@ -126,6 +126,7 @@
   max-width: 960px;
   margin-left: auto;
   margin-right: auto;
+  /*OutSystems change: branding */
 }
 .swagger-section .swagger-ui-wrap b,
 .swagger-section .swagger-ui-wrap strong,
@@ -1143,6 +1144,9 @@
 .swagger-section .api-popup-actions {
   padding-top: 10px;
 }
+.swagger-section {
+  /*OutSystems change: branding*/
+}
 .swagger-section .os-header-byline {
   font-family: 'Open Sans', sans-serif;
   font-size: 11px;
@@ -1230,6 +1234,7 @@
   cursor: pointer;
 }
 .swagger-section #header {
+  /*OutSystems change: branding*/
   color: #ffffff;
   height: 60px;
   line-height: 61px;
