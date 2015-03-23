@@ -15,10 +15,18 @@ class StatusCodeView extends Backbone.View
     else
       # Outsystems change: show example of non object types
       if @model.responseSchema
+        sampleJSON = @model.responseSchema.getSampleValue({}, {})
+        if sampleJSON == null
+          sampleJSON = ""
+        else if @model.produces.length > 0 and @model.produces[0] == "application/octet-stream"
+          sampleJSON = "binary"
+        else if not (@model.produces.length > 0 and @model.produces[0] == "text/plain")
+          sampleJSON = JSON.stringify(sampleJSON, null, 2)
         responseModel =
-          sampleJSON: JSON.stringify(@model.responseSchema.getSampleValue({}, {}), null, 2)
+          sampleJSON: sampleJSON
           isParam: false
-          signature: getStringSignature(@model.responseSchema.schema)
+          signature: ""
+          #signature: getStringSignature(@model.responseSchema.schema)
         responseModelView = new SignatureView({model: responseModel, tagName: 'div'})
         $('.model-signature', @$el).append responseModelView.render().el
         # $('.model-signature', @$el).html ''
