@@ -342,7 +342,8 @@
   width: 100%;
 }
 .swagger-section .swagger-ui-wrap .model-signature {
-  font-family: "Droid Sans", sans-serif;
+  /*OutSystems Change: branding*/
+  font-family: "Open Sans", sans-serif;
   font-size: 1em;
   line-height: 1.5em;
 }
@@ -465,7 +466,8 @@
   font-size: 1.5em;
   line-height: 1.3em;
   padding: 10px 0 10px 0;
-  font-family: "Droid Sans", sans-serif;
+  /*OutSystems Change: branding*/
+  font-family: "Open Sans", sans-serif;
   font-weight: bold;
 }
 .swagger-section .swagger-ui-wrap .heading_with_menu {
@@ -517,7 +519,8 @@
   font-family: "Anonymous Pro", "Menlo", "Consolas", "Bitstream Vera Sans Mono", "Courier New", monospace;
 }
 .swagger-section .swagger-ui-wrap form.formtastic fieldset.inputs ol li.text textarea {
-  font-family: "Droid Sans", sans-serif;
+  /*OutSystems Change: branding*/
+  font-family: "Open Sans", sans-serif;
   height: 250px;
   padding: 4px;
   display: block;
@@ -595,7 +598,8 @@
   margin: 20px 0 25px 0 !important;
 }
 .swagger-section .swagger-ui-wrap ul#resources {
-  font-family: "Droid Sans", sans-serif;
+  /*OutSystems Change: branding*/
+  font-family: "Open Sans", sans-serif;
   font-size: 0.9em;
 }
 .swagger-section .swagger-ui-wrap ul#resources li.resource {
@@ -668,7 +672,8 @@
   display: block;
   clear: none;
   float: left;
-  font-family: "Droid Sans", sans-serif;
+  /*OutSystems Change: branding*/
+  font-family: "Open Sans", sans-serif;
   font-weight: bold;
 }
 .swagger-section .swagger-ui-wrap ul#resources li.resource div.heading h2 a {
@@ -1032,7 +1037,8 @@
   padding: 10px 0;
   font-size: 0.8em;
   border-top: 1px solid #dddddd;
-  font-family: "Droid Sans", sans-serif;
+  /*OutSystems Change: branding*/
+  font-family: "Open Sans", sans-serif;
   color: #999999;
   font-style: italic;
 }
@@ -1047,7 +1053,8 @@
 }
 .swagger-section .swagger-ui-wrap .markdown ol,
 .swagger-section .swagger-ui-wrap .markdown ul {
-  font-family: "Droid Sans", sans-serif;
+  /*OutSystems Change: branding*/
+  font-family: "Open Sans", sans-serif;
   margin: 5px 0 10px;
   padding: 0 0 0 18px;
   list-style-type: disc;
@@ -1442,25 +1449,16 @@ table {
   border-collapse: collapse;
   border-spacing: 0;
 }
-/* droid-sans-regular - latin */
+/*OutSystems Change: branding*/
 @font-face {
-  font-family: 'Droid Sans';
+  font-family: 'Open Sans';
   font-style: normal;
   font-weight: 400;
-  src: url('../fonts/droid-sans-v6-latin-regular.eot');
-  src: local('Droid Sans'), local('DroidSans'), url('../fonts/droid-sans-v6-latin-regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */ url('../fonts/droid-sans-v6-latin-regular.woff2') format('woff2'), /* Super Modern Browsers */ url('../fonts/droid-sans-v6-latin-regular.woff') format('woff'), /* Modern Browsers */ url('../fonts/droid-sans-v6-latin-regular.ttf') format('truetype'), /* Safari, Android, iOS */ url('../fonts/droid-sans-v6-latin-regular.svg#DroidSans') format('svg');
-  
-  /* IE9 Compat Modes */
-  /* Legacy iOS */
+  src: local('Open Sans'), local('OpenSans'), url(../fonts/open-sans-latin-400.woff) format('woff');
 }
-/* droid-sans-700 - latin */
 @font-face {
-  font-family: 'Droid Sans';
+  font-family: 'Open Sans';
   font-style: normal;
   font-weight: 700;
-  src: url('../fonts/droid-sans-v6-latin-700.eot');
-  src: local('Droid Sans Bold'), local('DroidSans-Bold'), url('../fonts/droid-sans-v6-latin-700.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */ url('../fonts/droid-sans-v6-latin-700.woff2') format('woff2'), /* Super Modern Browsers */ url('../fonts/droid-sans-v6-latin-700.woff') format('woff'), /* Modern Browsers */ url('../fonts/droid-sans-v6-latin-700.ttf') format('truetype'), /* Safari, Android, iOS */ url('../fonts/droid-sans-v6-latin-700.svg#DroidSans') format('svg');
-  
-  /* IE9 Compat Modes */
-  /* Legacy iOS */
+  src: local('Open Sans Bold'), local('OpenSans-Bold'), url(../fonts/open-sans-latin-700.woff) format('woff');
 }
