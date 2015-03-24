@@ -22,13 +22,14 @@ class StatusCodeView extends Backbone.View
           sampleJSON = "binary"
         else if not (@model.produces.length > 0 and @model.produces[0] == "text/plain")
           sampleJSON = JSON.stringify(sampleJSON, null, 2)
-        responseModel =
-          sampleJSON: sampleJSON
-          isParam: false
-          signature: ""
-          #signature: getStringSignature(@model.responseSchema.schema)
-        responseModelView = new SignatureView({model: responseModel, tagName: 'div'})
-        $('.model-signature', @$el).append responseModelView.render().el
+        if sampleJSON != ""
+          responseModel =
+            sampleJSON: sampleJSON
+            isParam: false
+            signature: ""
+            #signature: getStringSignature(@model.responseSchema.schema)
+          responseModelView = new SignatureView({model: responseModel, tagName: 'div'})
+          $('.model-signature', @$el).append responseModelView.render().el
         # $('.model-signature', @$el).html ''
     @
 
