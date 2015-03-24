@@ -475,61 +475,6 @@ this["Handlebars"]["templates"]["content_type"] = Handlebars.template({"1":funct
   if (stack1 != null) { buffer += stack1; }
   return buffer + "</select>\n";
 },"useData":true});
-var BasicAuthButton,
-  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
-  hasProp = {}.hasOwnProperty;
-
-BasicAuthButton = (function(superClass) {
-  extend(BasicAuthButton, superClass);
-
-  function BasicAuthButton() {
-    return BasicAuthButton.__super__.constructor.apply(this, arguments);
-  }
-
-  BasicAuthButton.prototype.initialize = function() {};
-
-  BasicAuthButton.prototype.render = function() {
-    var template;
-    template = this.template();
-    $(this.el).html(template(this.model));
-    return this;
-  };
-
-  BasicAuthButton.prototype.events = {
-    "click #basic_auth_button": "togglePasswordContainer",
-    "click #apply_basic_auth": "applyPassword"
-  };
-
-  BasicAuthButton.prototype.applyPassword = function() {
-    var elem, password, username;
-    username = $(".input_username").val();
-    password = $(".input_password").val();
-    window.authorizations.add(this.model.type, new PasswordAuthorization("basic", username, password));
-    window.swaggerUi.load();
-    return elem = $('#basic_auth_container').hide();
-  };
-
-  BasicAuthButton.prototype.togglePasswordContainer = function() {
-    var elem;
-    if ($('#basic_auth_container').length > 0) {
-      elem = $('#basic_auth_container').show();
-      if (elem.is(':visible')) {
-        return elem.slideUp();
-      } else {
-        $('.auth_container').hide();
-        return elem.show();
-      }
-    }
-  };
-
-  BasicAuthButton.prototype.template = function() {
-    return Handlebars.templates.basic_auth_button_view;
-  };
-
-  return BasicAuthButton;
-
-})(Backbone.View);
-
 this["Handlebars"]["templates"]["main"] = Handlebars.template({"1":function(depth0,helpers,partials,data) {
   var stack1, lambda=this.lambda, escapeExpression=this.escapeExpression, buffer = "  <div class=\"info_title\">"
     + escapeExpression(lambda(((stack1 = (depth0 != null ? depth0.info : depth0)) != null ? stack1.title : stack1), depth0))
@@ -613,6 +558,61 @@ this["Handlebars"]["templates"]["main"] = Handlebars.template({"1":function(dept
   if (stack1 != null) { buffer += stack1; }
   return buffer + "    </h4>\n    </div>\n</div>\n";
 },"useData":true});
+var BasicAuthButton,
+  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+  hasProp = {}.hasOwnProperty;
+
+BasicAuthButton = (function(superClass) {
+  extend(BasicAuthButton, superClass);
+
+  function BasicAuthButton() {
+    return BasicAuthButton.__super__.constructor.apply(this, arguments);
+  }
+
+  BasicAuthButton.prototype.initialize = function() {};
+
+  BasicAuthButton.prototype.render = function() {
+    var template;
+    template = this.template();
+    $(this.el).html(template(this.model));
+    return this;
+  };
+
+  BasicAuthButton.prototype.events = {
+    "click #basic_auth_button": "togglePasswordContainer",
+    "click #apply_basic_auth": "applyPassword"
+  };
+
+  BasicAuthButton.prototype.applyPassword = function() {
+    var elem, password, username;
+    username = $(".input_username").val();
+    password = $(".input_password").val();
+    window.authorizations.add(this.model.type, new PasswordAuthorization("basic", username, password));
+    window.swaggerUi.load();
+    return elem = $('#basic_auth_container').hide();
+  };
+
+  BasicAuthButton.prototype.togglePasswordContainer = function() {
+    var elem;
+    if ($('#basic_auth_container').length > 0) {
+      elem = $('#basic_auth_container').show();
+      if (elem.is(':visible')) {
+        return elem.slideUp();
+      } else {
+        $('.auth_container').hide();
+        return elem.show();
+      }
+    }
+  };
+
+  BasicAuthButton.prototype.template = function() {
+    return Handlebars.templates.basic_auth_button_view;
+  };
+
+  return BasicAuthButton;
+
+})(Backbone.View);
+
 var ContentTypeView,
   extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
   hasProp = {}.hasOwnProperty;
@@ -1989,12 +1989,6 @@ SignatureView = (function(superClass) {
 
 })(Backbone.View);
 
-this["Handlebars"]["templates"]["signature"] = Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
-  var helper, functionType="function", helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression;
-  return "<!-- OutSystems change: Removed Model and Model Schema labels -->\r\n<div class=\"signature-container\">\r\n	<!-- OutSystems change: Removed Model -->\r\n  <div class=\"snippet\">\r\n    <pre><code>"
-    + escapeExpression(((helper = (helper = helpers.sampleJSON || (depth0 != null ? depth0.sampleJSON : depth0)) != null ? helper : helperMissing),(typeof helper === functionType ? helper.call(depth0, {"name":"sampleJSON","hash":{},"data":data}) : helper)))
-    + "</code></pre>\r\n    <small class=\"notice\"></small>\r\n  </div>\r\n</div>\r\n\r\n";
-},"useData":true});
 var StatusCodeView,
   extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
   hasProp = {}.hasOwnProperty;
@@ -2056,6 +2050,12 @@ StatusCodeView = (function(superClass) {
 
 })(Backbone.View);
 
+this["Handlebars"]["templates"]["signature"] = Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
+  var helper, functionType="function", helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression;
+  return "<!-- OutSystems change: Removed Model and Model Schema labels -->\r\n<div class=\"signature-container\">\r\n	<!-- OutSystems change: Removed Model -->\r\n  <div class=\"snippet\">\r\n    <pre><code>"
+    + escapeExpression(((helper = (helper = helpers.sampleJSON || (depth0 != null ? depth0.sampleJSON : depth0)) != null ? helper : helperMissing),(typeof helper === functionType ? helper.call(depth0, {"name":"sampleJSON","hash":{},"data":data}) : helper)))
+    + "</code></pre>\r\n    <small class=\"notice\"></small>\r\n  </div>\r\n</div>\r\n\r\n";
+},"useData":true});
 this["Handlebars"]["templates"]["status_code"] = Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
   var stack1, helper, functionType="function", helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression, buffer = "<!--Outsystems change: included content type in response messages-->\n<td class='code'>"
     + escapeExpression(((helper = (helper = helpers.code || (depth0 != null ? depth0.code : depth0)) != null ? helper : helperMissing),(typeof helper === functionType ? helper.call(depth0, {"name":"code","hash":{},"data":data}) : helper)))
