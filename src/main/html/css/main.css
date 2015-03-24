@@ -342,6 +342,7 @@
   width: 100%;
 }
 .swagger-section .swagger-ui-wrap .model-signature {
+  /*OutSystems Change: branding*/
   font-family: "Open Sans", sans-serif;
   font-size: 1em;
   line-height: 1.5em;
@@ -465,6 +466,7 @@
   font-size: 1.5em;
   line-height: 1.3em;
   padding: 10px 0 10px 0;
+  /*OutSystems Change: branding*/
   font-family: "Open Sans", sans-serif;
   font-weight: bold;
 }
@@ -517,6 +519,7 @@
   font-family: "Anonymous Pro", "Menlo", "Consolas", "Bitstream Vera Sans Mono", "Courier New", monospace;
 }
 .swagger-section .swagger-ui-wrap form.formtastic fieldset.inputs ol li.text textarea {
+  /*OutSystems Change: branding*/
   font-family: "Open Sans", sans-serif;
   height: 250px;
   padding: 4px;
@@ -595,6 +598,7 @@
   margin: 20px 0 25px 0 !important;
 }
 .swagger-section .swagger-ui-wrap ul#resources {
+  /*OutSystems Change: branding*/
   font-family: "Open Sans", sans-serif;
   font-size: 0.9em;
 }
@@ -668,6 +672,7 @@
   display: block;
   clear: none;
   float: left;
+  /*OutSystems Change: branding*/
   font-family: "Open Sans", sans-serif;
   font-weight: bold;
 }
@@ -1032,6 +1037,7 @@
   padding: 10px 0;
   font-size: 0.8em;
   border-top: 1px solid #dddddd;
+  /*OutSystems Change: branding*/
   font-family: "Open Sans", sans-serif;
   color: #999999;
   font-style: italic;
@@ -1047,6 +1053,7 @@
 }
 .swagger-section .swagger-ui-wrap .markdown ol,
 .swagger-section .swagger-ui-wrap .markdown ul {
+  /*OutSystems Change: branding*/
   font-family: "Open Sans", sans-serif;
   margin: 5px 0 10px;
   padding: 0 0 0 18px;
@@ -1442,6 +1449,7 @@ table {
   border-collapse: collapse;
   border-spacing: 0;
 }
+/*OutSystems Change: branding*/
 @font-face {
   font-family: 'Open Sans';
   font-style: normal;
