@@ -341,76 +341,76 @@
 .swagger-section .swagger-ui-wrap table.fullwidth {
   width: 100%;
 }
-.swagger-section .swagger-ui-wrap .model-signature {
+.swagger-section .swagger-ui-wrap .model-signaturemodel-signature {
   /*OutSystems Change: branding*/
   font-family: "Open Sans", sans-serif;
   font-size: 1em;
   line-height: 1.5em;
 }
-.swagger-section .swagger-ui-wrap .model-signature .signature-nav a {
+.swagger-section .swagger-ui-wrap .model-signaturemodel-signature .signature-nav a {
   text-decoration: none;
   color: #AAA;
 }
-.swagger-section .swagger-ui-wrap .model-signature .signature-nav a:hover {
+.swagger-section .swagger-ui-wrap .model-signaturemodel-signature .signature-nav a:hover {
   text-decoration: underline;
   color: black;
 }
-.swagger-section .swagger-ui-wrap .model-signature .signature-nav .selected {
+.swagger-section .swagger-ui-wrap .model-signaturemodel-signature .signature-nav .selected {
   color: black;
   text-decoration: none;
 }
-.swagger-section .swagger-ui-wrap .model-signature .propType {
+.swagger-section .swagger-ui-wrap .model-signaturemodel-signature .propType {
   color: #5555aa;
 }
-.swagger-section .swagger-ui-wrap .model-signature pre:hover {
+.swagger-section .swagger-ui-wrap .model-signaturemodel-signature pre:hover {
   background-color: #ffffdd;
 }
-.swagger-section .swagger-ui-wrap .model-signature pre {
+.swagger-section .swagger-ui-wrap .model-signaturemodel-signature pre {
   font-size: .85em;
   line-height: 1.2em;
   overflow: auto;
   max-height: 200px;
   /*OutSystems change: remove pointer from code snippet */
 }
-.swagger-section .swagger-ui-wrap .model-signature ul.signature-nav {
+.swagger-section .swagger-ui-wrap .model-signaturemodel-signature ul.signature-nav {
   display: block;
   margin: 0;
   padding: 0;
 }
-.swagger-section .swagger-ui-wrap .model-signature ul.signature-nav li:last-child {
+.swagger-section .swagger-ui-wrap .model-signaturemodel-signature ul.signature-nav li:last-child {
   padding-right: 0;
   border-right: none;
 }
-.swagger-section .swagger-ui-wrap .model-signature ul.signature-nav li {
+.swagger-section .swagger-ui-wrap .model-signaturemodel-signature ul.signature-nav li {
   float: left;
   margin: 0 5px 5px 0;
   padding: 2px 5px 2px 0;
   border-right: 1px solid #ddd;
 }
-.swagger-section .swagger-ui-wrap .model-signature .propOpt {
+.swagger-section .swagger-ui-wrap .model-signaturemodel-signature .propOpt {
   color: #555;
 }
-.swagger-section .swagger-ui-wrap .model-signature .snippet small {
+.swagger-section .swagger-ui-wrap .model-signaturemodel-signature .snippet small {
   font-size: 0.75em;
 }
-.swagger-section .swagger-ui-wrap .model-signature .propOptKey {
+.swagger-section .swagger-ui-wrap .model-signaturemodel-signature .propOptKey {
   font-style: italic;
 }
-.swagger-section .swagger-ui-wrap .model-signature .description .strong {
+.swagger-section .swagger-ui-wrap .model-signaturemodel-signature .description .strong {
   font-weight: bold;
   color: #000;
   font-size: .9em;
 }
-.swagger-section .swagger-ui-wrap .model-signature .description div {
+.swagger-section .swagger-ui-wrap .model-signaturemodel-signature .description div {
   font-size: 0.9em;
   line-height: 1.5em;
   margin-left: 1em;
 }
-.swagger-section .swagger-ui-wrap .model-signature .description .stronger {
+.swagger-section .swagger-ui-wrap .model-signaturemodel-signature .description .stronger {
   font-weight: bold;
   color: #000;
 }
-.swagger-section .swagger-ui-wrap .model-signature .description .propWrap .optionsWrapper {
+.swagger-section .swagger-ui-wrap .model-signaturemodel-signature .description .propWrap .optionsWrapper {
   border-spacing: 0;
   position: absolute;
   background-color: #ffffff;
@@ -423,7 +423,7 @@
   padding: 5px;
   margin-left: 10px;
 }
-.swagger-section .swagger-ui-wrap .model-signature .description .propWrap .optionsWrapper th {
+.swagger-section .swagger-ui-wrap .model-signaturemodel-signature .description .propWrap .optionsWrapper th {
   text-align: center;
   background-color: #eeeeee;
   border: 1px solid #bbbbbb;
@@ -433,13 +433,13 @@
   padding: 5px;
   line-height: 15px;
 }
-.swagger-section .swagger-ui-wrap .model-signature .description .propWrap .optionsWrapper .optionName {
+.swagger-section .swagger-ui-wrap .model-signaturemodel-signature .description .propWrap .optionsWrapper .optionName {
   font-weight: bold;
 }
-.swagger-section .swagger-ui-wrap .model-signature .propName {
+.swagger-section .swagger-ui-wrap .model-signaturemodel-signature .propName {
   font-weight: bold;
 }
-.swagger-section .swagger-ui-wrap .model-signature .signature-container {
+.swagger-section .swagger-ui-wrap .model-signaturemodel-signature .signature-container {
   clear: both;
 }
 .swagger-section .swagger-ui-wrap .body-textarea {
@@ -605,13 +605,14 @@
 .swagger-section .swagger-ui-wrap ul#resources li.resource {
   border-bottom: 1px solid #dddddd;
 }
-.swagger-section .swagger-ui-wrap ul#resources li.resource:hover div.heading h2 a,
-.swagger-section .swagger-ui-wrap ul#resources li.resource.active div.heading h2 a {
-  color: black;
-}
-.swagger-section .swagger-ui-wrap ul#resources li.resource:hover div.heading ul.options li a,
-.swagger-section .swagger-ui-wrap ul#resources li.resource.active div.heading ul.options li a {
-  color: #555555;
+.swagger-section .swagger-ui-wrap ul#resources li.resource:hover div.heading,
+.swagger-section .swagger-ui-wrap ul#resources li.resource.active div.heading {
+  /*h2 a {
+                    color: black;
+                }
+                ul.options li a {
+                    color: #555555;
+                }*/
 }
 .swagger-section .swagger-ui-wrap ul#resources li.resource:last-child {
   border-bottom: none;
@@ -1151,8 +1152,31 @@
 .swagger-section .api-popup-actions {
   padding-top: 10px;
 }
-.swagger-section {
-  /*OutSystems change: branding*/
+/*OutSystems change: branding*/
+@media screen and (max-height: 400px) {
+  .swagger-ui-wrap {
+    min-height: 300px;
+  }
+}
+@media screen and (min-height: 401px) and (max-height: 600px) {
+  .swagger-ui-wrap {
+    min-height: 450px;
+  }
+}
+@media screen and (min-height: 601px) and (max-height: 800px) {
+  .swagger-ui-wrap {
+    min-height: 550px;
+  }
+}
+@media screenand (min-height: 800px) and (max-height: 1280px) {
+  .swagger-ui-wrap {
+    min-height: 600px;
+  }
+}
+@media screenand (min-height: 1281px) {
+  .swagger-ui-wrap {
+    min-height: 1000px;
+  }
 }
 .swagger-section .os-header-byline {
   font-family: 'Open Sans', sans-serif;
@@ -1161,12 +1185,36 @@
 }
 .swagger-section .os-header-title {
   font-family: 'Open Sans', sans-serif;
-  font-size: 21px;
+  font-size: 18px;
   margin-top: 4px;
   margin-left: -1px;
 }
 .swagger-section .os-header-left {
   margin-top: 9px;
+}
+.swagger-section .os-swagger-footer {
+  color: #999;
+  font-size: 12px;
+  text-align: center;
+  min-height: 50px;
+  padding: 10px 0;
+  width: 100%;
+  bottom: 0;
+  background: #d6d6d6;
+  background: -moz-linear-gradient(top, #d6d6d6 0%, #f2f2f2 10%, #f2f2f2 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #d6d6d6), color-stop(10%, #f2f2f2), color-stop(100%, #f2f2f2));
+  background: -webkit-linear-gradient(top, #d6d6d6 0%, #f2f2f2 10%, #f2f2f2 100%);
+  background: -o-linear-gradient(top, #d6d6d6 0%, #f2f2f2 10%, #f2f2f2 100%);
+  background: -ms-linear-gradient(top, #d6d6d6 0%, #f2f2f2 10%, #f2f2f2 100%);
+  background: linear-gradient(to bottom, #d6d6d6 0%, #f2f2f2 10%, #f2f2f2 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#d6d6d6', endColorstr='#f2f2f2', GradientType=0);
+}
+.swagger-section .os-swagger-footer a {
+  color: #E83E26;
+  text-decoration: none;
+  transition: color 0.2s ease-in;
+  -webkit-transition: color 0.2s ease-in;
+  font-family: Roboto, Helvetica, Arial, sans-serif;
 }
 .swagger-section .os-header-right {
   float: right;
