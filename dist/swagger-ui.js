@@ -199,6 +199,14 @@ var Docs = {
 	}
 };
 
+this["Handlebars"] = this["Handlebars"] || {};
+this["Handlebars"]["templates"] = this["Handlebars"]["templates"] || {};
+this["Handlebars"]["templates"]["apikey_button_view"] = Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
+  var helper, functionType="function", helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression;
+  return "<!--div class='auth_button' id='apikey_button'><img class='auth_icon' alt='apply api key' src='images/apikey.jpeg'></div-->\n<div class='auth_container' id='apikey_container'>\n  <div class='key_input_container'>\n    <div class='auth_label'>"
+    + escapeExpression(((helper = (helper = helpers.keyName || (depth0 != null ? depth0.keyName : depth0)) != null ? helper : helperMissing),(typeof helper === functionType ? helper.call(depth0, {"name":"keyName","hash":{},"data":data}) : helper)))
+    + "</div>\n    <input placeholder=\"api_key\" class=\"auth_input\" id=\"input_apiKey_entry\" name=\"apiKey\" type=\"text\"/>\n    <div class='auth_submit'><a class='auth_submit_button' id=\"apply_api_key\" href=\"#\">apply</a></div>\n  </div>\n</div>\n\n";
+},"useData":true});
 var SwaggerUi,
   extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
   hasProp = {}.hasOwnProperty;
@@ -385,14 +393,6 @@ SwaggerUi = (function(superClass) {
 
 window.SwaggerUi = SwaggerUi;
 
-this["Handlebars"] = this["Handlebars"] || {};
-this["Handlebars"]["templates"] = this["Handlebars"]["templates"] || {};
-this["Handlebars"]["templates"]["apikey_button_view"] = Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
-  var helper, functionType="function", helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression;
-  return "<!--div class='auth_button' id='apikey_button'><img class='auth_icon' alt='apply api key' src='images/apikey.jpeg'></div-->\n<div class='auth_container' id='apikey_container'>\n  <div class='key_input_container'>\n    <div class='auth_label'>"
-    + escapeExpression(((helper = (helper = helpers.keyName || (depth0 != null ? depth0.keyName : depth0)) != null ? helper : helperMissing),(typeof helper === functionType ? helper.call(depth0, {"name":"keyName","hash":{},"data":data}) : helper)))
-    + "</div>\n    <input placeholder=\"api_key\" class=\"auth_input\" id=\"input_apiKey_entry\" name=\"apiKey\" type=\"text\"/>\n    <div class='auth_submit'><a class='auth_submit_button' id=\"apply_api_key\" href=\"#\">apply</a></div>\n  </div>\n</div>\n\n";
-},"useData":true});
 Handlebars.registerHelper('sanitize', function(html) {
   html = html.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '');
   return new Handlebars.SafeString(html);
@@ -613,6 +613,35 @@ this["Handlebars"]["templates"]["main"] = Handlebars.template({"1":function(dept
   if (stack1 != null) { buffer += stack1; }
   return buffer + "    </h4>\n    </div>\n</div>\n";
 },"useData":true});
+var ContentTypeView,
+  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+  hasProp = {}.hasOwnProperty;
+
+ContentTypeView = (function(superClass) {
+  extend(ContentTypeView, superClass);
+
+  function ContentTypeView() {
+    return ContentTypeView.__super__.constructor.apply(this, arguments);
+  }
+
+  ContentTypeView.prototype.initialize = function() {};
+
+  ContentTypeView.prototype.render = function() {
+    var template;
+    template = this.template();
+    $(this.el).html(template(this.model));
+    $('label[for=contentType]', $(this.el)).text('Response Content Type');
+    return this;
+  };
+
+  ContentTypeView.prototype.template = function() {
+    return Handlebars.templates.content_type;
+  };
+
+  return ContentTypeView;
+
+})(Backbone.View);
+
 this["Handlebars"]["templates"]["operation"] = Handlebars.template({"1":function(depth0,helpers,partials,data) {
   return "deprecated";
   },"3":function(depth0,helpers,partials,data) {
@@ -708,35 +737,6 @@ this["Handlebars"]["templates"]["operation"] = Handlebars.template({"1":function
   if (stack1 != null) { buffer += stack1; }
   return buffer + "					<!-- OutSystems change: removed Try it out button -->\r\n						</form>\r\n						<div class='response' style='display:none'>\r\n							<h4>Request URL</h4>\r\n							<div class='block request_url'></div>\r\n							<h4>Response Body</h4>\r\n							<div class='block response_body'></div>\r\n							<h4>Response Code</h4>\r\n							<div class='block response_code'></div>\r\n							<h4>Response Headers</h4>\r\n							<div class='block response_headers'></div>\r\n						</div>\r\n					</div>\r\n					</li>\r\n				</ul>\r\n";
 },"useData":true});
-var ContentTypeView,
-  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
-  hasProp = {}.hasOwnProperty;
-
-ContentTypeView = (function(superClass) {
-  extend(ContentTypeView, superClass);
-
-  function ContentTypeView() {
-    return ContentTypeView.__super__.constructor.apply(this, arguments);
-  }
-
-  ContentTypeView.prototype.initialize = function() {};
-
-  ContentTypeView.prototype.render = function() {
-    var template;
-    template = this.template();
-    $(this.el).html(template(this.model));
-    $('label[for=contentType]', $(this.el)).text('Response Content Type');
-    return this;
-  };
-
-  ContentTypeView.prototype.template = function() {
-    return Handlebars.templates.content_type;
-  };
-
-  return ContentTypeView;
-
-})(Backbone.View);
-
 this["Handlebars"]["templates"]["param"] = Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
   var stack1, helper, functionType="function", helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression, buffer = "<td class='code'>"
     + escapeExpression(((helper = (helper = helpers.name || (depth0 != null ? depth0.name : depth0)) != null ? helper : helperMissing),(typeof helper === functionType ? helper.call(depth0, {"name":"name","hash":{},"data":data}) : helper)))
