@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Swagger UI</title>
+	<!-- OutSystems change: resources relative URLs and merged some css/javascript files to reduce the amount of resources -->
+  <link href='dist/css/main.css' rel='stylesheet' type='text/css'/>
+  <script src="dist/lib/shred.bundle.js" type="text/javascript" ></script>
+  <script src='dist/lib/jquery.js' type='text/javascript'></script>
+  <script src='dist/lib/underscore-min.js' type='text/javascript'></script>
+  <script src='dist/lib/backbone-min.js' type='text/javascript'></script>
+  <script src='dist/lib/swagger.utils.js' type='text/javascript'></script>
+  <script src='dist/swagger-ui.js' type='text/javascript'></script>
+  
+  <!-- enabling this will enable oauth2 implicit scope support -->
+  <script type="text/javascript">
+    $(function () {
+			// OutSystems change: swagger JSON URL
+      var url = "http://localhost/restDetach/rest/GoogleCalMimicswagger.json";
+      window.swaggerUi = new SwaggerUi({
+        url: url,
+        dom_id: "swagger-ui-container",
+        supportedSubmitMethods: ['get', 'post', 'put', 'delete', 'patch'],
+        onComplete: function(swaggerApi, swaggerUi){
+          if(typeof initOAuth == "function") {
+            /*
+            initOAuth({
+              clientId: "your-client-id",
+              realm: "your-realms",
+              appName: "your-app-name"
+            });
+            */
+          }
+          $('pre code').each(function(i, e) {
+            hljs.highlightBlock(e)
+          });
+          $('.os-swagger-footer').attr('position', 'relative');
+        },
+        onFailure: function(data) {
+          log("Unable to Load SwaggerUI");
+        },
+			  // Outsystems change: open the documentation expanded by default
+        docExpansion: "list",
+        sorter : "alpha",
+				// Outsystems change: disable validator
+		validatorUrl: null
+      });
+
+      function addApiKeyAuthorization() {
+        var key = $('#input_apiKey')[0].value;
+        log("key: " + key);
+        if(key && key.trim() != "") {
+            log("added key " + key);
+            window.authorizations.add("api_key", new ApiKeyAuthorization("api_key", key, "query"));
+        }
+      }
+
+      $('#input_apiKey').change(function() {
+        addApiKeyAuthorization();
+      });
+
+      // if you have an apiKey you would like to pre-populate on the page for demonstration purposes...
+      /*
+        var apiKey = "myApiKeyXXXX123456789";
+        $('#input_apiKey').val(apiKey);
+        addApiKeyAuthorization();
+      */
+
+      window.swaggerUi.load();
+  });
+  </script>
+</head>
+
+<body class="swagger-section">
+<div id='header'>
+  <div class="swagger-ui-wrap">
+      <div class="os-header-right">
+	  		<div class="os-header-title">REST API Documentation</div>
+	  </div>
+	  <div class="os-header-left"><img class="os-logo-vertical" src="dist/images/platform-vertical-white.png" alt="Outsystems Platform"></div>
+	  <!-- OutSystems change: customize header information
+      <a id="logo" href="http://swagger.io">swagger</a>
+	  -->
+  </div>
+</div>
+
+<div id="message-bar" class="swagger-ui-wrap">&nbsp;</div>
+<div id="swagger-ui-container" class="swagger-ui-wrap"></div>
+<div id="swagger-footer" class="os-swagger-footer">Built with the&nbsp;<a title="Custom Enterprise Web Application Development Platform" alt="Custom Enterprise Web Application Development Platform" href="http://www.outsystems.com/ce/web-application-development/">OutSystems Platform</a></div>
+</body>
+</html>
+
