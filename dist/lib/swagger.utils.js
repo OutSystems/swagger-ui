@@ -2074,7 +2074,9 @@ var SwaggerResource = function (resourceObj, api) {
     } else {
       this.url = this.api.basePath + this.path.replace('{format}', 'json');
     }
-    this.api.progress('fetching resource ' + this.name + ': ' + this.url);
+		// Outsystems change: loading message
+    //this.api.progress('fetching resource ' + this.name + ': ' + this.url);
+		this.api.progress('Loading Documentation');
     var obj = {
       url: this.url,
       method: 'GET',
