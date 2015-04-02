@@ -8,6 +8,10 @@ class OperationView extends Backbone.View
     'click .toggleOperation'  : 'toggleOperationContent'
     'mouseenter .api-ic'      : 'mouseEnter'
     'mouseout .api-ic'        : 'mouseExit'
+		'click .description-link-response' : 'switchToDescriptionResponse'
+		'click .snippet-link-response'     : 'switchToSnippetResponse'
+		'click .description-link-parameter' : 'switchToDescriptionParameter'
+		'click .snippet-link-parameter'     : 'switchToSnippetParameter'
   }
 
   initialize: (opts={}) ->
@@ -83,7 +87,7 @@ class OperationView extends Backbone.View
       for code, value of @model.responses
         # OutSystems change: send non-object schema information to be rendered
         schema = null
-        nonObjectSchema = null;
+        nonObjectSchema = null
         schemaObj = @model.responses[code].schema
         if schemaObj and schemaObj['$ref']
           schema = schemaObj['$ref']
@@ -95,7 +99,10 @@ class OperationView extends Backbone.View
               getSampleValue : () -> null
           else
             nonObjectSchema = new Property("nonObject", @model.responses[code].schema, false);
-        @model.responseMessages.push {code: code, message: value.description, responseModel: schema, responseSchema: nonObjectSchema, produces: @model.produces  }
+        modelSignature = ''
+        if schemaObj
+          modelSignature = @model.getModelSignature(@model.getType(schemaObj), swaggerUi.api.models)
+        @model.responseMessages.push {code: code, message: value.description, responseModel: schema, responseSchema: nonObjectSchema, produces: @model.produces, modelSignature: modelSignature  }
 
     if typeof @model.responseMessages is 'undefined'
       @model.responseMessages = []
@@ -127,7 +134,7 @@ class OperationView extends Backbone.View
       $('.model-signature', $(@el)).append responseSignatureView.render().el
     else
       @model.responseClassSignature = 'string'
-      # OutSystems change: the reponse type information being shown in case it's not a model
+      # OutSystems change: the response type information being shown in case it's not a model
       if @model.type != null
         if @model.produces != null and @model.produces.length == 1 and @model.produces[0] = "application/octet-stream"
           $('.model-signature', $(@el)).html("binary")
@@ -480,3 +487,35 @@ class OperationView extends Backbone.View
   toggleOperationContent: ->
     elem = $('#' + Docs.escapeResourceName(@parentId + "_" + @nickname + "_content"))
     if elem.is(':visible') then Docs.collapseOperation(elem) else Docs.expandOperation(elem)
+
+  # handler for show signature
+  switchToDescriptionParameter: (e) ->
+    e?.preventDefault()
+    $(".snippet", $('.parameter-table', @el)).hide()
+    $(".description",  $('.parameter-table', @el)).show()
+    $('.description-link',  $('.parameter-table', @el)).addClass('selected')
+    $('.snippet-link',  $('.parameter-table', @el)).removeClass('selected')
+  
+  # handler for show signature
+  switchToDescriptionResponse: (e) ->
+    e?.preventDefault()
+    $(".snippet",  $('.response-table', @el)).hide()
+    $(".description", $('.response-table', @el)).show()
+    $('.description-link', $('.response-table', @el)).addClass('selected')
+    $('.snippet-link', $('.response-table', @el)).removeClass('selected')
+    
+  # handler for show sample
+  switchToSnippetParameter: (e) ->
+    e?.preventDefault()
+    $(".description", $('.parameter-table', @el)).hide()
+    $(".snippet", $('.parameter-table', @el)).show()
+    $('.snippet-link', $('.parameter-table', @el)).addClass('selected')
+    $('.description-link', $('.parameter-table', @el)).removeClass('selected')
+  
+  # handler for show sample
+  switchToSnippetResponse: (e) ->
+    e?.preventDefault()
+    $(".description", $('.response-table', @el)).hide()
+    $(".snippet", $('.response-table', @el)).show()
+    $('.snippet-link', $('.response-table', @el)).addClass('selected')
+    $('.description-link', $('.response-table', @el)).removeClass('selected')

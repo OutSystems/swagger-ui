@@ -341,6 +341,33 @@
 .swagger-section .swagger-ui-wrap table.fullwidth {
   width: 100%;
 }
+.swagger-section .swagger-ui-wrap .signature-nav a {
+  text-decoration: none;
+  color: #AAA;
+}
+.swagger-section .swagger-ui-wrap .signature-nav a:hover {
+  text-decoration: underline;
+  color: black;
+}
+.swagger-section .swagger-ui-wrap .signature-nav .selected {
+  color: black;
+  text-decoration: none;
+}
+.swagger-section .swagger-ui-wrap ul.signature-nav {
+  display: block;
+  margin: 0;
+  padding: 0;
+}
+.swagger-section .swagger-ui-wrap ul.signature-nav li:last-child {
+  padding-right: 0;
+  border-right: none;
+}
+.swagger-section .swagger-ui-wrap ul.signature-nav li {
+  float: left;
+  margin: 5px 5px 5px 0;
+  padding: 0px 5px 0px 0;
+  border-right: 1px solid #ddd;
+}
 .swagger-section .swagger-ui-wrap .model-signature {
   /*OutSystems Change: branding*/
   font-family: "Open Sans", sans-serif;

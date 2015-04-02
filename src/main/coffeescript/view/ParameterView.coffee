@@ -42,7 +42,7 @@ class ParameterView extends Backbone.View
       if @model.consumes.length > 0 and @model.consumes[0] == "text/plain"
         @model.sampleJSON = (new Property("xpto", @model.schema, false)).getSampleValue({}, {})
       else if @model.consumes.length == 0
-        @model.sampleJSON = "binary"
+        @model.sampleJSON = "DATA"
       else
         @model.sampleJSON = JSON.stringify((new Property("xpto", @model.schema, false)).getSampleValue({}, {}))
 
