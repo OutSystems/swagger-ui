@@ -1,7 +1,7 @@
 class SignatureView extends Backbone.View
   events: {
-  'click a.description-link'       : 'switchToDescription'
-  'click a.snippet-link'           : 'switchToSnippet'
+	#'click a.description-link'       : 'switchToDescription'
+	#'click a.snippet-link'           : 'switchToSnippet'
   # OutSystems Change: enable selection for code snippet
   # 'mousedown .snippet'          : 'snippetToTextArea'
   }

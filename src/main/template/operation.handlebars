@@ -47,14 +47,33 @@
           <div style='margin:0;padding:0;display:inline'></div>
           {{#if parameters}}
           <h4>Parameters</h4>
-          <table class='fullwidth'>
+          <table class='fullwidth parameter-table'>
           <thead>
             <tr>
             <th style="width: 100px; max-width: 100px">Parameter</th>
 						<!-- OutSystems change: removed Value -->
-            <th style="width: 200px; max-width: 200px">Description</th>
+            <th style="width: 355px; max-width: 355px">Description</th>
             <th style="width: 100px; max-width: 100px">Parameter Type</th>
-            <th style="width: 220px; max-width: 230px">Data Type</th>
+						<th style="width: 375px; max-width: 385px">
+							<div>								
+								<table>
+									<tr>
+										<td style="vertical-align:middle;height:30px;"><div style="">Data Type (</div></td>
+										<td style="vertical-align:middle;height:30px;"><div style="vertical-align: middle;height: 20px;">
+									<ul class="signature-nav">
+									<li>
+										<a class="description-link description-link-parameter" href="#">Model</a>
+								  </li>
+									<li>
+										<a class="snippet-link snippet-link-parameter selected" href="#">Example</a>
+								  </li>
+									</ul></td>
+									<td style="vertical-align:middle;height:30px;">
+										<div style="">)</div>
+									</td>
+									</tr>
+								</table>
+						</th>
             </tr>
           </thead>
           <tbody class="operation-params">
@@ -65,14 +84,32 @@
           {{#if responseMessages}}
           <div style='margin:0;padding:0;display:inline'></div>
           <h4>Response Messages</h4>
-          <table class='fullwidth'>
+          <table class='fullwidth response-table'>
             <thead>
             <tr>
               <!-- OutSystems change: Normalize table Sizes and include Content Type in response messages -->
               <th style="width: 100px; max-width: 100px">HTTP Status Code</th>
-              <th style="width: 200px; max-width: 200px">Description</th>
+              <th style="width: 355px; max-width: 355px">Description</th>
               <th style="width: 100px; max-width: 100px">Content-Type</th>
-              <th style="width: 220px; max-width: 230px">Data Type</th>
+              <th style="width: 375px; max-width: 385px">
+								<table>
+									<tr>
+										<td style="vertical-align:middle;height:30px;"><div style="">Data Type (</div></td>
+										<td style="vertical-align:middle;height:30px;"><div style="vertical-align: middle;height: 20px;">
+									<ul class="signature-nav">
+									<li>
+										<a class="description-link description-link-response" href="#">Model</a>
+								  </li>
+									<li>
+										<a class="snippet-link snippet-link-response selected" href="#">Example</a>
+								  </li>
+									</ul></td>
+									<td style="vertical-align:middle;height:30px;">
+										<div style="">)</div>
+									</td>
+									</tr>
+								</table>
+							</th>
             </tr>
             </thead>
             <tbody class="operation-status">

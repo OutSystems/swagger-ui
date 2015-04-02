@@ -230,8 +230,37 @@
         width: 100%;
     }
 
-    .model-signaturemodel-signature {
-        /*OutSystems Change: branding*/
+    
+		.signature-nav {
+            a {
+                text-decoration: none;
+                color: #AAA;
+            }
+            a:hover {
+                text-decoration: underline;
+                color: black;
+            }
+            .selected {
+                color: black;
+                text-decoration: none;
+            }
+        }
+		ul.signature-nav {
+            display: block;
+            margin: 0;
+            padding: 0;
+            li:last-child {
+                padding-right: 0;
+                border-right: none;
+            }
+            li {
+                float: left;
+                margin: 5px 5px 5px 0;
+                padding: 0px 5px 0px 0;
+                border-right: 1px solid #ddd;
+            }
+        }
+.model-signature {        /*OutSystems Change: branding*/
         font-family: "Open Sans", sans-serif;
         font-size: 1em;
         line-height: 1.5em;
