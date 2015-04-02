@@ -341,6 +341,33 @@
 .swagger-section .swagger-ui-wrap table.fullwidth {
   width: 100%;
 }
+.swagger-section .swagger-ui-wrap .signature-nav a {
+  text-decoration: none;
+  color: #AAA;
+}
+.swagger-section .swagger-ui-wrap .signature-nav a:hover {
+  text-decoration: underline;
+  color: black;
+}
+.swagger-section .swagger-ui-wrap .signature-nav .selected {
+  color: black;
+  text-decoration: none;
+}
+.swagger-section .swagger-ui-wrap ul.signature-nav {
+  display: block;
+  margin: 0;
+  padding: 0;
+}
+.swagger-section .swagger-ui-wrap ul.signature-nav li:last-child {
+  padding-right: 0;
+  border-right: none;
+}
+.swagger-section .swagger-ui-wrap ul.signature-nav li {
+  float: left;
+  margin: 5px 5px 5px 0;
+  padding: 0px 5px 0px 0;
+  border-right: 1px solid #ddd;
+}
 .swagger-section .swagger-ui-wrap .model-signature {
   /*OutSystems Change: branding*/
   font-family: "Open Sans", sans-serif;
@@ -605,13 +632,14 @@
 .swagger-section .swagger-ui-wrap ul#resources li.resource {
   border-bottom: 1px solid #dddddd;
 }
-.swagger-section .swagger-ui-wrap ul#resources li.resource:hover div.heading h2 a,
-.swagger-section .swagger-ui-wrap ul#resources li.resource.active div.heading h2 a {
-  color: black;
-}
-.swagger-section .swagger-ui-wrap ul#resources li.resource:hover div.heading ul.options li a,
-.swagger-section .swagger-ui-wrap ul#resources li.resource.active div.heading ul.options li a {
-  color: #555555;
+.swagger-section .swagger-ui-wrap ul#resources li.resource:hover div.heading,
+.swagger-section .swagger-ui-wrap ul#resources li.resource.active div.heading {
+  /*h2 a {
+                    color: black;
+                }
+                ul.options li a {
+                    color: #555555;
+                }*/
 }
 .swagger-section .swagger-ui-wrap ul#resources li.resource:last-child {
   border-bottom: none;
@@ -1151,8 +1179,42 @@
 .swagger-section .api-popup-actions {
   padding-top: 10px;
 }
-.swagger-section {
-  /*OutSystems change: branding*/
+/*OutSystems change: branding*/
+@media screen and (max-height: 450px) {
+  .swagger-ui-wrap {
+    min-height: 250px;
+  }
+}
+@media screen and (min-height: 451px) and (max-height: 600px) {
+  .swagger-ui-wrap {
+    min-height: 270px;
+  }
+}
+@media screen and (min-height: 601px) and (max-height: 800px) {
+  .swagger-ui-wrap {
+    min-height: 400px;
+  }
+}
+@media screen and (min-height: 801px) and (max-height: 900px) {
+  .swagger-ui-wrap {
+    min-height: 600px;
+  }
+}
+@media screen and (min-height: 901px) and (max-height: 1000px) {
+  .swagger-ui-wrap {
+    min-height: 730px;
+  }
+}
+@media screen and (min-height: 1001px) {
+  .swagger-ui-wrap {
+    min-height: 850px;
+  }
+}
+html {
+  background: #f2f2f2;
+}
+body {
+  background: white;
 }
 .swagger-section .os-header-byline {
   font-family: 'Open Sans', sans-serif;
@@ -1161,12 +1223,37 @@
 }
 .swagger-section .os-header-title {
   font-family: 'Open Sans', sans-serif;
-  font-size: 21px;
+  font-size: 18px;
   margin-top: 4px;
   margin-left: -1px;
 }
 .swagger-section .os-header-left {
   margin-top: 9px;
+}
+.swagger-section .os-swagger-footer {
+  color: #999;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 12px;
+  text-align: center;
+  min-height: 50px;
+  padding: 10px 0;
+  width: 100%;
+  bottom: 0;
+  background: #d6d6d6;
+  background: -moz-linear-gradient(top, #d6d6d6 0%, #f2f2f2 10%, #f2f2f2 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #d6d6d6), color-stop(10%, #f2f2f2), color-stop(100%, #f2f2f2));
+  background: -webkit-linear-gradient(top, #d6d6d6 0%, #f2f2f2 10%, #f2f2f2 100%);
+  background: -o-linear-gradient(top, #d6d6d6 0%, #f2f2f2 10%, #f2f2f2 100%);
+  background: -ms-linear-gradient(top, #d6d6d6 0%, #f2f2f2 10%, #f2f2f2 100%);
+  background: linear-gradient(to bottom, #d6d6d6 0%, #f2f2f2 10%, #f2f2f2 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#d6d6d6', endColorstr='#f2f2f2', GradientType=0);
+}
+.swagger-section .os-swagger-footer a {
+  color: #E83E26;
+  text-decoration: none;
+  transition: color 0.2s ease-in;
+  -webkit-transition: color 0.2s ease-in;
+  font-family: 'Open Sans', sans-serif;
 }
 .swagger-section .os-header-right {
   float: right;

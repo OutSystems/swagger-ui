@@ -641,9 +641,9 @@ this["Handlebars"]["templates"]["operation"] = Handlebars.template({"1":function
   },"14":function(depth0,helpers,partials,data) {
   return "        <div class='access'>\r\n          <span class=\"api-ic ic-off\" title=\"click to authenticate\"></span>\r\n        </div>\r\n";
   },"16":function(depth0,helpers,partials,data) {
-  return "          <h4>Parameters</h4>\r\n          <table class='fullwidth'>\r\n          <thead>\r\n            <tr>\r\n            <th style=\"width: 100px; max-width: 100px\">Parameter</th>\r\n						<!-- OutSystems change: removed Value -->\r\n            <th style=\"width: 200px; max-width: 200px\">Description</th>\r\n            <th style=\"width: 100px; max-width: 100px\">Parameter Type</th>\r\n            <th style=\"width: 220px; max-width: 230px\">Data Type</th>\r\n            </tr>\r\n          </thead>\r\n          <tbody class=\"operation-params\">\r\n\r\n          </tbody>\r\n          </table>\r\n";
+  return "          <h4>Parameters</h4>\r\n          <table class='fullwidth parameter-table'>\r\n          <thead>\r\n            <tr>\r\n            <th style=\"width: 100px; max-width: 100px\">Parameter</th>\r\n						<!-- OutSystems change: removed Value -->\r\n            <th style=\"width: 355px; max-width: 355px\">Description</th>\r\n            <th style=\"width: 100px; max-width: 100px\">Parameter Type</th>\r\n						<th style=\"width: 375px; max-width: 385px\">\r\n							<div>								\r\n								<table>\r\n									<tr>\r\n										<td style=\"vertical-align:middle;height:30px;\"><div style=\"\">Data Type (</div></td>\r\n										<td style=\"vertical-align:middle;height:30px;\"><div style=\"vertical-align: middle;height: 20px;\">\r\n									<ul class=\"signature-nav\">\r\n									<li>\r\n										<a class=\"description-link description-link-parameter\" href=\"#\">Model</a>\r\n								  </li>\r\n									<li>\r\n										<a class=\"snippet-link snippet-link-parameter selected\" href=\"#\">Example</a>\r\n								  </li>\r\n									</ul></td>\r\n									<td style=\"vertical-align:middle;height:30px;\">\r\n										<div style=\"\">)</div>\r\n									</td>\r\n									</tr>\r\n								</table>\r\n						</th>\r\n            </tr>\r\n          </thead>\r\n          <tbody class=\"operation-params\">\r\n\r\n          </tbody>\r\n          </table>\r\n";
   },"18":function(depth0,helpers,partials,data) {
-  return "          <div style='margin:0;padding:0;display:inline'></div>\r\n          <h4>Response Messages</h4>\r\n          <table class='fullwidth'>\r\n            <thead>\r\n            <tr>\r\n              <!-- OutSystems change: Normalize table Sizes and include Content Type in response messages -->\r\n              <th style=\"width: 100px; max-width: 100px\">HTTP Status Code</th>\r\n              <th style=\"width: 200px; max-width: 200px\">Description</th>\r\n              <th style=\"width: 100px; max-width: 100px\">Content-Type</th>\r\n              <th style=\"width: 220px; max-width: 230px\">Data Type</th>\r\n            </tr>\r\n            </thead>\r\n            <tbody class=\"operation-status\">\r\n            \r\n            </tbody>\r\n					</table>\r\n";
+  return "          <div style='margin:0;padding:0;display:inline'></div>\r\n          <h4>Response Messages</h4>\r\n          <table class='fullwidth response-table'>\r\n            <thead>\r\n            <tr>\r\n              <!-- OutSystems change: Normalize table Sizes and include Content Type in response messages -->\r\n              <th style=\"width: 100px; max-width: 100px\">HTTP Status Code</th>\r\n              <th style=\"width: 355px; max-width: 355px\">Description</th>\r\n              <th style=\"width: 100px; max-width: 100px\">Content-Type</th>\r\n              <th style=\"width: 375px; max-width: 385px\">\r\n								<table>\r\n									<tr>\r\n										<td style=\"vertical-align:middle;height:30px;\"><div style=\"\">Data Type (</div></td>\r\n										<td style=\"vertical-align:middle;height:30px;\"><div style=\"vertical-align: middle;height: 20px;\">\r\n									<ul class=\"signature-nav\">\r\n									<li>\r\n										<a class=\"description-link description-link-response\" href=\"#\">Model</a>\r\n								  </li>\r\n									<li>\r\n										<a class=\"snippet-link snippet-link-response selected\" href=\"#\">Example</a>\r\n								  </li>\r\n									</ul></td>\r\n									<td style=\"vertical-align:middle;height:30px;\">\r\n										<div style=\"\">)</div>\r\n									</td>\r\n									</tr>\r\n								</table>\r\n							</th>\r\n            </tr>\r\n            </thead>\r\n            <tbody class=\"operation-status\">\r\n            \r\n            </tbody>\r\n					</table>\r\n";
   },"20":function(depth0,helpers,partials,data) {
   return "					<!-- OutSystems change: remove success code -->\r\n					<h4>Response</h4>\r\n					<p><span class=\"model-signature\" /></p>\r\n					<br/>\r\n					<div class=\"response-content-type\" />\r\n";
   },"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
@@ -967,7 +967,11 @@ OperationView = (function(superClass) {
     'click .response_hider': 'hideResponse',
     'click .toggleOperation': 'toggleOperationContent',
     'mouseenter .api-ic': 'mouseEnter',
-    'mouseout .api-ic': 'mouseExit'
+    'mouseout .api-ic': 'mouseExit',
+    'click .description-link-response': 'switchToDescriptionResponse',
+    'click .snippet-link-response': 'switchToSnippetResponse',
+    'click .description-link-parameter': 'switchToDescriptionParameter',
+    'click .snippet-link-parameter': 'switchToSnippetParameter'
   };
 
   OperationView.prototype.initialize = function(opts) {
@@ -1015,7 +1019,7 @@ OperationView = (function(superClass) {
   };
 
   OperationView.prototype.render = function() {
-    var a, auth, auths, code, contentTypeModel, isMethodSubmissionSupported, k, key, l, len, len1, len2, len3, len4, m, modelAuths, n, nonObjectSchema, o, p, param, q, ref, ref1, ref2, ref3, ref4, ref5, responseContentTypeView, responseSignatureView, schema, schemaObj, scopeIndex, signatureModel, statusCode, successResponse, type, v, value;
+    var a, auth, auths, code, contentTypeModel, isMethodSubmissionSupported, k, key, l, len, len1, len2, len3, len4, m, modelAuths, modelSignature, n, nonObjectSchema, o, p, param, q, ref, ref1, ref2, ref3, ref4, ref5, responseContentTypeView, responseSignatureView, schema, schemaObj, scopeIndex, signatureModel, statusCode, successResponse, type, v, value;
     isMethodSubmissionSupported = jQuery.inArray(this.model.method, this.model.supportedSubmitMethods()) >= 0;
     if (!isMethodSubmissionSupported) {
       this.model.isReadOnly = true;
@@ -1095,12 +1099,17 @@ OperationView = (function(superClass) {
             nonObjectSchema = new Property("nonObject", this.model.responses[code].schema, false);
           }
         }
+        modelSignature = '';
+        if (schemaObj) {
+          modelSignature = this.model.getModelSignature(this.model.getType(schemaObj), swaggerUi.api.models);
+        }
         this.model.responseMessages.push({
           code: code,
           message: value.description,
           responseModel: schema,
           responseSchema: nonObjectSchema,
-          produces: this.model.produces
+          produces: this.model.produces,
+          modelSignature: modelSignature
         });
       }
     }
@@ -1586,6 +1595,46 @@ OperationView = (function(superClass) {
     }
   };
 
+  OperationView.prototype.switchToDescriptionParameter = function(e) {
+    if (e != null) {
+      e.preventDefault();
+    }
+    $(".snippet", $('.parameter-table', this.el)).hide();
+    $(".description", $('.parameter-table', this.el)).show();
+    $('.description-link', $('.parameter-table', this.el)).addClass('selected');
+    return $('.snippet-link', $('.parameter-table', this.el)).removeClass('selected');
+  };
+
+  OperationView.prototype.switchToDescriptionResponse = function(e) {
+    if (e != null) {
+      e.preventDefault();
+    }
+    $(".snippet", $('.response-table', this.el)).hide();
+    $(".description", $('.response-table', this.el)).show();
+    $('.description-link', $('.response-table', this.el)).addClass('selected');
+    return $('.snippet-link', $('.response-table', this.el)).removeClass('selected');
+  };
+
+  OperationView.prototype.switchToSnippetParameter = function(e) {
+    if (e != null) {
+      e.preventDefault();
+    }
+    $(".description", $('.parameter-table', this.el)).hide();
+    $(".snippet", $('.parameter-table', this.el)).show();
+    $('.snippet-link', $('.parameter-table', this.el)).addClass('selected');
+    return $('.description-link', $('.parameter-table', this.el)).removeClass('selected');
+  };
+
+  OperationView.prototype.switchToSnippetResponse = function(e) {
+    if (e != null) {
+      e.preventDefault();
+    }
+    $(".description", $('.response-table', this.el)).hide();
+    $(".snippet", $('.response-table', this.el)).show();
+    $('.snippet-link', $('.response-table', this.el)).addClass('selected');
+    return $('.description-link', $('.response-table', this.el)).removeClass('selected');
+  };
+
   return OperationView;
 
 })(Backbone.View);
@@ -1700,7 +1749,7 @@ ParameterView = (function(superClass) {
       if (this.model.consumes.length > 0 && this.model.consumes[0] === "text/plain") {
         this.model.sampleJSON = (new Property("xpto", this.model.schema, false)).getSampleValue({}, {});
       } else if (this.model.consumes.length === 0) {
-        this.model.sampleJSON = "binary";
+        this.model.sampleJSON = "DATA";
       } else {
         this.model.sampleJSON = JSON.stringify((new Property("xpto", this.model.schema, false)).getSampleValue({}, {}));
       }
@@ -1932,10 +1981,7 @@ SignatureView = (function(superClass) {
     return SignatureView.__super__.constructor.apply(this, arguments);
   }
 
-  SignatureView.prototype.events = {
-    'click a.description-link': 'switchToDescription',
-    'click a.snippet-link': 'switchToSnippet'
-  };
+  SignatureView.prototype.events = {};
 
   SignatureView.prototype.initialize = function() {};
 
@@ -1990,8 +2036,10 @@ SignatureView = (function(superClass) {
 })(Backbone.View);
 
 this["Handlebars"]["templates"]["signature"] = Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
-  var helper, functionType="function", helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression;
-  return "<!-- OutSystems change: Removed Model and Model Schema labels -->\r\n<div class=\"signature-container\">\r\n	<!-- OutSystems change: Removed Model -->\r\n  <div class=\"snippet\">\r\n    <pre><code>"
+  var stack1, helper, functionType="function", helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression, buffer = "<!-- OutSystems change: Removed Model and Model Schema labels -->\r\n<!-- <div>\r\n<ul class=\"signature-nav\">\r\n    <li><a class=\"description-link\" href=\"#\">Description</a></li>\r\n    <li><a class=\"snippet-link\" href=\"#\">Snippet</a></li>\r\n</ul>\r\n<div> \r\n	-->\r\n\r\n<div class=\"signature-container\">\r\n	<!-- OutSystems change: Removed Model -->\r\n    <div class=\"description\">\r\n        ";
+  stack1 = ((helper = (helper = helpers.signature || (depth0 != null ? depth0.signature : depth0)) != null ? helper : helperMissing),(typeof helper === functionType ? helper.call(depth0, {"name":"signature","hash":{},"data":data}) : helper));
+  if (stack1 != null) { buffer += stack1; }
+  return buffer + "\r\n    </div>  <div class=\"snippet\">\r\n    <pre><code>"
     + escapeExpression(((helper = (helper = helpers.sampleJSON || (depth0 != null ? depth0.sampleJSON : depth0)) != null ? helper : helperMissing),(typeof helper === functionType ? helper.call(depth0, {"name":"sampleJSON","hash":{},"data":data}) : helper)))
     + "</code></pre>\r\n    <small class=\"notice\"></small>\r\n  </div>\r\n</div>\r\n\r\n";
 },"useData":true});
@@ -2009,7 +2057,7 @@ StatusCodeView = (function(superClass) {
   StatusCodeView.prototype.initialize = function() {};
 
   StatusCodeView.prototype.render = function() {
-    var responseModel, responseModelView, sampleJSON, template;
+    var modelSignature, responseModel, responseModelView, sampleJSON, template;
     template = this.template();
     $(this.el).html(template(this.model));
     if (swaggerUi.api.models.hasOwnProperty(this.model.responseModel)) {
@@ -2026,10 +2074,13 @@ StatusCodeView = (function(superClass) {
     } else {
       if (this.model.responseSchema) {
         sampleJSON = this.model.responseSchema.getSampleValue({}, {});
+        modelSignature = this.model.modelSignature;
         if (sampleJSON === null) {
           sampleJSON = "";
+          modelSignature = "";
         } else if (this.model.produces.length > 0 && this.model.produces[0] === "application/octet-stream") {
-          sampleJSON = "binary";
+          sampleJSON = "DATA";
+          modelSignature = "binary";
         } else if (!(this.model.produces.length > 0 && this.model.produces[0] === "text/plain")) {
           sampleJSON = JSON.stringify(sampleJSON, null, 2);
         }
@@ -2037,7 +2088,7 @@ StatusCodeView = (function(superClass) {
           responseModel = {
             sampleJSON: sampleJSON,
             isParam: false,
-            signature: ""
+            signature: modelSignature
           };
           responseModelView = new SignatureView({
             model: responseModel,
@@ -2061,8 +2112,8 @@ StatusCodeView = (function(superClass) {
 this["Handlebars"]["templates"]["status_code"] = Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
   var stack1, helper, functionType="function", helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression, buffer = "<!--Outsystems change: included content type in response messages-->\r\n<td class='code'>"
     + escapeExpression(((helper = (helper = helpers.code || (depth0 != null ? depth0.code : depth0)) != null ? helper : helperMissing),(typeof helper === functionType ? helper.call(depth0, {"name":"code","hash":{},"data":data}) : helper)))
-    + "</td>\r\n<td>";
+    + "</td>\r\n<td><strong>";
   stack1 = ((helper = (helper = helpers.message || (depth0 != null ? depth0.message : depth0)) != null ? helper : helperMissing),(typeof helper === functionType ? helper.call(depth0, {"name":"message","hash":{},"data":data}) : helper));
   if (stack1 != null) { buffer += stack1; }
-  return buffer + "</td>\r\n<td class='content-type'></td>\r\n<td><span class=\"model-signature\" /></td>";
+  return buffer + "</strong></td>\r\n<td class='content-type'></td>\r\n<td><span class=\"model-signature\" /></td>\r\n";
 },"useData":true});
