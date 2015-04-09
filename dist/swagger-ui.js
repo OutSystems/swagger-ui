@@ -307,11 +307,6 @@ this["Handlebars"]["templates"]["main"] = Handlebars.template({"1":function(dept
     + escapeExpression(lambda(((stack1 = ((stack1 = (depth0 != null ? depth0.info : depth0)) != null ? stack1.license : stack1)) != null ? stack1.name : stack1), depth0))
     + "</a></div>";
 },"14":function(depth0,helpers,partials,data) {
-  var stack1, lambda=this.lambda, escapeExpression=this.escapeExpression;
-  return "    , <span style=\"font-variant: small-caps\">api version</span>: "
-    + escapeExpression(lambda(((stack1 = (depth0 != null ? depth0.info : depth0)) != null ? stack1.version : stack1), depth0))
-    + "\n";
-},"16":function(depth0,helpers,partials,data) {
   var helper, functionType="function", helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression;
   return "    <span style=\"float:right\"><a href=\""
     + escapeExpression(((helper = (helper = helpers.validatorUrl || (depth0 != null ? depth0.validatorUrl : depth0)) != null ? helper : helperMissing),(typeof helper === functionType ? helper.call(depth0, {"name":"validatorUrl","hash":{},"data":data}) : helper)))
@@ -328,11 +323,8 @@ this["Handlebars"]["templates"]["main"] = Handlebars.template({"1":function(dept
   if (stack1 != null) { buffer += stack1; }
   buffer += "</div>\n<div class='container' id='resources_container'>\n  <ul id='resources'></ul>\n\n  <div class=\"footer\">\n    <br>\n    <br>\n    <h4 style=\"color: #999; margin-bottom: 25px;\">[ <span style=\"font-variant: small-caps\">base url</span>: "
     + escapeExpression(((helper = (helper = helpers.basePath || (depth0 != null ? depth0.basePath : depth0)) != null ? helper : helperMissing),(typeof helper === functionType ? helper.call(depth0, {"name":"basePath","hash":{},"data":data}) : helper)))
-    + "\n    <!-- OutSystems change: remove version number and increase bottom margin\n";
-  stack1 = helpers['if'].call(depth0, ((stack1 = (depth0 != null ? depth0.info : depth0)) != null ? stack1.version : stack1), {"name":"if","hash":{},"fn":this.program(14, data),"inverse":this.noop,"data":data});
-  if (stack1 != null) { buffer += stack1; }
-  buffer += "    -->]\n";
-  stack1 = helpers['if'].call(depth0, (depth0 != null ? depth0.validatorUrl : depth0), {"name":"if","hash":{},"fn":this.program(16, data),"inverse":this.noop,"data":data});
+    + "\n		]\n";
+  stack1 = helpers['if'].call(depth0, (depth0 != null ? depth0.validatorUrl : depth0), {"name":"if","hash":{},"fn":this.program(14, data),"inverse":this.noop,"data":data});
   if (stack1 != null) { buffer += stack1; }
   return buffer + "    </h4>\n    </div>\n</div>\n";
 },"useData":true});
@@ -364,11 +356,11 @@ this["Handlebars"]["templates"]["operation"] = Handlebars.template({"1":function
   },"14":function(depth0,helpers,partials,data) {
   return "        <div class='access'>\n          <span class=\"api-ic ic-off\" title=\"click to authenticate\"></span>\n        </div>\n";
   },"16":function(depth0,helpers,partials,data) {
-  return "          <h4>Parameters</h4>\n          <table class='fullwidth parameter-table'>\n          <thead>\n            <tr>\n            <th style=\"width: 100px; max-width: 100px\">Parameter</th>\n						<!-- OutSystems change: removed Value -->\n            <th style=\"width: 355px; max-width: 355px\">Description</th>\n            <th style=\"width: 100px; max-width: 100px\">Parameter Type</th>\n						<th style=\"width: 375px; max-width: 385px\">\n							<div>								\n								<table>\n									<tr>\n										<td style=\"vertical-align:middle;height:30px;\"><div style=\"\">Data Type (</div></td>\n										<td style=\"vertical-align:middle;height:30px;\"><div style=\"vertical-align: middle;height: 20px;\">\n									<ul class=\"signature-nav\">\n									<li>\n										<a class=\"description-link description-link-parameter\" href=\"#\">Model</a>\n								  </li>\n									<li>\n										<a class=\"snippet-link snippet-link-parameter selected\" href=\"#\">Example</a>\n								  </li>\n									</ul></td>\n									<td style=\"vertical-align:middle;height:30px;\">\n										<div style=\"\">)</div>\n									</td>\n									</tr>\n								</table>\n						</th>\n            </tr>\n          </thead>\n          <tbody class=\"operation-params\">\n\n          </tbody>\n          </table>\n";
+  return "          <h4>Parameters</h4>\n          <table class='fullwidth parameter-table'>\n          <thead>\n            <tr>\n            <th style=\"width: 100px; max-width: 100px\">Parameter</th>\n            <th style=\"width: 355px; max-width: 355px\">Description</th>\n            <th style=\"width: 100px; max-width: 100px\">Parameter Type</th>\n						<th style=\"width: 375px; max-width: 385px\">\n							<div>								\n								<table>\n									<tr>\n										<td style=\"vertical-align:middle;height:30px;\"><div style=\"\">Data Type (</div></td>\n										<td style=\"vertical-align:middle;height:30px;\"><div style=\"vertical-align: middle;height: 20px;\">\n									<ul class=\"signature-nav\">\n									<li>\n										<a class=\"description-link description-link-parameter\" href=\"#\">Model</a>\n								  </li>\n									<li>\n										<a class=\"snippet-link snippet-link-parameter selected\" href=\"#\">Example</a>\n								  </li>\n									</ul></td>\n									<td style=\"vertical-align:middle;height:30px;\">\n										<div style=\"\">)</div>\n									</td>\n									</tr>\n								</table>\n						</th>\n            </tr>\n          </thead>\n          <tbody class=\"operation-params\">\n\n          </tbody>\n          </table>\n";
   },"18":function(depth0,helpers,partials,data) {
-  return "          <div style='margin:0;padding:0;display:inline'></div>\n          <h4>Response Messages</h4>\n          <table class='fullwidth response-table'>\n            <thead>\n            <tr>\n              <!-- OutSystems change: Normalize table Sizes and include Content Type in response messages -->\n              <th style=\"width: 100px; max-width: 100px\">HTTP Status Code</th>\n              <th style=\"width: 355px; max-width: 355px\">Description</th>\n              <th style=\"width: 100px; max-width: 100px\">Content-Type</th>\n              <th style=\"width: 375px; max-width: 385px\">\n								<table>\n									<tr>\n										<td style=\"vertical-align:middle;height:30px;\"><div style=\"\">Data Type (</div></td>\n										<td style=\"vertical-align:middle;height:30px;\"><div style=\"vertical-align: middle;height: 20px;\">\n									<ul class=\"signature-nav\">\n									<li>\n										<a class=\"description-link description-link-response\" href=\"#\">Model</a>\n								  </li>\n									<li>\n										<a class=\"snippet-link snippet-link-response selected\" href=\"#\">Example</a>\n								  </li>\n									</ul></td>\n									<td style=\"vertical-align:middle;height:30px;\">\n										<div style=\"\">)</div>\n									</td>\n									</tr>\n								</table>\n							</th>\n            </tr>\n            </thead>\n            <tbody class=\"operation-status\">\n            \n            </tbody>\n					</table>\n";
+  return "          <div style='margin:0;padding:0;display:inline'></div>\n          <h4>Response Messages</h4>\n          <table class='fullwidth response-table'>\n            <thead>\n            <tr>\n              <th style=\"width: 100px; max-width: 100px\">HTTP Status Code</th>\n              <th style=\"width: 355px; max-width: 355px\">Description</th>\n              <th style=\"width: 100px; max-width: 100px\">Content-Type</th>\n              <th style=\"width: 375px; max-width: 385px\">\n								<table>\n									<tr>\n										<td style=\"vertical-align:middle;height:30px;\"><div style=\"\">Data Type (</div></td>\n										<td style=\"vertical-align:middle;height:30px;\"><div style=\"vertical-align: middle;height: 20px;\">\n									<ul class=\"signature-nav\">\n									<li>\n										<a class=\"description-link description-link-response\" href=\"#\">Model</a>\n								  </li>\n									<li>\n										<a class=\"snippet-link snippet-link-response selected\" href=\"#\">Example</a>\n								  </li>\n									</ul></td>\n									<td style=\"vertical-align:middle;height:30px;\">\n										<div style=\"\">)</div>\n									</td>\n									</tr>\n								</table>\n							</th>\n            </tr>\n            </thead>\n            <tbody class=\"operation-status\">\n            \n            </tbody>\n					</table>\n";
   },"20":function(depth0,helpers,partials,data) {
-  return "					<!-- OutSystems change: remove success code -->\n					<h4>Response</h4>\n					<p><span class=\"model-signature\" /></p>\n					<br/>\n					<div class=\"response-content-type\" />\n";
+  return "					<h4>Response</h4>\n					<p><span class=\"model-signature\" /></p>\n					<br/>\n					<div class=\"response-content-type\" />\n";
   },"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
   var stack1, helper, options, functionType="function", helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression, blockHelperMissing=helpers.blockHelperMissing, buffer = "\n  <ul class='operations' >\n    <li class='"
     + escapeExpression(((helper = (helper = helpers.method || (depth0 != null ? depth0.method : depth0)) != null ? helper : helperMissing),(typeof helper === functionType ? helper.call(depth0, {"name":"method","hash":{},"data":data}) : helper)))
@@ -426,15 +418,14 @@ this["Handlebars"]["templates"]["operation"] = Handlebars.template({"1":function
   if (stack1 != null) { buffer += stack1; }
   stack1 = helpers['if'].call(depth0, (depth0 != null ? depth0.responseMessages : depth0), {"name":"if","hash":{},"fn":this.program(18, data),"inverse":this.noop,"data":data});
   if (stack1 != null) { buffer += stack1; }
-  buffer += "					<!-- OutSystems change: position of the response -->\n";
   stack1 = helpers['if'].call(depth0, (depth0 != null ? depth0.type : depth0), {"name":"if","hash":{},"fn":this.program(20, data),"inverse":this.noop,"data":data});
   if (stack1 != null) { buffer += stack1; }
-  return buffer + "					<!-- OutSystems change: removed Try it out button -->\n						</form>\n						<div class='response' style='display:none'>\n							<h4>Request URL</h4>\n							<div class='block request_url'></div>\n							<h4>Response Body</h4>\n							<div class='block response_body'></div>\n							<h4>Response Code</h4>\n							<div class='block response_code'></div>\n							<h4>Response Headers</h4>\n							<div class='block response_headers'></div>\n						</div>\n					</div>\n					</li>\n				</ul>\n";
+  return buffer + "						</form>\n						<div class='response' style='display:none'>\n							<h4>Request URL</h4>\n							<div class='block request_url'></div>\n							<h4>Response Body</h4>\n							<div class='block response_body'></div>\n							<h4>Response Code</h4>\n							<div class='block response_code'></div>\n							<h4>Response Headers</h4>\n							<div class='block response_headers'></div>\n						</div>\n					</div>\n					</li>\n				</ul>\n";
 },"useData":true});
 this["Handlebars"]["templates"]["param_list"] = Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
   var stack1, helper, functionType="function", helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression, buffer = "<td class='code'>"
     + escapeExpression(((helper = (helper = helpers.name || (depth0 != null ? depth0.name : depth0)) != null ? helper : helperMissing),(typeof helper === functionType ? helper.call(depth0, {"name":"name","hash":{},"data":data}) : helper)))
-    + "</td>\n<!-- OutSystems change: removed value column -->\n<td class=\"markdown\">";
+    + "</td>\n<td class=\"markdown\">";
   stack1 = ((helper = (helper = helpers.description || (depth0 != null ? depth0.description : depth0)) != null ? helper : helperMissing),(typeof helper === functionType ? helper.call(depth0, {"name":"description","hash":{},"data":data}) : helper));
   if (stack1 != null) { buffer += stack1; }
   buffer += "</td>\n<td>";
@@ -445,7 +436,7 @@ this["Handlebars"]["templates"]["param_list"] = Handlebars.template({"compiler":
 this["Handlebars"]["templates"]["param_readonly_required"] = Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
   var stack1, helper, functionType="function", helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression, buffer = "<td class='code required'>"
     + escapeExpression(((helper = (helper = helpers.name || (depth0 != null ? depth0.name : depth0)) != null ? helper : helperMissing),(typeof helper === functionType ? helper.call(depth0, {"name":"name","hash":{},"data":data}) : helper)))
-    + "</td>\r\n<!-- OutSystems change: removed value column -->\r\n<td class=\"markdown\">";
+    + "</td>\r\n<td class=\"markdown\">";
   stack1 = ((helper = (helper = helpers.description || (depth0 != null ? depth0.description : depth0)) != null ? helper : helperMissing),(typeof helper === functionType ? helper.call(depth0, {"name":"description","hash":{},"data":data}) : helper));
   if (stack1 != null) { buffer += stack1; }
   buffer += "</td>\r\n<td>";
@@ -456,7 +447,7 @@ this["Handlebars"]["templates"]["param_readonly_required"] = Handlebars.template
 this["Handlebars"]["templates"]["param_readonly"] = Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
   var stack1, helper, functionType="function", helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression, buffer = "<td class='code'>"
     + escapeExpression(((helper = (helper = helpers.name || (depth0 != null ? depth0.name : depth0)) != null ? helper : helperMissing),(typeof helper === functionType ? helper.call(depth0, {"name":"name","hash":{},"data":data}) : helper)))
-    + "</td>\r\n<!-- OutSystems change: removed value column -->\r\n<td class=\"markdown\">";
+    + "</td>\r\n<td class=\"markdown\">";
   stack1 = ((helper = (helper = helpers.description || (depth0 != null ? depth0.description : depth0)) != null ? helper : helperMissing),(typeof helper === functionType ? helper.call(depth0, {"name":"description","hash":{},"data":data}) : helper));
   if (stack1 != null) { buffer += stack1; }
   buffer += "</td>\r\n<td>";
@@ -467,7 +458,7 @@ this["Handlebars"]["templates"]["param_readonly"] = Handlebars.template({"compil
 this["Handlebars"]["templates"]["param_required"] = Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
   var stack1, helper, functionType="function", helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression, buffer = "<td class='code required'>"
     + escapeExpression(((helper = (helper = helpers.name || (depth0 != null ? depth0.name : depth0)) != null ? helper : helperMissing),(typeof helper === functionType ? helper.call(depth0, {"name":"name","hash":{},"data":data}) : helper)))
-    + "</td>\r\n<!-- OutSystems change: removed value column -->\r\n<td>\r\n	<strong><span class=\"markdown\">";
+    + "</td>\r\n<td>\r\n	<strong><span class=\"markdown\">";
   stack1 = ((helper = (helper = helpers.description || (depth0 != null ? depth0.description : depth0)) != null ? helper : helperMissing),(typeof helper === functionType ? helper.call(depth0, {"name":"description","hash":{},"data":data}) : helper));
   if (stack1 != null) { buffer += stack1; }
   buffer += "</span></strong>\r\n</td>\r\n<td>";
@@ -478,7 +469,7 @@ this["Handlebars"]["templates"]["param_required"] = Handlebars.template({"compil
 this["Handlebars"]["templates"]["param"] = Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
   var stack1, helper, functionType="function", helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression, buffer = "<td class='code'>"
     + escapeExpression(((helper = (helper = helpers.name || (depth0 != null ? depth0.name : depth0)) != null ? helper : helperMissing),(typeof helper === functionType ? helper.call(depth0, {"name":"name","hash":{},"data":data}) : helper)))
-    + "</td>\r\n<!-- OutSystems change: removed value column -->\r\n<td class=\"markdown\">";
+    + "</td>\r\n<td class=\"markdown\">";
   stack1 = ((helper = (helper = helpers.description || (depth0 != null ? depth0.description : depth0)) != null ? helper : helperMissing),(typeof helper === functionType ? helper.call(depth0, {"name":"description","hash":{},"data":data}) : helper));
   if (stack1 != null) { buffer += stack1; }
   buffer += "</td>\r\n<td>";
@@ -513,7 +504,7 @@ this["Handlebars"]["templates"]["resource"] = Handlebars.template({"1":function(
     + escapeExpression(((helper = (helper = helpers.url || (depth0 != null ? depth0.url : depth0)) != null ? helper : helperMissing),(typeof helper === functionType ? helper.call(depth0, {"name":"url","hash":{},"data":data}) : helper)))
     + "'>Raw</a>\n    </li>\n";
 },"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
-  var stack1, helper, functionType="function", helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression, buffer = "<div class='heading'>\n	<!-- OutSystems change: Remove tag name -->\n  <ul class='options'>\n		<!-- OutSystems change: Remove \"Show/Hide\" -->\n    <li>\n      <a href='#' class=\"collapseResource\" data-id=\""
+  var stack1, helper, functionType="function", helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression, buffer = "<div class='heading'>\n  <ul class='options'>\n    <li>\n      <a href='#' class=\"collapseResource\" data-id=\""
     + escapeExpression(((helper = (helper = helpers.id || (depth0 != null ? depth0.id : depth0)) != null ? helper : helperMissing),(typeof helper === functionType ? helper.call(depth0, {"name":"id","hash":{},"data":data}) : helper)))
     + "\">\n        List Operations\n      </a>\n    </li>\n    <li>\n      <a href='#' class=\"expandResource\" data-id=\""
     + escapeExpression(((helper = (helper = helpers.id || (depth0 != null ? depth0.id : depth0)) != null ? helper : helperMissing),(typeof helper === functionType ? helper.call(depth0, {"name":"id","hash":{},"data":data}) : helper)))
@@ -536,18 +527,13 @@ this["Handlebars"]["templates"]["response_content_type"] = Handlebars.template({
 },"4":function(depth0,helpers,partials,data) {
   return "";
 },"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
-  var stack1, lambda=this.lambda, escapeExpression=this.escapeExpression, buffer = "<!--OutSystems change: removed label, pre and fixed ";
-  stack1 = lambda(depth0, depth0);
-  if (stack1 != null) { buffer += stack1; }
-  buffer += " to "
-    + escapeExpression(lambda(depth0, depth0))
-    + "-->\r\n";
+  var stack1, buffer = "";
   stack1 = helpers['if'].call(depth0, (depth0 != null ? depth0.produces : depth0), {"name":"if","hash":{},"fn":this.program(1, data),"inverse":this.program(4, data),"data":data});
   if (stack1 != null) { buffer += stack1; }
   return buffer;
 },"useData":true});
 this["Handlebars"]["templates"]["signature"] = Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
-  var stack1, helper, functionType="function", helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression, buffer = "<!-- OutSystems change: Removed Model and Model Schema labels -->\r\n<!-- <div>\r\n<ul class=\"signature-nav\">\r\n    <li><a class=\"description-link\" href=\"#\">Description</a></li>\r\n    <li><a class=\"snippet-link\" href=\"#\">Snippet</a></li>\r\n</ul>\r\n<div> \r\n	-->\r\n\r\n<div class=\"signature-container\">\r\n	<!-- OutSystems change: Removed Model -->\r\n    <div class=\"description\">\r\n        ";
+  var stack1, helper, functionType="function", helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression, buffer = "<div class=\"signature-container\">\r\n    <div class=\"description\">\r\n        ";
   stack1 = ((helper = (helper = helpers.signature || (depth0 != null ? depth0.signature : depth0)) != null ? helper : helperMissing),(typeof helper === functionType ? helper.call(depth0, {"name":"signature","hash":{},"data":data}) : helper));
   if (stack1 != null) { buffer += stack1; }
   return buffer + "\r\n    </div>  <div class=\"snippet\">\r\n    <pre><code>"
@@ -555,7 +541,7 @@ this["Handlebars"]["templates"]["signature"] = Handlebars.template({"compiler":[
     + "</code></pre>\r\n    <small class=\"notice\"></small>\r\n  </div>\r\n</div>\r\n\r\n";
 },"useData":true});
 this["Handlebars"]["templates"]["status_code"] = Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
-  var stack1, helper, functionType="function", helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression, buffer = "<!--Outsystems change: included content type in response messages-->\n<td class='code'>"
+  var stack1, helper, functionType="function", helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression, buffer = "<td class='code'>"
     + escapeExpression(((helper = (helper = helpers.code || (depth0 != null ? depth0.code : depth0)) != null ? helper : helperMissing),(typeof helper === functionType ? helper.call(depth0, {"name":"code","hash":{},"data":data}) : helper)))
     + "</td>\n<td><strong>";
   stack1 = ((helper = (helper = helpers.message || (depth0 != null ? depth0.message : depth0)) != null ? helper : helperMissing),(typeof helper === functionType ? helper.call(depth0, {"name":"message","hash":{},"data":data}) : helper));
