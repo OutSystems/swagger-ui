@@ -4,7 +4,6 @@ var gulp = require('gulp');
 var es = require('event-stream');
 var gutil = require('gulp-util');
 var clean = require('gulp-clean');
-var coffee = require('gulp-coffee');
 var concat = require('gulp-concat');
 var uglify = require('gulp-uglify');
 var rename = require('gulp-rename');
@@ -16,6 +15,7 @@ var watch = require('gulp-watch');
 var connect = require('gulp-connect');
 var header = require('gulp-header');
 var pkg = require('./package.json');
+var order = require('gulp-order');
 var banner = ['/**',
   ' * <%= pkg.name %> - <%= pkg.description %>',
   ' * @version v<%= pkg.version %>',
@@ -31,7 +31,7 @@ gulp.task('clean', function() {
   return gulp
     .src('./dist', {read: false})
     .pipe(clean({force: true}))
-    .on('error', gutil.log);
+    .on('error', log);
 });
 
 /**
@@ -46,17 +46,7 @@ function templates() {
       namespace: 'Handlebars.templates',
       noRedeclare: true, // Avoid duplicate declarations
     }))
-    .on('error', gutil.log);
-}
-
-/**
- * Processes CoffeeScript files
- */
-function coffeescript () {
-  return gulp
-    .src(['./src/main/coffeescript/**/*.coffee'])
-    .pipe(coffee({bare: true}))
-    .on('error', gutil.log);
+    .on('error', log);
 }
 
 /**
@@ -65,16 +55,21 @@ function coffeescript () {
 gulp.task('dist', ['clean'], function() {
 
   return es.merge(
-      gulp.src('./src/main/javascript/doc.js'),
-      coffeescript(),
+      gulp.src([
+        './src/main/javascript/**/*.js',
+        './node_modules/swagger-client/browser/swagger-client.js'
+      ]),
       templates()
     )
+    .pipe(order(['scripts.js', 'templates.js']))
     .pipe(concat('swagger-ui.js'))
+    .pipe(wrap('(function(){<%= contents %>}).call(this);'))
     .pipe(header(banner, { pkg: pkg } ))
     .pipe(gulp.dest('./dist'))
     .pipe(uglify())
+    .on('error', log)
     .pipe(rename({extname: '.min.js'}))
-    .on('error', gutil.log)
+    .on('error', log)
     .pipe(gulp.dest('./dist'))
     .pipe(connect.reload());
 });
@@ -95,8 +90,8 @@ return gulp.src('./src/main/less/main.less')
  * Copy lib and html folders
  */
 gulp.task('copy', ['less'], function() {
-
-  // OutSystems change: merge jquery related JavaScript files inside lib folder
+  
+	// OutSystems change: merge jquery related JavaScript files inside lib folder
   es.merge(
       gulp.src(['./lib/jquery-1.8.0.min.js',
                 './lib/jquery.slideto.min.js',
@@ -106,13 +101,7 @@ gulp.task('copy', ['less'], function() {
     .pipe(gulp.dest('./dist/lib'))
     .on('error', gutil.log);
 
-  // OutSystems change: copy shred/content.js JavaScript files inside lib folder
-  gulp
-    .src(['./lib/shred/content.js'])
-    .pipe(gulp.dest('./dist/lib/shred'))
-    .on('error', gutil.log);
-  
-  // OutSystems change: merge swagger dependencies JavaScript files inside lib folder
+	// OutSystems change: merge swagger dependencies JavaScript files inside lib folder
   es.merge(
       gulp.src(['./lib/handlebars-2.0.0.js',
                 './lib/swagger-client.js',
@@ -122,27 +111,26 @@ gulp.task('copy', ['less'], function() {
     .pipe(concat('swagger.utils.js'))
     .pipe(gulp.dest('./dist/lib'))
     .on('error', gutil.log);
-    
-  // OutSystems change: copy other JavaScript files inside lib folder
+
+	// OutSystems change: copy other JavaScript files inside lib folder
   gulp
     .src(['./lib/backbone-min.js',
-          './lib/shred.bundle.js',
           './lib/underscore-min.js'])
     .pipe(gulp.dest('./dist/lib'))
     .on('error', gutil.log)
-  
+
   // copy all files inside html folder
   gulp
     .src(['./src/main/html/**/*'])
     .pipe(gulp.dest('./dist'))
-    .on('error', gutil.log)
+    .on('error', log);
 });
 
 /**
  * Watch for changes and recompile
  */
 gulp.task('watch', function() {
-  return watch(['./src/**/*.{coffee,js,less}'], function() {
+  return watch(['./src/**/*.{js,less,handlebars}'], function() {
     gulp.start('default');
   });
 });
@@ -157,6 +145,10 @@ gulp.task('connect', function() {
   });
 });
 
+function log(error) {
+  console.error(error.toString && error.toString());
+}
+
 
 gulp.task('default', ['dist', 'copy']);
-gulp.task('serve', ['connect', 'watch'])
+gulp.task('serve', ['connect', 'watch']);
