@@ -115,6 +115,11 @@ SwaggerUi.Views.MainView = Backbone.View.extend({
     }, function offhover(){
       $('.optionsWrapper', $(this)).hide();
     });
+	
+	// OutSystems change: Fill the host in the swagger api definition
+	var hostForSwagger = window.location.hostname;
+    $(".swaggerDefinitionHost", $(this.el)).text(hostForSwagger);
+	
     return this;
   },
 
