@@ -117,7 +117,7 @@ SwaggerUi.Views.MainView = Backbone.View.extend({
     });
 	
 	// OutSystems change: Fill the host in the swagger api definition
-	var hostForSwagger = window.location.hostname;
+	var hostForSwagger = window.location.hostname || 'localhost';
     $(".swaggerDefinitionHost", $(this.el)).text(hostForSwagger);
 	
     return this;
