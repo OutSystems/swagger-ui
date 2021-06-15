@@ -6,6 +6,8 @@ import ImPropTypes from "react-immutable-proptypes"
 import win from "core/window"
 import { getSampleSchema, getExtensions, getCommonExtensions, numberToString, stringify, isEmptyValue } from "core/utils"
 import getParameterSchema from "../../helpers/get-parameter-schema.js"
+//OutSystems change - import a new component created by OutSystems
+import DataTypesOutSystems from "./dataTypesOutSystems"
 
 export default class ParameterRow extends Component {
   static propTypes = {
@@ -182,6 +184,43 @@ export default class ParameterRow extends Component {
     return `${param.get("name")}-${param.get("in")}`
   }
 
+  //OutSystems change: Customize the Example
+  getExample(paramExample, schema, bodyParam, type) {
+    const { param, getComponent, getConfigs } = this.props
+    const HighlightCode = getComponent("highlightCode")
+    let exampleText
+    let example
+    //First check if there is something in the paramExample - paramExaple is not undefined if the param is sent in the URL or in the header. If it is in the body, it is null
+    if (paramExample != undefined) {
+      exampleText = stringify(paramExample)
+    }
+    else if (param.get("in") == 'body') {
+      //if the param is sent in the body, we need to get the example from the schema. For instance, If it is a double, date, integer, it will enter here
+      exampleText = schema ? schema.getIn(["example"]) : null
+      if (exampleText != undefined) {
+        exampleText = stringify(exampleText)
+      }
+    }
+    if (exampleText == undefined && type == 'string') {
+      //in the case of not having example but it's a string, let's set the exampleText = string. If it is a text, it will enter here
+      //If type = string and format = date time, there will be example. However, if type = string and it is a text (without format) there won't be example
+      exampleText = 'string'
+    }
+    if (exampleText == undefined) {
+      //if it is an object or an array, it will enter here
+      example = bodyParam
+    }
+    else {
+      example = <HighlightCode
+        className="body-param__example"
+        getConfigs={getConfigs}
+        language={null}
+        value={exampleText}
+      />
+    }
+    return example
+  }
+
   render() {
     let { param, rawParam, getComponent, getConfigs, isExecute, fn, onChangeConsumes, specSelectors, pathMethod, specPath, oas3Selectors } = this.props
 
@@ -219,13 +258,17 @@ export default class ParameterRow extends Component {
     const ParameterIncludeEmpty = getComponent("ParameterIncludeEmpty")
     const ExamplesSelectValueRetainer = getComponent("ExamplesSelectValueRetainer")
     const Example = getComponent("Example")
+    //OutSystems change: get highlightCode component
+    const HighlightCode = getComponent("highlightCode")
+
 
     let { schema } = getParameterSchema(param, { isOAS3 })
     let paramWithMeta = specSelectors.parameterWithMetaByIdentity(pathMethod, rawParam) || Map()
 
     let format = schema ? schema.get("format") : null
     let type = schema ? schema.get("type") : null
-    let itemType = schema ? schema.getIn(["items", "type"]) : null
+    //OutSystems change: we are not displaying the itemType
+    //let itemType = schema ? schema.getIn(["items", "type"]) : null
     let isFormData = inType === "formData"
     let isFormDataSupported = "FormData" in win
     let required = param.get("required")
@@ -269,6 +312,20 @@ export default class ParameterRow extends Component {
       }
     }
 
+    //OutSystems change - customize the Example
+    let example = this.getExample(paramExample, schema, bodyParam, type)
+
+    //OutSystems change: support binary data-type for body parameters. It is binary if consumes = [], format is not defined and the parameter is sent in the body
+    let consumes = specSelectors.consumesOptionsFor(pathMethod);
+    if (param.get("in") == 'body' && !format && (!consumes || consumes.size == 0)) {
+      example = <HighlightCode
+        className="body-param__example"
+        getConfigs={getConfigs}
+        language={null}
+        value={'DATA'}
+      />
+    }
+
     return (
       <tr data-param-name={param.get("name")} data-param-in={param.get("in")}>
         <td className="parameters-col_name">
@@ -276,11 +333,27 @@ export default class ParameterRow extends Component {
             {param.get("name")}
             {!required ? null : <span>&nbsp;*</span>}
           </div>
+          {/*OutSystems change: Create different columns to the Name, Description, Model, Parameter Type and Example*/}
+        </td>
+        {/*OutSystems change: Column to the Description*/}
+        <td className="parameters-col_description">
+          {param.get("description") ? <Markdown source={param.get("description")} /> : null}
+        </td>
+
+        {/*OutSystems change: Column to the Model*/}
+        <td className="parameters-col_name">
+          {/* OutSystems change: if there is format, display just the format, otherwise, display the type and itemType*/}
           <div className="parameter__type">
-            {type}
-            {itemType && `[${itemType}]`}
-            {format && <span className="prop-format">(${format})</span>}
+            {/* OutSystems change: Render the component created by OutSystems */}
+            <DataTypesOutSystems
+              param={param}
+              specSelectors={specSelectors}
+              schema={schema}
+              pathMethod={pathMethod} />
           </div>
+        </td>
+        {/*OutSystems change: Column to the Parameter type*/}
+        <td className="parameters-col_name">
           <div className="parameter__deprecated">
             {isOAS3 && param.get("deprecated") ? "deprecated" : null}
           </div>
@@ -289,10 +362,8 @@ export default class ParameterRow extends Component {
           {!showExtensions || !extensions.size ? null : extensions.entrySeq().map(([key, v]) => <ParameterExt key={`${key}-${v}`} xKey={key} xVal={v} />)}
         </td>
 
-        <td className="parameters-col_description">
-          {param.get("description") ? <Markdown source={param.get("description")} /> : null}
 
-          {/* OutSystems change - remove the input parameters to try it out
+        {/* OutSystems change - remove the input parameters to try it out
            * { (bodyParam || !isExecute) && isDisplayParamEnum ?
             <Markdown className="parameter__enum" source={
                 "<i>Available values</i> : " + paramEnum.map(function(item) {
@@ -306,7 +377,7 @@ export default class ParameterRow extends Component {
             : null
           }
 
-          { (bodyParam || !isExecute) && paramExample !== undefined ?
+          {(bodyParam || !isExecute) && paramExample !== undefined ?
             <Markdown source={"<i>Example</i> : " + paramExample}/>
             : null
           }
@@ -342,18 +413,18 @@ export default class ParameterRow extends Component {
           } */}
 
 
-          {
-            bodyParam && schema ? <ModelExample getComponent={getComponent}
-              specPath={specPath.push("schema")}
-              getConfigs={getConfigs}
-              isExecute={isExecute}
-              specSelectors={specSelectors}
-              schema={schema}
-              example={bodyParam}
-              includeWriteOnly={true} />
-              : null
-          }
-
+        {/* OutSystems change:  Show always the model example, and not just when the input is sent in the body. Remove the condition and add to 2 props to the ModelExample component*/}
+        <td className="parameters-col_name">
+          < ModelExample getComponent={getComponent}
+            specPath={specPath.push("schema")}
+            getConfigs={getConfigs}
+            isExecute={isExecute}
+            specSelectors={specSelectors}
+            schema={schema}
+            example={example}
+            includeWriteOnly={true}
+            param={param}
+            pathMethod={pathMethod} />
           {
             !bodyParam && isExecute && param.get("allowEmptyValue") ?
               <ParameterIncludeEmpty
@@ -379,6 +450,7 @@ export default class ParameterRow extends Component {
         </td>
 
       </tr>
+
     )
 
   }
