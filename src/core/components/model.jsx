@@ -18,6 +18,8 @@ export default class Model extends ImmutablePureComponent {
     specPath: ImPropTypes.list.isRequired,
     includeReadOnly: PropTypes.bool,
     includeWriteOnly: PropTypes.bool,
+    param: PropTypes.object.isRequired,
+    pathMethod: PropTypes.array.isRequired
   }
 
   getModelName =( ref )=> {
@@ -37,7 +39,7 @@ export default class Model extends ImmutablePureComponent {
 
   render () {
     let { getComponent, getConfigs, specSelectors, schema, required, name, isRef, specPath, displayName,
-      includeReadOnly, includeWriteOnly} = this.props
+      includeReadOnly, includeWriteOnly, param, pathMethod} = this.props
     const ObjectModel = getComponent("ObjectModel")
     const ArrayModel = getComponent("ArrayModel")
     const PrimitiveModel = getComponent("PrimitiveModel")
@@ -98,7 +100,12 @@ export default class Model extends ImmutablePureComponent {
           schema={ schema }
           name={ name }
           deprecated={deprecated}
-          required={ required }/>
+          required={required}
+          specSelectors={specSelectors}
+          param={param}
+          pathMethod={pathMethod}/>
     }
   }
 }
+
+

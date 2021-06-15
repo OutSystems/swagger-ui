@@ -13,6 +13,8 @@ export default class ModelExample extends React.Component {
     specPath: ImPropTypes.list.isRequired,
     includeReadOnly: PropTypes.bool,
     includeWriteOnly: PropTypes.bool,
+    param: PropTypes.object.isRequired,
+    pathMethod: PropTypes.array.isRequired
   }
 
   constructor(props, context) {
@@ -54,46 +56,57 @@ export default class ModelExample extends React.Component {
   }
 
   render() {
-    let { getComponent, specSelectors, schema, example, isExecute, getConfigs, specPath, includeReadOnly, includeWriteOnly } = this.props
+    let { getComponent, specSelectors, schema, example, isExecute, getConfigs, specPath, includeReadOnly, includeWriteOnly, param, pathMethod } = this.props
     let { defaultModelExpandDepth } = getConfigs()
     const ModelWrapper = getComponent("ModelWrapper")
     const HighlightCode = getComponent("highlightCode")
+    let type = schema ? schema.get("type") : null
+    let itemType = schema ? schema.getIn(["items", "type"]) : null
+
 
     let isOAS3 = specSelectors.isOAS3()
 
-    return <div className="model-example">
-      <ul className="tab">
-        <li className={ "tabitem" + ( this.state.activeTab === "example" ? " active" : "") }>
-          <a className="tablinks" data-name="example" onClick={ this.activeTab }>{isExecute ? "Edit Value" : "Example Value"}</a>
-        </li>
-        { schema ? <li className={ "tabitem" + ( this.state.activeTab === "model" ? " active" : "") }>
-          <a className={ "tablinks" + ( isExecute ? " inactive" : "" )} data-name="model" onClick={ this.activeTab }>
-            {isOAS3 ? "Schema" : "Model" }
-          </a>
-        </li> : null }
-      </ul>
-      <div>
-        {
-          this.state.activeTab === "example" ? (
-            example ? example : (
-              <HighlightCode value="(no example available)" getConfigs={ getConfigs } />
-            )
-          ) : null
-        }
-        {
-          this.state.activeTab === "model" && <ModelWrapper schema={ schema }
-                                                     getComponent={ getComponent }
-                                                     getConfigs={ getConfigs }
-                                                     specSelectors={ specSelectors }
-                                                     expandDepth={ defaultModelExpandDepth }
-                                                     specPath={specPath}
-                                                     includeReadOnly = {includeReadOnly}
-                                                     includeWriteOnly = {includeWriteOnly}/>
+    return (
+
+      <div className="model-example">
+        { (type == 'object' || (type == 'array' && itemType == 'object')) ?
+          <div>
+            <ul className="tab">
+              <li className={"tabitem" + (this.state.activeTab === "example" ? " active" : "")}>
+                <a className="tablinks" data-name="example" onClick={this.activeTab}>{isExecute ? "Edit Value" : "Example Value"}</a>
+              </li>
+              {schema ? <li className={"tabitem" + (this.state.activeTab === "model" ? " active" : "")}>
+                <a className={"tablinks" + (isExecute ? " inactive" : "")} data-name="model" onClick={this.activeTab}>
+                  {isOAS3 ? "Schema" : "Model"}
+                </a>
+              </li> : null}
+            </ul>
+          </div> : null}
+          <div>
+            {
+              this.state.activeTab === "example" ? (
+                example ? example : (
+                  <HighlightCode value="(no example available)" getConfigs={ getConfigs } />
+                )
+              ) : null
+            }
+            {
+              this.state.activeTab === "model" && <ModelWrapper schema={ schema }
+                                                         getComponent={ getComponent }
+                                                         getConfigs={ getConfigs }
+                                                         specSelectors={ specSelectors }
+                                                         expandDepth={ defaultModelExpandDepth }
+                                                         specPath={specPath}
+                                                         includeReadOnly = {includeReadOnly}
+                                                         includeWriteOnly={includeWriteOnly}
+                                                         param={param}
+                                                         pathMethod={pathMethod}/>
 
 
-        }
-      </div>
-    </div>
+            }
+            </div>
+
+    </div>)
   }
 
 }

@@ -1,6 +1,7 @@
 import React, { Component } from "react"
 import PropTypes from "prop-types"
 import { getExtensions } from "core/utils"
+import DataTypesOutSystems from "../plugins/dataTypesOutSystems"
 
 const propClass = "property primitive"
 
@@ -11,11 +12,14 @@ export default class Primitive extends Component {
     getConfigs: PropTypes.func.isRequired,
     name: PropTypes.string,
     displayName: PropTypes.string,
-    depth: PropTypes.number
+    depth: PropTypes.number,
+    specSelectors: PropTypes.object.isRequired,
+    param: PropTypes.object.isRequired,
+    pathMethod: PropTypes.array.isRequired
   }
 
-  render(){
-    let { schema, getComponent, getConfigs, name, displayName, depth } = this.props
+  render() {
+    let { schema, getComponent, getConfigs, name, displayName, depth, specSelectors, param, pathMethod } = this.props
 
     const { showExtensions } = getConfigs()
 
@@ -23,6 +27,7 @@ export default class Primitive extends Component {
       // don't render if schema isn't correctly formed
       return <div></div>
     }
+
 
     let type = schema.get("type")
     let format = schema.get("format")
@@ -41,8 +46,12 @@ export default class Primitive extends Component {
     return <span className="model">
       <span className="prop">
         { name && <span className={`${depth === 1 && "model-title"} prop-name`}>{ title }</span> }
-        <span className="prop-type">{ type }</span>
-        { format && <span className="prop-format">(${format})</span>}
+          <DataTypesOutSystems
+            param={param}
+            specSelectors={specSelectors}
+            schema={schema}
+            pathMethod={pathMethod} />
+        {/* format && <span className="prop-format">(${format})</span> */}
         {
           properties.size ? properties.entrySeq().map( ( [ key, v ] ) => <Property key={`${key}-${v}`} propKey={ key } propVal={ v } propClass={ propClass } />) : null
         }

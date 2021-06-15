@@ -5,9 +5,10 @@ import cx from "classnames"
 import { fromJS, Seq, Iterable, List, Map } from "immutable"
 import { getExtensions, getSampleSchema, fromJSOrdered, stringify } from "core/utils"
 import { getKnownSyntaxHighlighterLanguage } from "core/utils/jsonParse"
+import DataTypesOutSystems from "../plugins/dataTypesOutSystems"
 
 
-const getExampleComponent = ( sampleResponse, HighlightCode, getConfigs ) => {
+const getExampleComponent = (sampleResponse, HighlightCode, getConfigs, contentType) => {
   if (
     sampleResponse !== undefined &&
     sampleResponse !== null
@@ -16,6 +17,11 @@ const getExampleComponent = ( sampleResponse, HighlightCode, getConfigs ) => {
     let testValueForJson = getKnownSyntaxHighlighterLanguage(sampleResponse)
     if (testValueForJson) {
       language = "json"
+    }
+
+    //OutSystems change: if binary type - render the word DATA
+    if (contentType == 'application/octet-stream') {
+      sampleResponse = 'DATA';
     }
     return <div>
       <HighlightCode className="example" getConfigs={ getConfigs } language={ language } value={ stringify(sampleResponse) } />
@@ -92,7 +98,6 @@ export default class Response extends React.Component {
       controlsAcceptHeader,
       oas3Actions,
     } = this.props
-
     let { inferSchema } = fn
     let isOAS3 = specSelectors.isOAS3()
     const { showExtensions } = getConfigs()
@@ -170,20 +175,18 @@ export default class Response extends React.Component {
       sampleGenConfig,
       shouldOverrideSchemaExample ? mediaTypeExample : undefined
     )
-
-    let example = getExampleComponent( sampleResponse, HighlightCode, getConfigs )
+    //OutSystems change: send the contentType to detect if the response is binary
+    let example = getExampleComponent(sampleResponse, HighlightCode, getConfigs, contentType )
 
     return (
       <tr className={ "response " + ( className || "") } data-code={code}>
-        <td className="response-col_status">
+        <td className="col_header parameters-col_name">
           { code }
         </td>
-        <td className="response-col_description">
-
-          <div className="response-col_description__inner">
+        <td className="col_header parameters-col_description">
             <Markdown source={ response.get( "description" ) } />
-          </div>
-
+        </td>
+        {/*
           { !showExtensions || !extensions.size ? null : extensions.entrySeq().map(([key, v]) => <ResponseExtension key={`${key}-${v}`} xKey={key} xVal={v} /> )}
 
           {isOAS3 && response.get("content") ? (
@@ -233,8 +236,21 @@ export default class Response extends React.Component {
                 </div>
               ) : null}
             </section>
-          ) : null}
+          ) : null} */}
 
+        {/*OutSystems change: Column to the Model*/}
+        <td className="parameters-col_name">
+          {/* OutSystems change: if there is format, display just the format, otherwise, display the type and itemType*/}
+          <div className="parameter__type">
+            {/* OutSystems change: Render the component created by OutSystems */}
+            <DataTypesOutSystems
+              schema={schema}
+              isResponse={true}
+              contentType={contentType} />
+          </div>
+        </td>
+
+        <td className="parameters-col_name">              
           { example || schema ? (
             <ModelExample
               specPath={specPathWithPossibleSchema}
@@ -254,23 +270,24 @@ export default class Response extends React.Component {
                 omitValue={true}
               />
           ) : null}
-
-          { headers ? (
-            <Headers
-              headers={ headers }
-              getComponent={ getComponent }
-            />
-          ) : null}
-
         </td>
+
+         {/*headers ? (
+            <Headers
+              headers={headers}
+              getComponent={getComponent}
+            />
+        ) : null}
+
+        
         {isOAS3 ? <td className="response-col_links">
           { links ?
             links.toSeq().entrySeq().map(([key, link]) => {
               return <OperationLink key={key} name={key} link={ link } getComponent={getComponent}/>
             })
           : <i>No links</i>}
-        </td> : null}
-      </tr>
+        </td> : null*/}
+        </tr>
     )
   }
 }

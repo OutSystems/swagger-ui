@@ -79,6 +79,7 @@ export default class Responses extends React.Component {
     const ContentType = getComponent( "contentType" )
     const LiveResponse = getComponent( "liveResponse" )
     const Response = getComponent( "response" )
+    const Headers = getComponent("headers")
 
     let produces = this.props.produces && this.props.produces.size ? this.props.produces : Responses.defaultProps.produces
 
@@ -124,8 +125,11 @@ export default class Responses extends React.Component {
           <table aria-live="polite" className="responses-table" id={regionId} role="region">
             <thead>
               <tr className="responses-header">
-                <td className="col_header response-col_status">Code</td>
-                <td className="col_header response-col_description">Description</td>
+                <td className="col_header parameters-col_name">Code</td>
+                <td className="col_header parameters-col_description">Description</td>
+				        <td className="col_header parameters-col_name">Type</td>
+                <td className="col_header parameters-col_name">Example</td>
+
                 { specSelectors.isOAS3() ? <td className="col col_header response-col_links">Links</td> : null }
               </tr>
             </thead>
@@ -162,6 +166,19 @@ export default class Responses extends React.Component {
               }
             </tbody>
           </table>
+          {
+            responses.entrySeq().map(([code, response]) => {
+
+              let headers = response.get("headers")
+              return (
+                <Headers
+                  headers={headers}
+                  getComponent={getComponent}
+                  getConfigs={getConfigs}
+                />
+              )
+            }).toArray()
+          }
         </div>
       </div>
     )

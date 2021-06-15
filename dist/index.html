@@ -58,7 +58,7 @@
     window.onload = function() {
       // Begin Swagger UI call region
       const ui = SwaggerUIBundle({
-        url: "https://os-jbfr253.domain.outsystems.com/restRequestHeader/rest/RefreshRestAPI/swagger.json",
+        url: "https://os-jbfr253.domain.outsystems.com/apagaFast110/rest/RESTAPI2/swagger.json",
         dom_id: '#swagger-ui',
 		<!-- OutSystems change: submit methods = empty in order to don't use the Try It Out feature-->
 		supportedSubmitMethods: [],
@@ -81,7 +81,10 @@
 		  <!-- OutSystems change: pass the plugin that replaces the request-body component by a customized one -->
 		  SwaggerUIBundle.plugins.ParameterRowPluginOutSystems,
 		  <!-- OutSystems change: pass the plugin that replaces the base component by a customized one -->
-		  SwaggerUIBundle.plugins.BasePluginOutSystems,
+      SwaggerUIBundle.plugins.BasePluginOutSystems,
+      <!--OutSystems change: pass the plugin that replaces the request - body component by a customized one-- >
+      SwaggerUIBundle.plugins.ParametersPluginOutSystems,
+
 		  
         ],
 		<!-- OutSystems change: remove StandaloneLayout in order to don't use the swagger header-->

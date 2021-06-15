@@ -18,6 +18,8 @@ export default class ModelWrapper extends Component {
     layoutSelectors: PropTypes.object.isRequired,
     includeReadOnly: PropTypes.bool,
     includeWriteOnly: PropTypes.bool,
+    param: PropTypes.object.isRequired,
+    pathMethod: PropTypes.array.isRequired
   }
 
   onToggle = (name,isShown) => {
@@ -28,7 +30,7 @@ export default class ModelWrapper extends Component {
   }
 
   render(){
-    let { getComponent, getConfigs } = this.props
+    let { getComponent, getConfigs, param, pathMethod } = this.props
     const Model = getComponent("Model")
 
     let expanded
@@ -38,7 +40,7 @@ export default class ModelWrapper extends Component {
     }
 
     return <div className="model-box">
-      <Model { ...this.props } getConfigs={ getConfigs } expanded={expanded} depth={ 1 } onToggle={ this.onToggle } expandDepth={ this.props.expandDepth || 0 }/>
+      <Model {...this.props} getConfigs={getConfigs} expanded={expanded} depth={1} onToggle={this.onToggle} expandDepth={this.props.expandDepth || 0} param={param} pathMethod={pathMethod} />
     </div>
   }
 }
