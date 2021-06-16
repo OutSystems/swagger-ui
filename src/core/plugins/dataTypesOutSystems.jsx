@@ -1,10 +1,11 @@
 //OutSystems change - component to customize the data types of inputs and outputs
 import React, { Component } from "react"
 
-//OutSystems change: get the primitive types
+//OutSystems change: get the primitive types according to the type and format
 export const getPrimitiveModel = (type, format) => {
   var str;
   if (type === 'integer') {
+    //if format = int64 display long
     if (format == 'int64') {
       str = 'long';
     }
@@ -13,6 +14,7 @@ export const getPrimitiveModel = (type, format) => {
     }
   } else if (type === 'string') {
     if (format) {
+      //in the case of being string and having format (for instance time, date-time, date), display the format
       str = format;
     } else {
       str = 'string';
@@ -42,7 +44,6 @@ class DataTypesOutSystems extends Component {
     contentType: PropTypes.string,
   }
 
-  //OutSystems change: get the Model format
   getModel(type, format, itemType, itemFormat) {
     var str;
     if (type === 'array') {
@@ -68,11 +69,13 @@ class DataTypesOutSystems extends Component {
     let itemFormat = schema ? schema.getIn(["items", "format"]) : null
     let displayModel = this.getModel(type, format, itemType, itemFormat)
 
+    //if isResponse, check the content type. If content-Type = octet-stream, it will display binary
     if (isResponse) {
       if (contentType == 'application/octet-stream') {
         displayModel = 'binary';
       }
     } else {
+      //it is binary type if consumes = [] and there is no format
       let consumes = specSelectors.consumesOptionsFor(pathMethod);
       if ((param && param.get("in") == 'body') && !format && (!consumes || consumes.size == 0)) {
         displayModel = 'binary';
