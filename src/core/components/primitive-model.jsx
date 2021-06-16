@@ -2,7 +2,7 @@ import React, { Component } from "react"
 import PropTypes from "prop-types"
 import { getExtensions } from "core/utils"
 //OutSystems change: import a component created by OutSystems in order to get the data type to be displayed
-import DataTypesOutSystems from "../plugins/dataTypesOutSystems"
+import DataTypesOutSystems from "./dataTypesOutSystems"
 
 const propClass = "property primitive"
 

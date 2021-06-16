@@ -4,7 +4,7 @@ import Im from "immutable"
 //OutSystems change - import stringify
 import { stringify } from "core/utils"
 //OutSystems change - import a function created by OutSystems to get the data type
-import { getPrimitiveModel } from "../plugins/dataTypesOutSystems"
+import { getPrimitiveModel } from "./dataTypesOutSystems"
 
 
 const propClass = "header-example"

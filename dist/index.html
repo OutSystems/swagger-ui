@@ -58,6 +58,8 @@
       window.onload = function () {
         // Begin Swagger UI call region
         const ui = SwaggerUIBundle({
+		  // OutSystems change: change the URL!
+		  //It is supposed to change the URL!!!!!!!!!!!!!!!!!!!! This is for testing
           url: "https://os-jbfr253.domain.outsystems.com/apagaFast110/rest/RESTAPI2/swagger.json",
           dom_id: '#swagger-ui',
         <!--OutSystems change: submit methods = empty in order to don't use the Try It Out feature-->
@@ -73,15 +75,7 @@
           <!--OutSystems change: pass the plugin that disables the Authorize button-- >
           SwaggerUIBundle.plugins.DisableAuthorize,
           <!--OutSystems change: pass the plugin that disables the Schemes selection-- >
-          SwaggerUIBundle.plugins.DisableSchemes,
-          <!--OutSystems change: pass the plugin that replaces the request - body component by a customized one-- >
-          SwaggerUIBundle.plugins.RequestBodyPluginOutSystems,
-          <!--OutSystems change: pass the plugin that replaces the request - body component by a customized one-- >
-          SwaggerUIBundle.plugins.ParameterRowPluginOutSystems,
-          <!--OutSystems change: pass the plugin that replaces the request - body component by a customized one-- >
-          SwaggerUIBundle.plugins.ParametersPluginOutSystems,
-
-
+          SwaggerUIBundle.plugins.DisableSchemes
         ],
           <!--OutSystems change: remove StandaloneLayout in order to don't use the swagger header-->
             //layout: "StandaloneLayout"

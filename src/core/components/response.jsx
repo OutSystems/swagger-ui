@@ -5,7 +5,7 @@ import cx from "classnames"
 import { fromJS, Seq, Iterable, List, Map } from "immutable"
 import { getExtensions, getSampleSchema, fromJSOrdered, stringify } from "core/utils"
 import { getKnownSyntaxHighlighterLanguage } from "core/utils/jsonParse"
-import DataTypesOutSystems from "../plugins/dataTypesOutSystems"
+import DataTypesOutSystems from "./dataTypesOutSystems"
 
 //OutSystems change: receive the contentType to check if it is binary
 const getExampleComponent = (sampleResponse, HighlightCode, getConfigs, contentType) => {
