@@ -12,7 +12,6 @@ import React, { Component } from "react"
 
    //Function to create the requested URL
    getRequestUrl() {
-     console.log("heree")
     let { parameters, host, path, scheme, basePath} = this.props
     var requestUrl = path
     var querystring = '';
