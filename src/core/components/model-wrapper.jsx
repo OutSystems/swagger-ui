@@ -18,6 +18,7 @@ export default class ModelWrapper extends Component {
     layoutSelectors: PropTypes.object.isRequired,
     includeReadOnly: PropTypes.bool,
     includeWriteOnly: PropTypes.bool,
+    //OutSystems change: receive two new properties: param and pathMethod to pass to the Model component
     param: PropTypes.object.isRequired,
     pathMethod: PropTypes.array.isRequired
   }
@@ -29,7 +30,8 @@ export default class ModelWrapper extends Component {
     }
   }
 
-  render(){
+  render() {
+    //OutSystems change: receive two new properties: param and pathMethod to pass to the Model-wrapper component
     let { getComponent, getConfigs, param, pathMethod } = this.props
     const Model = getComponent("Model")
 
@@ -40,6 +42,7 @@ export default class ModelWrapper extends Component {
     }
 
     return <div className="model-box">
+      {/* OutSystems change: Pass the properties param and PathMethod */}
       <Model {...this.props} getConfigs={getConfigs} expanded={expanded} depth={1} onToggle={this.onToggle} expandDepth={this.props.expandDepth || 0} param={param} pathMethod={pathMethod} />
     </div>
   }

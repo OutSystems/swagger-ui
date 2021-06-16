@@ -41,6 +41,7 @@ export default class HighlightCode extends Component {
 
   render () {
     let { value, className, downloadable, getConfigs, canCopy, language } = this.props
+    //OutSystems change: if the example = "" (empty string), let's set the example to "string"
     if (value == "") {
       value = "string"
     }

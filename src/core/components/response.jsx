@@ -7,7 +7,7 @@ import { getExtensions, getSampleSchema, fromJSOrdered, stringify } from "core/u
 import { getKnownSyntaxHighlighterLanguage } from "core/utils/jsonParse"
 import DataTypesOutSystems from "../plugins/dataTypesOutSystems"
 
-
+//OutSystems change: receive the contentType to check if it is binary
 const getExampleComponent = (sampleResponse, HighlightCode, getConfigs, contentType) => {
   if (
     sampleResponse !== undefined &&
@@ -98,6 +98,7 @@ export default class Response extends React.Component {
       controlsAcceptHeader,
       oas3Actions,
     } = this.props
+
     let { inferSchema } = fn
     let isOAS3 = specSelectors.isOAS3()
     const { showExtensions } = getConfigs()
@@ -179,14 +180,16 @@ export default class Response extends React.Component {
     let example = getExampleComponent(sampleResponse, HighlightCode, getConfigs, contentType )
 
     return (
-      <tr className={ "response " + ( className || "") } data-code={code}>
+      <tr className={"response " + (className || "")} data-code={code}>
+        {/* OutSystems change: change the branding of the table*/}
         <td className="col_header parameters-col_name">
           { code }
         </td>
+        {/* OutSystems change: change the branding of the table*/}
         <td className="col_header parameters-col_description">
             <Markdown source={ response.get( "description" ) } />
         </td>
-        {/*
+        {/* OutSystems change : Remove the following block
           { !showExtensions || !extensions.size ? null : extensions.entrySeq().map(([key, v]) => <ResponseExtension key={`${key}-${v}`} xKey={key} xVal={v} /> )}
 
           {isOAS3 && response.get("content") ? (
@@ -238,11 +241,9 @@ export default class Response extends React.Component {
             </section>
           ) : null} */}
 
-        {/*OutSystems change: Column to the Model*/}
+        {/*OutSystems change: Column to the Model in the response as we have in the input parameters*/}
         <td className="parameters-col_name">
-          {/* OutSystems change: if there is format, display just the format, otherwise, display the type and itemType*/}
           <div className="parameter__type">
-            {/* OutSystems change: Render the component created by OutSystems */}
             <DataTypesOutSystems
               schema={schema}
               isResponse={true}
@@ -250,6 +251,7 @@ export default class Response extends React.Component {
           </div>
         </td>
 
+        {/*OutSystems change: branding*/}
         <td className="parameters-col_name">              
           { example || schema ? (
             <ModelExample
@@ -272,7 +274,8 @@ export default class Response extends React.Component {
           ) : null}
         </td>
 
-         {/*headers ? (
+         {/* OutSystems change: Remove the headers logic from this component. Instead it is placed in the responses.jsx in order to fulfill a specific layout
+          * headers ? (
             <Headers
               headers={headers}
               getComponent={getComponent}
@@ -287,7 +290,7 @@ export default class Response extends React.Component {
             })
           : <i>No links</i>}
         </td> : null*/}
-        </tr>
+      </tr>
     )
   }
 }

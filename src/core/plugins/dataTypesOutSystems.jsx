@@ -20,6 +20,7 @@ export const getPrimitiveModel = (type, format) => {
       str = 'string';
     }
   } else if (type === 'number') {
+    //if it's a number, display double
     if (format) {
       str = format;
     } else {
@@ -48,6 +49,7 @@ class DataTypesOutSystems extends Component {
     var str;
     if (type === 'array') {
       if (itemType) {
+        //display array[type], like array[integer]
         str = "array[" + getPrimitiveModel(itemType, itemFormat) + "]";
       }
     }

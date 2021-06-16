@@ -13,6 +13,7 @@ export default class ModelExample extends React.Component {
     specPath: ImPropTypes.list.isRequired,
     includeReadOnly: PropTypes.bool,
     includeWriteOnly: PropTypes.bool,
+    //OutSystems change: receive two new properties: param and pathMethod to pass to the Model-wrapper component
     param: PropTypes.object.isRequired,
     pathMethod: PropTypes.array.isRequired
   }
@@ -56,19 +57,20 @@ export default class ModelExample extends React.Component {
   }
 
   render() {
+    // OutSystems change: passing the 2 new properties
     let { getComponent, specSelectors, schema, example, isExecute, getConfigs, specPath, includeReadOnly, includeWriteOnly, param, pathMethod } = this.props
     let { defaultModelExpandDepth } = getConfigs()
     const ModelWrapper = getComponent("ModelWrapper")
     const HighlightCode = getComponent("highlightCode")
+
+    //OutSystems change: get the type and the itemType properties
     let type = schema ? schema.get("type") : null
     let itemType = schema ? schema.getIn(["items", "type"]) : null
-
-
     let isOAS3 = specSelectors.isOAS3()
 
     return (
-
       <div className="model-example">
+        {/*OutSystems change: perform the following logic only when we have type=object or an array[object]. Otherwise we won't display the model with this component(return null) */}
         { (type == 'object' || (type == 'array' && itemType == 'object')) ?
           <div>
             <ul className="tab">
@@ -90,7 +92,7 @@ export default class ModelExample extends React.Component {
                 )
               ) : null
             }
-            {
+            { //OutSystems change: Pass the properties param and pathMethod to the ModelWrapper component
               this.state.activeTab === "model" && <ModelWrapper schema={ schema }
                                                          getComponent={ getComponent }
                                                          getConfigs={ getConfigs }
@@ -101,12 +103,9 @@ export default class ModelExample extends React.Component {
                                                          includeWriteOnly={includeWriteOnly}
                                                          param={param}
                                                          pathMethod={pathMethod}/>
-
-
-            }
+             }
             </div>
-
-    </div>)
+      </div>)
   }
 
 }

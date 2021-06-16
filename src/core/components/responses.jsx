@@ -78,7 +78,8 @@ export default class Responses extends React.Component {
 
     const ContentType = getComponent( "contentType" )
     const LiveResponse = getComponent( "liveResponse" )
-    const Response = getComponent( "response" )
+    const Response = getComponent("response")
+    //OutSystems change: get the Headers component
     const Headers = getComponent("headers")
 
     let produces = this.props.produces && this.props.produces.size ? this.props.produces : Responses.defaultProps.produces
@@ -125,6 +126,7 @@ export default class Responses extends React.Component {
           <table aria-live="polite" className="responses-table" id={regionId} role="region">
             <thead>
               <tr className="responses-header">
+                {/* OutSystems change - change the structure of the table. Add Type and Example. Besides, change the branding*/}
                 <td className="col_header parameters-col_name">Code</td>
                 <td className="col_header parameters-col_description">Description</td>
 				        <td className="col_header parameters-col_name">Type</td>
@@ -166,6 +168,7 @@ export default class Responses extends React.Component {
               }
             </tbody>
           </table>
+          {/* OutSystems change: Call the headers logic here instead of using inside the response.jsx component in order to have a new table below the body response */}
           {
             responses.entrySeq().map(([code, response]) => {
 
