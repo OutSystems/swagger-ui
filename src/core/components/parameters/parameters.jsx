@@ -140,6 +140,9 @@ export default class Parameters extends Component {
     if (host == undefined) {
       host = window.location.host
     }
+    //OutSystems change: get the scheme. The first position is HTTPS if exists. If not, set to Https
+    let schemes = specSelectors.schemes()
+    let scheme = schemes? schemes.first() : 'https'
 
     return (
       <div className="opblock-section">
@@ -151,7 +154,7 @@ export default class Parameters extends Component {
           //first argument is the path
           path={pathMethod[0]}
           //get the scheme. The first position is HTTPS if exists
-          scheme={specSelectors.schemes()._tail.array[0]}
+          scheme={scheme}
           basePath={specSelectors.basePath()} />
         <div className="opblock-section-header">
           {isOAS3 ? (

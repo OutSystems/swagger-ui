@@ -65,10 +65,10 @@ class DataTypesOutSystems extends Component {
   render() {
     let { param, specSelectors, schema, pathMethod, isResponse, contentType } = this.props
 
-    let format = schema ? schema.get("format") : null
-    let type = schema ? schema.get("type") : null
-    let itemType = schema ? schema.getIn(["items", "type"]) : null
-    let itemFormat = schema ? schema.getIn(["items", "format"]) : null
+    let format = schema && schema.get? schema.get("format") : null
+    let type = schema && schema.get ? schema.get("type") : null
+    let itemType = schema && schema.get ? schema.getIn(["items", "type"]) : null
+    let itemFormat = schema && schema.get ? schema.getIn(["items", "format"]) : null
     let displayModel = this.getModel(type, format, itemType, itemFormat)
 
     //if isResponse, check the content type. If content-Type = octet-stream, it will display binary
