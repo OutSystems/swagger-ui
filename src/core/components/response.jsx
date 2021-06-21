@@ -20,7 +20,7 @@ const getExampleComponent = (sampleResponse, HighlightCode, getConfigs, contentT
     }
 
     //OutSystems change: if binary type - render the word DATA
-    if (contentType == 'application/octet-stream') {
+    if (contentType === 'application/octet-stream') {
       sampleResponse = 'DATA';
     }
     return <div>
@@ -177,7 +177,7 @@ export default class Response extends React.Component {
       shouldOverrideSchemaExample ? mediaTypeExample : undefined
     )
     //OutSystems change: send the contentType to detect if the response is binary
-    let example = getExampleComponent(sampleResponse, HighlightCode, getConfigs, contentType )
+    const example = getExampleComponent(sampleResponse, HighlightCode, getConfigs, contentType )
 
     return (
       <tr className={"response " + (className || "")} data-code={code}>

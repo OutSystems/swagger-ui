@@ -124,16 +124,15 @@ export default class Responses extends React.Component {
           }
 
           <table aria-live="polite" className="responses-table" id={regionId} role="region">
-            <thead>
-              <tr className="responses-header">
+			<thead>
+				<tr className="responses-header">
                 {/* OutSystems change - change the structure of the table. Add Type and Example. Besides, change the branding*/}
-                <td className="col_header parameters-col_name">Code</td>
-                <td className="col_header parameters-col_description">Description</td>
-				        <td className="col_header parameters-col_name">Type</td>
-                <td className="col_header parameters-col_name">Example</td>
-
-                { specSelectors.isOAS3() ? <td className="col col_header response-col_links">Links</td> : null }
-              </tr>
+					<td className="col_header parameters-col_name">Code</td>
+					<td className="col_header parameters-col_description">Description</td>
+					<td className="col_header parameters-col_name">Type</td>
+					<td className="col_header parameters-col_name">Example</td>
+					{ specSelectors.isOAS3() ? <td className="col col_header response-col_links">Links</td> : null }
+				</tr>
             </thead>
             <tbody>
               {
@@ -172,7 +171,7 @@ export default class Responses extends React.Component {
           {
             responses.entrySeq().map(([code, response]) => {
 
-              let headers = response.get("headers")
+              const headers = response.get("headers")
               return (
                 <Headers
                   headers={headers}

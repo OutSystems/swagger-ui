@@ -135,14 +135,12 @@ export default class Parameters extends Component {
     const retainRequestBodyValueFlagForOperation = (f) => oas3Actions.setRetainRequestBodyValueFlag({ value: f, pathMethod })
 
     //OutSystems change - get the host in order to send to the RequestUrlOutSystems component
-    var host = specSelectors.host()
     //in swagger api 20 host may not be defined. So that, we will use the location.host
-    if (host == undefined) {
-      host = window.location.host
-    }
+    const host = specSelectors.host() ?? window.location.host;
+
     //OutSystems change: get the scheme. The first position is HTTPS if exists. If not, set to Https
-    let schemes = specSelectors.schemes()
-    let scheme = schemes? schemes.first() : 'https'
+    const schemes = specSelectors.schemes()
+    const scheme = schemes ? schemes.first() : 'https'
 
     return (
       <div className="opblock-section">

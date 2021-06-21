@@ -58,14 +58,14 @@ export default class ModelExample extends React.Component {
 
   render() {
     // OutSystems change: passing the 2 new properties
-    let { getComponent, specSelectors, schema, example, isExecute, getConfigs, specPath, includeReadOnly, includeWriteOnly, param, pathMethod } = this.props
+    const { getComponent, specSelectors, schema, example, isExecute, getConfigs, specPath, includeReadOnly, includeWriteOnly, param, pathMethod } = this.props
     let { defaultModelExpandDepth } = getConfigs()
     const ModelWrapper = getComponent("ModelWrapper")
     const HighlightCode = getComponent("highlightCode")
 
     //OutSystems change: get the type and the itemType properties
-    let type = schema ? schema.get("type") : null
-    let itemType = schema ? schema.getIn(["items", "type"]) : null
+    let type = schema?.get("type");
+    let itemType = schema?.getIn(["items", "type"]);
     let isOAS3 = specSelectors.isOAS3()
 
     return (

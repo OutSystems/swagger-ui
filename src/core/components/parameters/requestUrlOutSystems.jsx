@@ -12,9 +12,9 @@ import React, { Component } from "react"
 
    //Function to create the requested URL
    getRequestUrl() {
-    let { parameters, host, path, scheme, basePath} = this.props
-    var requestUrl = path
-    var querystring = '';
+    const { parameters, host, path, scheme, basePath} = this.props
+    const requestUrl = path
+    let querystring = '';
     for (var i = 0; i < parameters.size; i++) {
       var param = parameters._tail.array[i];
       if (param.get("in") == 'query') {
@@ -28,7 +28,7 @@ import React, { Component } from "react"
       }
     }
 
-    var url = scheme + '://' + host
+    let url = scheme + '://' + host
     if (basePath !== '/') {
       url += basePath
     }
@@ -37,7 +37,7 @@ import React, { Component } from "react"
   }
 
    render() {
-    var requestUrl = this.getRequestUrl()
+    const requestUrl = this.getRequestUrl()
     return (
       <div >
         <div className="opblock-section-header">

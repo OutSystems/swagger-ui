@@ -19,7 +19,7 @@ export default class Headers extends React.Component {
 
   render() {
     //OutSystems change - pass the getConfigs property to the render method
-    let { headers, getComponent, getConfigs } = this.props
+    const { headers, getComponent, getConfigs } = this.props
 
     const Property = getComponent("Property")
     const Markdown = getComponent("Markdown", true)
@@ -59,10 +59,8 @@ export default class Headers extends React.Component {
               //OutSystems change - get the dataType to be displayed according to the type and format
               let dataType = getPrimitiveModel(type, format)
                //OutSystems change - get the example property
-              let example = header.getIn(["example"])
-              if (example == undefined) {
-                example = header.getIn(["x-example"])
-              }
+              const example = header.getIn(["example"]) ?? header.getIn(["x-example"]);
+
               return (<tr key={key}>
                 {/* OutSystems change - branding of the table*/}
                 <td className="col_header parameters-col_name">{ key }</td>

@@ -59,22 +59,22 @@
 			    //It is supposed to change the URL!!!!!!!!!!!!!!!!!!!! This is for testing
 			    url: "https://os-jbfr253.domain.outsystems.com/swaggerUiDocumentation/rest/useCases/swagger.json",
 			    dom_id: '#swagger-ui',
-			    <!--OutSystems change: submit methods = empty in order to don't use the Try It Out feature-->
+			    // OutSystems change: submit methods = empty in order to don't use the Try It Out feature
 			    supportedSubmitMethods: [],
 			    deepLinking: true,
 			    presets: [
 				    SwaggerUIBundle.presets.apis
-				    <!--OutSystems change: remove SwaggerUIStandalonePreset-- >
+				    //OutSystems change: remove SwaggerUIStandalonePreset
 					    //SwaggerUIStandalonePreset
 			    ],
 			    plugins: [
 			    SwaggerUIBundle.plugins.DownloadUrl,
-			    <!--OutSystems change: pass the plugin that disables the Authorize button-- >
+			    // OutSystems change: pass the plugin that disables the Authorize button
 			    SwaggerUIBundle.plugins.DisableAuthorize,
-			    <!--OutSystems change: pass the plugin that disables the Schemes selection-- >
+			    // OutSystems change: pass the plugin that disables the Schemes selection
 			    SwaggerUIBundle.plugins.DisableSchemes
 			    ],
-			    <!--OutSystems change: remove StandaloneLayout in order to don't use the swagger header-->
+			    // OutSystems change: remove StandaloneLayout in order to don't use the swagger header
 				  //layout: "StandaloneLayout"
 			  });
 			  // End Swagger UI call region

@@ -63,7 +63,7 @@ class DataTypesOutSystems extends Component {
   }
 
   render() {
-    let { param, specSelectors, schema, pathMethod, isResponse, contentType } = this.props
+    const { param, specSelectors, schema, pathMethod, isResponse, contentType } = this.props
 
     let format = schema && schema.get? schema.get("format") : null
     let type = schema && schema.get ? schema.get("type") : null
