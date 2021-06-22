@@ -174,6 +174,7 @@ export default class Responses extends React.Component {
               const headers = response.get("headers")
               return (
                 <Headers
+                  key={response.key}
                   headers={headers}
                   getComponent={getComponent}
                   getConfigs={getConfigs}

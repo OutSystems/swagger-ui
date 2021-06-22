@@ -1,56 +1,44 @@
 //OutSystems change - component to render the request URL information
-import React, { Component } from "react"
+import React from "react"
 
- class RequestUrlOutSystems extends Component {
-  static propTypes = {
-    parameters: ImPropTypes.list.isRequired,
-    host: PropTypes.string.isRequired,
-    path: PropTypes.string.isRequired,
-    scheme: PropTypes.string.isRequired,
-    basePath: PropTypes.string.isRequired,
+//Function to create the requested URL
+const getRequestUrl = (props) => {
+  const { parameters, host, path, scheme, basePath} = props
+  const requestUrl = path
+
+  const querystring = parameters
+    .filter((param) => param.get("in") === 'query')
+    .map((param) => encodeURIComponent(param.get("name")) + '={' + encodeURIComponent(param.get("name")) + '}')
+    .join("&");
+
+  let url = scheme + '://' + host
+  if (basePath !== '/') {
+    url += basePath
   }
 
-   //Function to create the requested URL
-   getRequestUrl() {
-    const { parameters, host, path, scheme, basePath} = this.props
-    const requestUrl = path
-    let querystring = '';
-    for (var i = 0; i < parameters.size; i++) {
-      var param = parameters._tail.array[i];
-      if (param.get("in") == 'query') {
-        if (querystring == '') {
-          querystring += '?';
-        } else {
-          querystring += '&'
-        }
-
-        querystring += encodeURIComponent(param.get("name")) + '={' + encodeURIComponent(param.get("name")) + '}';
-      }
-    }
-
-    let url = scheme + '://' + host
-    if (basePath !== '/') {
-      url += basePath
-    }
-
-    return url + requestUrl + querystring
+  url += requestUrl
+  if (querystring) {
+    url += '?' + querystring
   }
 
-   render() {
-    const requestUrl = this.getRequestUrl()
-    return (
-      <div >
-        <div className="opblock-section-header">
-          <h4 className="opblock-title">Request URL</h4>
-        </div>
-        <div className="parameters-container">
-          <div className="request-url">
-            <pre className="microlight">{requestUrl}</pre>
-          </div>
+  return url
+}
+
+
+const RequestUrlOutSystems = (props) => {
+  const requestUrl = getRequestUrl(props)
+  return (
+    <div >
+      <div className="opblock-section-header">
+        <h4 className="opblock-title">Request URL</h4>
+      </div>
+      <div className="parameters-container">
+        <div className="request-url">
+          <pre className="microlight">{requestUrl}</pre>
         </div>
       </div>
-      )
-  }
- }
+    </div>
+  )
+};
 
-export default RequestUrlOutSystems
+export default RequestUrlOutSystems;

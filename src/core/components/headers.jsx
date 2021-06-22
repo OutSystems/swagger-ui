@@ -73,6 +73,7 @@ export default class Headers extends React.Component {
                 {/* OutSystems change - display the example */}
                 <td className="col_header parameters-col_name">
                   <HighlightCode
+                    key={key}
                     className="body-param__example"
                     getConfigs={getConfigs}
                     language={null}
