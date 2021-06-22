@@ -11,17 +11,7 @@ const getRequestUrl = (props) => {
     .map((param) => encodeURIComponent(param.get("name")) + '={' + encodeURIComponent(param.get("name")) + '}')
     .join("&");
 
-  let url = scheme + '://' + host
-  if (basePath !== '/') {
-    url += basePath
-  }
-
-  url += requestUrl
-  if (querystring) {
-    url += '?' + querystring
-  }
-
-  return url
+  return `${scheme}://${host}${basePath !== "/" ? basePath : ""}${requestUrl}${querystring ? "?" + querystring : ""}`;
 }
 
 

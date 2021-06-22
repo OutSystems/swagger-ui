@@ -206,19 +206,12 @@ export default class ParameterRow extends Component {
       //If type = string and format = date time, there will be example. However, if type = string and it is a text (without format) there won't be example
       exampleText = 'string'
     }
-    if (exampleText == undefined) {
-      //if it is an object or an array, it will enter here
-      example = bodyParam
-    }
-    else {
-      example = <HighlightCode
-        className="body-param__example"
-        getConfigs={getConfigs}
-        language={null}
-        value={exampleText}
-      />
-    }
-    return example
+    return (exampleText ? <HighlightCode
+                            className="body-param__example"
+                            getConfigs={getConfigs}
+                            language={null}
+                            value={exampleText}
+                          /> : bodyParam )
   }
 
   render() {
@@ -313,7 +306,7 @@ export default class ParameterRow extends Component {
     }
 
     //OutSystems change - customize the Example
-    let example = this.getExample(paramExample, schema, bodyParam, type)
+    const example = this.getExample(paramExample, schema, bodyParam, type)
 
     //OutSystems change: support binary data-type for body parameters. It is binary if consumes = [], format is not defined and the parameter is sent in the body. Example = 'DATA' in binary
     let consumes = specSelectors.consumesOptionsFor(pathMethod);
