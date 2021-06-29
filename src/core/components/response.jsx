@@ -3,21 +3,31 @@ import PropTypes from "prop-types"
 import ImPropTypes from "react-immutable-proptypes"
 import cx from "classnames"
 import { fromJS, Seq, Iterable, List, Map } from "immutable"
-import { getExtensions, fromJSOrdered, stringify } from "core/utils"
+import { getExtensions, getSampleSchema, fromJSOrdered, stringify } from "core/utils"
 import { getKnownSyntaxHighlighterLanguage } from "core/utils/jsonParse"
+import DataTypesOutSystems from "./dataTypesOutSystems"
 
+//OutSystems change: receive the contentType to check if it is binary
+const getExampleComponent = (sampleResponse, HighlightCode, getConfigs, contentType) => {
+  if (
+    sampleResponse !== undefined &&
+    sampleResponse !== null
+  ) {
+    let language = null
+    let testValueForJson = getKnownSyntaxHighlighterLanguage(sampleResponse)
+    if (testValueForJson) {
+      language = "json"
+    }
 
-const getExampleComponent = ( sampleResponse, HighlightCode ) => {
-  if (sampleResponse == null) return null
-
-  const testValueForJson = getKnownSyntaxHighlighterLanguage(sampleResponse)
-  const language = testValueForJson ? "json" : null
-
-  return (
-    <div>
-      <HighlightCode className="example" language={language}>{stringify(sampleResponse)}</HighlightCode>
+    //OutSystems change: if binary type - render the word DATA
+    if (contentType === 'application/octet-stream') {
+      sampleResponse = 'DATA';
+    }
+    return <div>
+      <HighlightCode className="example" getConfigs={ getConfigs } language={ language } value={ stringify(sampleResponse) } />
     </div>
-  )
+  }
+  return null
 }
 
 export default class Response extends React.Component {
@@ -50,7 +60,7 @@ export default class Response extends React.Component {
   static defaultProps = {
     response: fromJS({}),
     onContentTypeChange: () => {}
-  }
+  };
 
   _onContentTypeChange = (value) => {
     const { onContentTypeChange, controlsAcceptHeader } = this.props
@@ -89,7 +99,7 @@ export default class Response extends React.Component {
       oas3Actions,
     } = this.props
 
-    let { inferSchema, getSampleSchema } = fn
+    let { inferSchema } = fn
     let isOAS3 = specSelectors.isOAS3()
     const { showExtensions } = getConfigs()
 
@@ -98,7 +108,7 @@ export default class Response extends React.Component {
     let links = response.get("links")
     const ResponseExtension = getComponent("ResponseExtension")
     const Headers = getComponent("headers")
-    const HighlightCode = getComponent("HighlightCode", true)
+    const HighlightCode = getComponent("highlightCode")
     const ModelExample = getComponent("modelExample")
     const Markdown = getComponent("Markdown", true)
     const OperationLink = getComponent("operationLink")
@@ -134,7 +144,7 @@ export default class Response extends React.Component {
     // Goal: find an example value for `sampleResponse`
     if(isOAS3) {
       sampleSchema = activeMediaType.get("schema")?.toJS()
-      if(Map.isMap(examplesForMediaType) && !examplesForMediaType.isEmpty()) {
+      if(examplesForMediaType) {
         const targetExamplesKey = this.getTargetExamplesKey()
         const targetExample = examplesForMediaType
           .get(targetExamplesKey, Map({}))
@@ -166,20 +176,20 @@ export default class Response extends React.Component {
       sampleGenConfig,
       shouldOverrideSchemaExample ? mediaTypeExample : undefined
     )
-
-    const example = getExampleComponent( sampleResponse, HighlightCode )
+    //OutSystems change: send the contentType to detect if the response is binary
+    const example = getExampleComponent(sampleResponse, HighlightCode, getConfigs, contentType )
 
     return (
-      <tr className={ "response " + ( className || "") } data-code={code}>
-        <td className="response-col_status">
+      <tr className={"response " + (className || "")} data-code={code}>
+        {/* OutSystems change: change the branding of the table*/}
+        <td className="col_header parameters-col_name">
           { code }
         </td>
-        <td className="response-col_description">
-
-          <div className="response-col_description__inner">
+        {/* OutSystems change: change the branding of the table*/}
+        <td className="col_header parameters-col_description">
             <Markdown source={ response.get( "description" ) } />
-          </div>
-
+        </td>
+        {/* OutSystems change : Remove the following block
           { !showExtensions || !extensions.size ? null : extensions.entrySeq().map(([key, v]) => <ResponseExtension key={`${key}-${v}`} xKey={key} xVal={v} /> )}
 
           {isOAS3 && response.get("content") ? (
@@ -208,7 +218,7 @@ export default class Response extends React.Component {
                   </small>
                 ) : null}
               </div>
-              {Map.isMap(examplesForMediaType) && !examplesForMediaType.isEmpty() ? (
+              {examplesForMediaType ? (
                 <div className="response-control-examples">
                   <small className="response-control-examples__title">
                     Examples
@@ -229,8 +239,20 @@ export default class Response extends React.Component {
                 </div>
               ) : null}
             </section>
-          ) : null}
+          ) : null} */}
 
+        {/*OutSystems change: Column to the Model in the response as we have in the input parameters*/}
+        <td className="parameters-col_name">
+          <div className="parameter__type">
+            <DataTypesOutSystems
+              schema={schema}
+              isResponse={true}
+              contentType={contentType} />
+          </div>
+        </td>
+
+        {/*OutSystems change: branding*/}
+        <td className="parameters-col_name">              
           { example || schema ? (
             <ModelExample
               specPath={specPathWithPossibleSchema}
@@ -250,22 +272,24 @@ export default class Response extends React.Component {
                 omitValue={true}
               />
           ) : null}
-
-          { headers ? (
-            <Headers
-              headers={ headers }
-              getComponent={ getComponent }
-            />
-          ) : null}
-
         </td>
+
+         {/* OutSystems change: Remove the headers logic from this component. Instead it is placed in the responses.jsx in order to fulfill a specific layout
+          * headers ? (
+            <Headers
+              headers={headers}
+              getComponent={getComponent}
+            />
+        ) : null}
+
+        
         {isOAS3 ? <td className="response-col_links">
           { links ?
             links.toSeq().entrySeq().map(([key, link]) => {
               return <OperationLink key={key} name={key} link={ link } getComponent={getComponent}/>
             })
           : <i>No links</i>}
-        </td> : null}
+        </td> : null*/}
       </tr>
     )
   }

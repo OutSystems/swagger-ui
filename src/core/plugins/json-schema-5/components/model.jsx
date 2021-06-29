@@ -31,6 +31,9 @@ export default class Model extends ImmutablePureComponent {
     specPath: ImPropTypes.list.isRequired,
     includeReadOnly: PropTypes.bool,
     includeWriteOnly: PropTypes.bool,
+    //OutSystems change: receive two new properties: param and pathMethod to pass to the PrimitiveModel component
+    param: PropTypes.object.isRequired,
+    pathMethod: PropTypes.array.isRequired
   }
 
   getModelName =( ref )=> {
@@ -48,9 +51,10 @@ export default class Model extends ImmutablePureComponent {
     return specSelectors.findDefinition(model)
   }
 
-  render () {
+  render() {
+    //OutSystems change: receive two new properties: param and pathMethod to pass to the PrimitiveModel component
     let { getComponent, getConfigs, specSelectors, schema, required, name, isRef, specPath, displayName,
-      includeReadOnly, includeWriteOnly} = this.props
+      includeReadOnly, includeWriteOnly, param, pathMethod} = this.props
     const ObjectModel = getComponent("ObjectModel")
     const ArrayModel = getComponent("ArrayModel")
     const PrimitiveModel = getComponent("PrimitiveModel")
@@ -123,6 +127,7 @@ export default class Model extends ImmutablePureComponent {
       case "integer":
       case "boolean":
       default:
+        //OutSystems change: passing 3 properties (param and pathMethod and specSelectors) to the PrimitiveModel component
         return <PrimitiveModel
           { ...this.props }
           getComponent={ getComponent }
@@ -130,7 +135,10 @@ export default class Model extends ImmutablePureComponent {
           schema={ schema }
           name={ name }
           deprecated={deprecated}
-          required={ required }/>
+          required={required}
+          specSelectors={specSelectors}
+          param={param}
+          pathMethod={pathMethod}/>
     }
   }
 }

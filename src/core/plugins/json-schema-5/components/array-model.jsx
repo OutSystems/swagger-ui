@@ -1,7 +1,6 @@
 import React, { Component } from "react"
 import PropTypes from "prop-types"
 import ImPropTypes from "react-immutable-proptypes"
-import { sanitizeUrl } from "core/utils"
 
 const propClass = "property"
 
@@ -26,16 +25,12 @@ export default class ArrayModel extends Component {
     let description = schema.get("description")
     let items = schema.get("items")
     let title = schema.get("title") || displayName || name
-    let properties = schema.filter( ( v, key) => ["type", "items", "description", "$$ref", "externalDocs"].indexOf(key) === -1 )
-    let externalDocsUrl = schema.getIn(["externalDocs", "url"])
-    let externalDocsDescription = schema.getIn(["externalDocs", "description"])
-
+    let properties = schema.filter((v, key) => ["type", "items", "description", "$$ref"].indexOf(key) === -1)
 
     const Markdown = getComponent("Markdown", true)
     const ModelCollapse = getComponent("ModelCollapse")
     const Model = getComponent("Model")
     const Property = getComponent("Property")
-    const Link = getComponent("Link")
 
     const titleEl = title &&
       <span className="model-title">
@@ -48,20 +43,17 @@ export default class ArrayModel extends Component {
     */
 
     return <span className="model">
-      <ModelCollapse title={titleEl} expanded={ depth <= expandDepth } collapsedContent="[...]">
-        [
-          {
+      <ModelCollapse title={titleEl} expanded={depth <= expandDepth} collapsedContent="[...]">
+        {/* OutSystems change - display the Array Model in a different manner Array[object] Object: object content */}
+        Array[object]<p></p>
+        {!description ? (properties.size ? <div className="markdown"></div> : null) :
+          <Markdown source={description} />
+        }
+        <p>object:</p>
+        {
             properties.size ? properties.entrySeq().map( ( [ key, v ] ) => <Property key={`${key}-${v}`} propKey={ key } propVal={ v } propClass={ propClass } />) : null
-          }
-          {
-            !description ? (properties.size ? <div className="markdown"></div> : null) :
-              <Markdown source={ description } />
-          }
-          { externalDocsUrl &&
-            <div className="external-docs">
-               <Link target="_blank" href={sanitizeUrl(externalDocsUrl)}>{externalDocsDescription || externalDocsUrl}</Link>
-             </div>
-          }
+        }
+          
           <span>
             <Model
               { ...this.props }
@@ -72,8 +64,10 @@ export default class ArrayModel extends Component {
               required={ false }
               depth={ depth + 1 }
             />
-          </span>
-        ]
+         </span>
+        {/*OutSystems change - remove the ]
+        ] */}
+        
       </ModelCollapse>
     </span>
   }
