@@ -184,12 +184,10 @@ export default class ParameterRow extends Component {
     return `${param.get("name")}-${param.get("in")}`
   }
 
-  //OutSystems change: Customize the Example
-  getExample(paramExample, schema, bodyParam, type) {
-    const { param, getComponent, getConfigs } = this.props
-    const HighlightCode = getComponent("highlightCode")
+  //OutSystem - get the example text
+  getExampleText(paramExample, schema, type, param) {
     let exampleText
-    let example
+
     //First check if there is something in the paramExample - paramExaple is not undefined if the param is sent in the URL or in the header. If it is in the body, it is null
     if (paramExample != undefined) {
       exampleText = stringify(paramExample)
@@ -206,6 +204,16 @@ export default class ParameterRow extends Component {
       //If type = string and format = date time, there will be example. However, if type = string and it is a text (without format) there won't be example
       exampleText = 'string'
     }
+
+    return exampleText;
+  }
+
+  //OutSystems change: Customize the Example
+  getExample(paramExample, schema, bodyParam, type) {
+    const { param, getComponent, getConfigs } = this.props
+    const HighlightCode = getComponent("highlightCode")
+
+    const exampleText = this.getExampleText(paramExample, schema, type, param);
     return (exampleText ? <HighlightCode
                             className="body-param__example"
                             getConfigs={getConfigs}
@@ -309,7 +317,7 @@ export default class ParameterRow extends Component {
     const example = this.getExample(paramExample, schema, bodyParam, type)
 
     //OutSystems change: support binary data-type for body parameters. It is binary if consumes = [], format is not defined and the parameter is sent in the body. Example = 'DATA' in binary
-    let consumes = specSelectors.consumesOptionsFor(pathMethod);
+    const consumes = specSelectors.consumesOptionsFor(pathMethod);
     if (param.get("in") == 'body' && !format && (!consumes || consumes.size == 0)) {
       example = <HighlightCode
         className="body-param__example"

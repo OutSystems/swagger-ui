@@ -56,10 +56,10 @@ const DataTypesOutSystems = (props) => {
 
   const { param, specSelectors, schema, pathMethod, isResponse, contentType } = props
 
-  let format = schema && schema.get ? schema.get("format") : null
-  let type = schema && schema.get ? schema.get("type") : null
-  let itemType = schema && schema.get ? schema.getIn(["items", "type"]) : null
-  let itemFormat = schema && schema.get ? schema.getIn(["items", "format"]) : null
+  const format = schema && schema.get ? schema.get("format") : null
+  const type = schema && schema.get ? schema.get("type") : null
+  const itemType = schema && schema.get ? schema.getIn(["items", "type"]) : null
+  const itemFormat = schema && schema.get ? schema.getIn(["items", "format"]) : null
   let displayModel = getModel(type, format, itemType, itemFormat)
 
   //if isResponse, check the content type. If content-Type = octet-stream, it will display binary
@@ -69,7 +69,7 @@ const DataTypesOutSystems = (props) => {
     }
   } else {
     //it is binary type if consumes = [] and there is no format
-    let consumes = specSelectors.consumesOptionsFor(pathMethod);
+    const consumes = specSelectors.consumesOptionsFor(pathMethod);
     if ((param && param.get("in") == 'body') && !format && (!consumes || consumes.size == 0)) {
       displayModel = 'binary';
     }

@@ -57,7 +57,7 @@ export default class Headers extends React.Component {
               //OutSystems change - get the format property
               const format = header.getIn(["schema"]) ? header.getIn(["schema", "format"]) : header.getIn(["format"])
               //OutSystems change - get the dataType to be displayed according to the type and format
-              let dataType = getPrimitiveModel(type, format)
+              const dataType = getPrimitiveModel(type, format)
                //OutSystems change - get the example property
               const example = header.getIn(["example"]) ?? header.getIn(["x-example"]);
 

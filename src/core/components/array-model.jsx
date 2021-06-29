@@ -46,14 +46,13 @@ export default class ArrayModel extends Component {
       <ModelCollapse title={titleEl} expanded={depth <= expandDepth} collapsedContent="[...]">
         {/* OutSystems change - display the Array Model in a different manner Array[object] Object: object content */}
         Array[object]<p></p>
+        {!description ? (properties.size ? <div className="markdown"></div> : null) :
+          <Markdown source={description} />
+        }
         <p>object:</p>
         {
             properties.size ? properties.entrySeq().map( ( [ key, v ] ) => <Property key={`${key}-${v}`} propKey={ key } propVal={ v } propClass={ propClass } />) : null
         }
-        { /* OutSystems change: remove description
-          !description ? (properties.size ? <div className="markdown"></div> : null) :
-            <Markdown source={description} />
-        */}
           
           <span>
             <Model

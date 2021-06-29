@@ -64,8 +64,8 @@ export default class ModelExample extends React.Component {
     const HighlightCode = getComponent("highlightCode")
 
     //OutSystems change: get the type and the itemType properties
-    let type = schema?.get("type");
-    let itemType = schema?.getIn(["items", "type"]);
+    const type = schema?.get("type");
+    const itemType = schema?.getIn(["items", "type"]);
     let isOAS3 = specSelectors.isOAS3()
 
     return (

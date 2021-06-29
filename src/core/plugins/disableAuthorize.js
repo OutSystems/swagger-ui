@@ -1,5 +1,5 @@
 // OutSystems change: create a plugin that disables the Authorize button 
-const DisableAuthorizePlugin = function() {
+const DisableAuthorizePlugin = () => {
   return {
 	  wrapComponents: {
 		  authorizeBtn: () => () => null
