@@ -47,19 +47,19 @@ export default class OperationTag extends React.Component {
       deepLinking,
     } = getConfigs()
 
+    const isDeepLinkingEnabled = deepLinking && deepLinking !== "false"
+
     const Collapse = getComponent("Collapse")
     const Markdown = getComponent("Markdown", true)
     const DeepLink = getComponent("DeepLink")
     const Link = getComponent("Link")
-    const ArrowUpIcon = getComponent("ArrowUpIcon")
-    const ArrowDownIcon = getComponent("ArrowDownIcon")
 
     let tagDescription = tagObj.getIn(["tagDetails", "description"], null)
     let tagExternalDocsDescription = tagObj.getIn(["tagDetails", "externalDocs", "description"])
     let rawTagExternalDocsUrl = tagObj.getIn(["tagDetails", "externalDocs", "url"])
     let tagExternalDocsUrl
     if (isFunc(oas3Selectors) && isFunc(oas3Selectors.selectedServer)) {
-      tagExternalDocsUrl = safeBuildUrl(rawTagExternalDocsUrl, specUrl, { selectedServer: oas3Selectors.selectedServer() })
+      tagExternalDocsUrl = safeBuildUrl( rawTagExternalDocsUrl, specUrl, { selectedServer: oas3Selectors.selectedServer() } )
     } else {
       tagExternalDocsUrl = rawTagExternalDocsUrl
     }
@@ -72,43 +72,48 @@ export default class OperationTag extends React.Component {
 
         <h3
           onClick={() => layoutActions.show(isShownKey, !showTag)}
-          className={!tagDescription ? "opblock-tag no-desc" : "opblock-tag"}
+          className={!tagDescription ? "opblock-tag no-desc" : "opblock-tag" }
           id={isShownKey.map(v => escapeDeepLinkPath(v)).join("-")}
           data-tag={tag}
           data-is-open={showTag}
-        >
+          >
           <DeepLink
-            enabled={deepLinking}
+            enabled={isDeepLinkingEnabled}
             isShown={showTag}
             path={createDeepLinkPath(tag)}
             text={tag} />
-          {!tagDescription ? <small></small> :
+          { !tagDescription ? <small></small> :
             <small>
-              <Markdown source={tagDescription} />
-            </small>
-          }
-
-          {!tagExternalDocsUrl ? null :
-            <div className="info__externaldocs">
-              <small>
-                <Link
-                    href={sanitizeUrl(tagExternalDocsUrl)}
-                    onClick={(e) => e.stopPropagation()}
-                    target="_blank"
-                  >{tagExternalDocsDescription || tagExternalDocsUrl}</Link>
+                <Markdown source={tagDescription} />
               </small>
+            }
+
+            <div>
+              { !tagExternalDocsDescription ? null :
+                <small>
+                    { tagExternalDocsDescription }
+                      { tagExternalDocsUrl ? ": " : null }
+                      { tagExternalDocsUrl ?
+                        <Link
+                            href={sanitizeUrl(tagExternalDocsUrl)}
+                            onClick={(e) => e.stopPropagation()}
+                            target="_blank"
+                            >{tagExternalDocsUrl}</Link> : null
+                          }
+                  </small>
+                }
             </div>
-          }
 
+            <button
+              aria-expanded={showTag}
+              className="expand-operation"
+              title={showTag ? "Collapse operation": "Expand operation"}
+              onClick={() => layoutActions.show(isShownKey, !showTag)}>
 
-          <button
-            aria-expanded={showTag}
-            className="expand-operation"
-            title={showTag ? "Collapse operation" : "Expand operation"}
-            onClick={() => layoutActions.show(isShownKey, !showTag)}>
-
-            {showTag ? <ArrowUpIcon className="arrow" /> : <ArrowDownIcon className="arrow" />}
-          </button>
+              <svg className="arrow" width="20" height="20" aria-hidden="true" focusable="false">
+                <use href={showTag ? "#large-arrow-up" : "#large-arrow-down"} xlinkHref={showTag ? "#large-arrow-up" : "#large-arrow-down"} />
+              </svg>
+            </button>
         </h3>
 
         <Collapse isOpened={showTag}>

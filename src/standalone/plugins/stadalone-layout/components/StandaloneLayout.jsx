@@ -1,7 +1,7 @@
 import React from "react"
 import PropTypes from "prop-types"
 
-class StandaloneLayout extends React.Component {
+export default class StandaloneLayout extends React.Component {
 
   static propTypes = {
     errSelectors: PropTypes.object.isRequired,
@@ -21,20 +21,24 @@ class StandaloneLayout extends React.Component {
     const Topbar = getComponent("Topbar", true)
     const BaseLayout = getComponent("BaseLayout", true)
     const OnlineValidatorBadge = getComponent("onlineValidatorBadge", true)
+    const ErrorBoundary = getComponent("ErrorBoundary", true)
+
 
     return (
       <Container className='swagger-ui'>
-        {Topbar ? <Topbar /> : null}
+        <ErrorBoundary targetName="Topbar">
+          {Topbar ? <Topbar /> : null}
+        </ErrorBoundary>
         <BaseLayout />
-        <Row>
-          <Col>
-            <OnlineValidatorBadge />
-          </Col>
-        </Row>
+        <ErrorBoundary targetName="OnlineValidatorBadge">
+          <Row>
+            <Col>
+              <OnlineValidatorBadge />
+            </Col>
+          </Row>
+        </ErrorBoundary>
       </Container>
     )
   }
 
 }
-
-export default StandaloneLayout

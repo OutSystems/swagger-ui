@@ -9,6 +9,7 @@
   If you're refactoring something in here, feel free to break it out to a file
   in `./helpers` if you have the time.
 */
+
 import Im, { fromJS, Set } from "immutable"
 import { sanitizeUrl as braintreeSanitizeUrl } from "@braintree/sanitize-url"
 import camelCase from "lodash/camelCase"
@@ -18,11 +19,13 @@ import find from "lodash/find"
 import some from "lodash/some"
 import eq from "lodash/eq"
 import isFunction from "lodash/isFunction"
+import { memoizedSampleFromSchema, memoizedCreateXMLExample } from "core/plugins/samples/fn"
+import win from "./window"
 import cssEscape from "css.escape"
+import getParameterSchema from "../helpers/get-parameter-schema"
 import randomBytes from "randombytes"
 import shaJs from "sha.js"
-import win from "core/window"
-import getParameterSchema from "core/utils/get-parameter-schema"
+import YAML from "js-yaml"
 
 
 const DEFAULT_RESPONSE_KEY = "default"
@@ -118,11 +121,11 @@ export function createObjWithHashedKeys (fdObj) {
 }
 
 export function bindToState(obj, state) {
-  var newObj = {}
-  Object.keys(obj)
-    .filter(key => typeof obj[key] === "function")
-    .forEach(key => newObj[key] = obj[key].bind(null, state))
-  return newObj
+	var newObj = {}
+	Object.keys(obj)
+  .filter(key => typeof obj[key] === "function")
+  .forEach(key => newObj[key] = obj[key].bind(null, state))
+	return newObj
 }
 
 export function normalizeArray(arr) {
@@ -345,21 +348,21 @@ export const validateString = ( val ) => {
 }
 
 export const validateDateTime = (val) => {
-  if (isNaN(Date.parse(val))) {
-    return "Value must be a DateTime"
-  }
+    if (isNaN(Date.parse(val))) {
+        return "Value must be a DateTime"
+    }
 }
 
 export const validateGuid = (val) => {
-  val = val.toString().toLowerCase()
-  if (!/^[{(]?[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}[)}]?$/.test(val)) {
-    return "Value must be a Guid"
-  }
+    val = val.toString().toLowerCase()
+    if (!/^[{(]?[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}[)}]?$/.test(val)) {
+        return "Value must be a Guid"
+    }
 }
 
 export const validateMaxLength = (val, max) => {
   if (val.length > max) {
-    return `Value must be no longer than ${max} character${max !== 1 ? "s" : ""}`
+      return `Value must be no longer than ${max} character${max !== 1 ? "s" : ""}`
   }
 }
 
@@ -387,7 +390,7 @@ export const validateUniqueItems = (val, uniqueItems) => {
 
 export const validateMinItems = (val, min) => {
   if (!val && min >= 1 || val && val.length < min) {
-    return `Array must contain at least ${min} item${min === 1 ? "" : "s"}`
+      return `Array must contain at least ${min} item${min === 1 ? "" : "s"}`
   }
 }
 
@@ -399,14 +402,14 @@ export const validateMaxItems = (val, max) => {
 
 export const validateMinLength = (val, min) => {
   if (val.length < min) {
-    return `Value must be at least ${min} character${min !== 1 ? "s" : ""}`
+      return `Value must be at least ${min} character${min !== 1 ? "s" : ""}`
   }
 }
 
 export const validatePattern = (val, rxPattern) => {
   var patt = new RegExp(rxPattern)
   if (!patt.test(val)) {
-    return "Value must follow pattern " + rxPattern
+      return "Value must follow pattern " + rxPattern
   }
 }
 
@@ -439,26 +442,13 @@ function validateValueBySchema(value, schema, requiredByParam, bypassRequiredChe
 
   const isValidNullable = nullable && value === null
 
-  // required value is not provided and there's no type defined in the schema
-  const requiredNotProvided =
-    schemaRequiresValue
-    && !hasValue
-    && !isValidNullable
-    && !bypassRequiredCheck
-    && !type
-
-  if (requiredNotProvided) {
-    errors.push("Required field is not provided")
-    return errors
-  }
-
   // will not be included in the request or [schema / value] does not [allow / require] further analysis.
   const noFurtherValidationNeeded =
     isValidNullable
     || !type
     || !requiresFurtherValidation
 
-  if (noFurtherValidationNeeded) {
+  if(noFurtherValidationNeeded) {
     return []
   }
 
@@ -609,22 +599,111 @@ export const validateParam = (param, value, { isOAS3 = false, bypassRequiredChec
 
   let paramRequired = param.get("required")
 
-  let {
-    schema: paramDetails,
-    parameterContentMediaType
-  } = getParameterSchema(param, { isOAS3 })
+  let { schema: paramDetails, parameterContentMediaType } = getParameterSchema(param, { isOAS3 })
 
   return validateValueBySchema(value, paramDetails, paramRequired, bypassRequiredCheck, parameterContentMediaType)
 }
 
+const getXmlSampleSchema = (schema, config, exampleOverride) => {
+  if (schema && (!schema.xml || !schema.xml.name)) {
+    schema.xml = schema.xml || {}
+
+    if (schema.$$ref) {
+      let match = schema.$$ref.match(/\S*\/(\S+)$/)
+      schema.xml.name = match[1]
+    } else if (schema.type || schema.items || schema.properties || schema.additionalProperties) {
+      return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<!-- XML example cannot be generated; root element name is undefined -->"
+    } else {
+      return null
+    }
+  }
+  return memoizedCreateXMLExample(schema, config, exampleOverride)
+}
+
+const shouldStringifyTypesConfig = [
+  {
+    when: /json/,
+    shouldStringifyTypes: ["string"]
+  }
+]
+
+const defaultStringifyTypes = ["object"]
+
+const getStringifiedSampleForSchema = (schema, config, contentType, exampleOverride) => {
+  const res = memoizedSampleFromSchema(schema, config, exampleOverride)
+  const resType = typeof res
+
+  const typesToStringify = shouldStringifyTypesConfig.reduce(
+    (types, nextConfig) => nextConfig.when.test(contentType)
+      ? [...types, ...nextConfig.shouldStringifyTypes]
+      : types,
+    defaultStringifyTypes)
+
+  return some(typesToStringify, x => x === resType)
+    ? JSON.stringify(res, null, 2)
+    : res
+}
+
+const getYamlSampleSchema = (schema, config, contentType, exampleOverride) => {
+  const jsonExample = getStringifiedSampleForSchema(schema, config, contentType, exampleOverride)
+  let yamlString
+  try {
+    yamlString = YAML.dump(YAML.load(jsonExample), {
+
+      lineWidth: -1 // don't generate line folds
+    })
+    if(yamlString[yamlString.length - 1] === "\n") {
+      yamlString = yamlString.slice(0, yamlString.length - 1)
+    }
+  } catch (e) {
+    console.error(e)
+    return "error: could not generate yaml example"
+  }
+  return yamlString
+    .replace(/\t/g, "  ")
+}
+
+export const getSampleSchema = (schema, contentType="", config={}, exampleOverride = undefined) => {
+  if(schema && isFunc(schema.toJS))
+    schema = schema.toJS()
+  if(exampleOverride && isFunc(exampleOverride.toJS))
+    exampleOverride = exampleOverride.toJS()
+
+  if (/xml/.test(contentType)) {
+    return getXmlSampleSchema(schema, config, exampleOverride)
+  }
+  if (/(yaml|yml)/.test(contentType)) {
+    return getYamlSampleSchema(schema, config, contentType, exampleOverride)
+  }
+  return getStringifiedSampleForSchema(schema, config, contentType, exampleOverride)
+}
+
 export const parseSearch = () => {
-  const searchParams = new URLSearchParams(win.location.search)
-  return Object.fromEntries(searchParams)
+  let map = {}
+  let search = win.location.search
+
+  if(!search)
+    return {}
+
+  if ( search != "" ) {
+    let params = search.substr(1).split("&")
+
+    for (let i in params) {
+      if (!Object.prototype.hasOwnProperty.call(params, i)) {
+        continue
+      }
+      i = params[i].split("=")
+      map[decodeURIComponent(i[0])] = (i[1] && decodeURIComponent(i[1])) || ""
+    }
+  }
+
+  return map
 }
 
 export const serializeSearch = (searchMap) => {
-  const searchParams = new URLSearchParams(Object.entries(searchMap))
-  return String(searchParams)
+  return Object.keys(searchMap).map(k => {
+    return encodeURIComponent(k) + "=" + encodeURIComponent(searchMap[k])
+  }).join("&")
 }
 
 export const btoa = (str) => {
@@ -819,10 +898,10 @@ export function generateCodeVerifier() {
 
 export function createCodeChallenge(codeVerifier) {
   return b64toB64UrlEncoded(
-    shaJs("sha256")
+      shaJs("sha256")
       .update(codeVerifier)
       .digest("base64")
-  )
+    )
 }
 
 function b64toB64UrlEncoded(str) {

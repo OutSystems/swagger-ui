@@ -2,29 +2,31 @@
 # We don't declare them here — take a look at our docs.
 # https://github.com/swagger-api/swagger-ui/blob/master/docs/usage/configuration.md
 
-FROM nginx:1.27.2-alpine
+FROM nginx:1.21.4-alpine
 
-RUN apk update && apk add "nodejs"
+RUN apk update && apk add --no-cache "nodejs>=14.17.6-r0"
 
-LABEL maintainer="char0n"
+LABEL maintainer="fehguy"
 
-ENV API_KEY="**None**" \
-    SWAGGER_JSON="/app/swagger.json" \
-    PORT="8080" \
-    PORT_IPV6="" \
-    BASE_URL="/" \
-    SWAGGER_JSON_URL="" \
-    CORS="true" \
-    EMBEDDING="false"
+ENV API_KEY "**None**"
+ENV SWAGGER_JSON "/app/swagger.json"
+ENV PORT 8080
+ENV BASE_URL ""
+ENV SWAGGER_JSON_URL ""
 
-COPY --chown=nginx:nginx --chmod=0666 ./docker/default.conf.template ./docker/cors.conf ./docker/embedding.conf /etc/nginx/templates/
+COPY ./docker/nginx.conf ./docker/cors.conf /etc/nginx/
 
-COPY --chmod=0666 ./dist/* /usr/share/nginx/html/
-COPY --chmod=0555 ./docker/docker-entrypoint.d/ /docker-entrypoint.d/
-COPY --chmod=0666 ./docker/configurator /usr/share/nginx/configurator
+# copy swagger files to the `/js` folder
+COPY ./dist/* /usr/share/nginx/html/
+COPY ./docker/run.sh /usr/share/nginx/
+COPY ./docker/configurator /usr/share/nginx/configurator
 
-# Simulates running NGINX as a non root; in future we want to use nginxinc/nginx-unprivileged.
-# In future we will have separate unpriviledged images tagged as v5.1.2-unprivileged.
-RUN chmod 777 /usr/share/nginx/html/ /etc/nginx/conf.d/ /etc/nginx/conf.d/default.conf /var/cache/nginx/ /var/run/
+RUN chmod +x /usr/share/nginx/run.sh && \
+    chmod -R a+rw /usr/share/nginx && \
+    chmod -R a+rw /etc/nginx && \
+    chmod -R a+rw /var && \
+    chmod -R a+rw /var/run
 
 EXPOSE 8080
+
+CMD ["sh", "/usr/share/nginx/run.sh"]

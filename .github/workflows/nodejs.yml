@@ -5,52 +5,48 @@ name: Node.js CI
 
 on:
   push:
-    branches: [ master, next ]
+    branches: [ master ]
   pull_request:
-    branches: [ master, next ]
+    branches: [ master ]
 
 env:
   CYPRESS_CACHE_FOLDER: cypress/cache
-
-permissions:
-  contents: read
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
-
-      - name: Use Node.js 20.x
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v2
+      - name: Use Node.js 16.x
+        uses: actions/setup-node@v2
         with:
-          node-version: 20
-
-      - name: Cache Node Modules and Cypress binary
-        uses: actions/cache@v4
-        id: cache-primes
+          node-version: 16
+      - name: Cache Node Modules
+        id: cache-node-modules
+        uses: actions/cache@v2
         with:
-          path: |
-            node_modules
-            ${{ env.CYPRESS_CACHE_FOLDER }}
-          key: ${{ runner.os }}-node-and-cypress-${{ hashFiles('package-lock.json') }}
-
+          path: node_modules
+          key: node-modules-${{ hashFiles('package-lock.json') }}
+      - name: Cache Cypress binary
+        id: cache-cypress-binary
+        uses: actions/cache@v2
+        with:
+          path: cypress/cache
+          key: cypress-binary-${{ hashFiles('package-lock.json') }}
       - name: Install dependencies
-        if: steps.cache-primes.outputs.cache-hit != 'true'
+        if: |
+          steps.cache-node-modules.outputs.cache-hit != 'true' ||
+          steps.cache-cypress-binary.outputs.cache-hit != 'true'
         run: npm ci
-
       - name: Lint code for errors only
         run: npm run lint-errors
-
       - name: Run all tests
-        run: npm run test:unit
+        run: npm run just-test-in-node && npm run test:unit-jest
         env:
           CI: true
-
       - name: Build SwaggerUI
         run: npm run build
-
       - name: Test build artifacts
         run: npm run test:artifact
 
@@ -59,28 +55,30 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        containers: ['+(a11y|security|bugs)/**/*cy.js', 'features/**/+(o|d)*.cy.js', 'features/**/m*.cy.js', 'features/**/!(o|d|m)*.cy.js']
+        containers: ['+(a11y|security|bugs)/**/*.js', 'features/**/+(o|d)*.js', 'features/**/m*.js', 'features/**/!(o|d|m)*.js']
 
     steps:
-      - uses: actions/checkout@v4
-
-      - name: Use Node.js 20.x
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v2
+      - name: Use Node.js 16.x
+        uses: actions/setup-node@v2
         with:
-          node-version: 20
-
-      - name: Cache Node Modules and Cypress binary
-        uses: actions/cache@v4
-        id: cache-primes
+          node-version: 16
+      - name: Cache Node Modules
+        id: cache-node-modules
+        uses: actions/cache@v2
         with:
-          path: |
-            node_modules
-            ${{ env.CYPRESS_CACHE_FOLDER }}
-          key: ${{ runner.os }}-node-and-cypress-${{ hashFiles('package-lock.json') }}
-
+          path: node_modules
+          key: node-modules-${{ hashFiles('package-lock.json') }}
+      - name: Cache Cypress binary
+        id: cache-cypress-binary
+        uses: actions/cache@v2
+        with:
+          path: cypress/cache
+          key: cypress-binary-${{ hashFiles('package-lock.json') }}
       - name: Install dependencies
-        if: steps.cache-primes.outputs.cache-hit != 'true'
+        if: |
+          steps.cache-node-modules.outputs.cache-hit != 'true' ||
+          steps.cache-cypress-binary.outputs.cache-hit != 'true'
         run: npm ci
-
       - name: Cypress Test
-        run: npx start-server-and-test cy:start http://localhost:3204 'npm run cy:run -- --spec "test/e2e-cypress/e2e/${{ matrix.containers }}"'
+        run: npx start-server-and-test cy:start http://localhost:3204 'npm run cy:run -- --spec "test/e2e-cypress/tests/${{ matrix.containers }}"'

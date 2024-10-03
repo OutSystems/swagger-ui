@@ -2,14 +2,18 @@
  * @prettier
  */
 
-const path = require("path")
-const deepExtend = require("deep-extend")
-const webpack = require("webpack")
-const TerserPlugin = require("terser-webpack-plugin")
-const nodeExternals = require("webpack-node-externals")
+import path from "path"
+import os from "os"
+import fs from "fs"
+import deepExtend from "deep-extend"
+import webpack from "webpack"
+import TerserPlugin from "terser-webpack-plugin"
 
-const { getRepoInfo, getDevtool } = require("./_helpers")
-const pkg = require("../package.json")
+import { getRepoInfo } from "./_helpers"
+import pkg from "../package.json"
+const nodeModules = fs.readdirSync("node_modules").filter(function(x) {
+  return x !== ".bin"
+})
 
 const projectBasePath = path.join(__dirname, "../")
 
@@ -26,21 +30,29 @@ const baseRules = [
       cacheDirectory: true,
     },
   },
+  { test: /\.(txt|yaml)$/, loader: "raw-loader" },
   {
-    test: /\.(txt|yaml)$/,
-    type: "asset/source",
+    test: /\.(png|jpg|jpeg|gif|svg)$/,
+    use: [
+      {
+        loader: "url-loader",
+        options: {
+          esModule: false,
+        },
+      },
+    ],
   },
   {
-    test: /\.svg$/,
-    use: ["@svgr/webpack"],
+    test: /\.(woff|woff2)$/,
+    loader: "url-loader?",
+    options: {
+      limit: 10000,
+    },
   },
-  {
-    test: /\.(png|jpg|jpeg|gif)$/,
-    type: "asset/inline",
-  },
+  { test: /\.(ttf|eot)$/, loader: "file-loader" },
 ]
 
-function buildConfig(
+export default function buildConfig(
   {
     minimize = true,
     mangle = true,
@@ -60,10 +72,6 @@ function buildConfig(
         BUILD_TIME: new Date().toUTCString(),
       }),
     }),
-    new webpack.ProvidePlugin({
-      process: "process/browser",
-      Buffer: ["buffer", "Buffer"],
-    }),
   ]
 
   const completeConfig = deepExtend(
@@ -78,15 +86,16 @@ function buildConfig(
         publicPath: "/dist",
         filename: "[name].js",
         chunkFilename: "[name].js",
-        globalObject: "this",
-        library: {
-          // when esm, library.name should be unset, so do not define here
-          // when esm, library.export should be unset, so do not define here
-          type: "umd",
-        },
+        libraryTarget: "umd",
+        libraryExport: "default", // TODO: enable
       },
 
       target: "web",
+
+      node: {
+        // yaml-js has a reference to `fs`, this is a workaround
+        fs: "empty",
+      },
 
       module: {
         rules: baseRules,
@@ -94,66 +103,63 @@ function buildConfig(
 
       externals: includeDependencies
         ? {
-            esprima: "esprima",
+            // json-react-schema/deeper depends on buffertools, which fails.
+            buffertools: true,
+            esprima: true,
           }
-        : [
-            nodeExternals({
-              importType: (moduleName) => {
-                return `commonjs ${moduleName}`
-              },
-            }),
-          ],
+        : (context, request, cb) => {
+            // webpack injects some stuff into the resulting file,
+            // these libs need to be pulled in to keep that working.
+            var exceptionsForWebpack = ["ieee754", "base64-js"]
+            if (
+              nodeModules.indexOf(request) !== -1 ||
+              exceptionsForWebpack.indexOf(request) !== -1
+            ) {
+              cb(null, "commonjs " + request)
+              return
+            }
+            cb()
+          },
+
       resolve: {
         modules: [path.join(projectBasePath, "./src"), "node_modules"],
         extensions: [".web.js", ".js", ".jsx", ".json", ".less"],
         alias: {
           // these aliases make sure that we don't bundle same libraries twice
           // when the versions of these libraries diverge between swagger-js and swagger-ui
-          "@babel/runtime-corejs3": path.resolve(
-            __dirname,
-            "..",
-            "node_modules/@babel/runtime-corejs3"
-          ),
+          "@babel/runtime-corejs3": path.resolve(__dirname, "..", "node_modules/@babel/runtime-corejs3"),
           "js-yaml": path.resolve(__dirname, "..", "node_modules/js-yaml"),
-          lodash: path.resolve(__dirname, "..", "node_modules/lodash"),
-          "react-is": path.resolve(__dirname, "..", "node_modules/react-is"),
-          "safe-buffer": path.resolve(
-            __dirname,
-            "..",
-            "node_modules/safe-buffer"
-          ),
-        },
-        fallback: {
-          fs: false,
-          stream: require.resolve("stream-browserify"),
+          "lodash": path.resolve(__dirname, "..", "node_modules/lodash"),
+          "isarray": path.resolve(__dirname, "..", "node_modules/stream-browserify/node_modules/isarray"),
+          "react-is": path.resolve(__dirname, "..", "node_modules/react-redux/node_modules/react-is"),
         },
       },
 
-      devtool: getDevtool(sourcemaps, minimize),
+      // If we're mangling, size is a concern -- so use trace-only sourcemaps
+      // Otherwise, provide heavy souremaps suitable for development
+      devtool: sourcemaps
+        ? minimize
+          ? "nosource-source-map"
+          : "module-source-map"
+        : false,
 
       performance: {
         hints: "error",
-        maxEntrypointSize: 13312000,
-        maxAssetSize: 133312000,
+        maxEntrypointSize: 1153434,
+        maxAssetSize: 1153434,
       },
 
       optimization: {
         minimize: !!minimize,
         minimizer: [
-          (compiler) =>
+          compiler =>
             new TerserPlugin({
+              cache: true,
+              sourceMap: sourcemaps,
               terserOptions: {
-                sourceMap: sourcemaps,
                 mangle: !!mangle,
-                keep_classnames:
-                  !customConfig.mode || customConfig.mode === "production",
-                keep_fnames:
-                  !customConfig.mode || customConfig.mode === "production",
-                output: {
-                  comments: false,
-                },
               },
-            }).apply(compiler),
+            }).apply(compiler)
         ],
       },
     },
@@ -165,5 +171,3 @@ function buildConfig(
 
   return completeConfig
 }
-
-module.exports = buildConfig
