@@ -127,6 +127,7 @@ export default class ParamBody extends PureComponent {
             ? <TextArea className={ "body-param__text" + ( errors.count() ? " invalid" : "")} value={value} onChange={ this.handleOnChange }/>
             : (value && <HighlightCode className="body-param__example" language={ language }>{value}</HighlightCode>)
         }
+        {/* OutSystems change: remove Parameter content Type
         <div className="body-param-options">
           {
             !isExecute ? null
@@ -147,7 +148,7 @@ export default class ParamBody extends PureComponent {
               controlId={controlId}
             />
           </label>
-        </div>
+        </div> */}
 
       </div>
     )
