@@ -3,7 +3,7 @@ import PropTypes from "prop-types"
 import ImPropTypes from "react-immutable-proptypes"
 import cx from "classnames"
 import { fromJS, Seq, Iterable, List, Map } from "immutable"
-import { getExtensions, getSampleSchema, fromJSOrdered, stringify } from "core/utils"
+import { getExtensions, fromJSOrdered, stringify } from "core/utils"
 import { getKnownSyntaxHighlighterLanguage } from "core/utils/jsonParse"
 import DataTypesOutSystems from "./dataTypesOutSystems"
 
@@ -99,7 +99,7 @@ export default class Response extends React.Component {
       oas3Actions,
     } = this.props
 
-    let { inferSchema } = fn
+    let { inferSchema, getSampleSchema } = fn
     let isOAS3 = specSelectors.isOAS3()
     const { showExtensions } = getConfigs()
 
@@ -108,7 +108,7 @@ export default class Response extends React.Component {
     let links = response.get("links")
     const ResponseExtension = getComponent("ResponseExtension")
     const Headers = getComponent("headers")
-    const HighlightCode = getComponent("highlightCode")
+    const HighlightCode = getComponent("HighlightCode", true)
     const ModelExample = getComponent("modelExample")
     const Markdown = getComponent("Markdown", true)
     const OperationLink = getComponent("operationLink")
@@ -144,7 +144,7 @@ export default class Response extends React.Component {
     // Goal: find an example value for `sampleResponse`
     if(isOAS3) {
       sampleSchema = activeMediaType.get("schema")?.toJS()
-      if(examplesForMediaType) {
+      if(Map.isMap(examplesForMediaType) && !examplesForMediaType.isEmpty()) {
         const targetExamplesKey = this.getTargetExamplesKey()
         const targetExample = examplesForMediaType
           .get(targetExamplesKey, Map({}))

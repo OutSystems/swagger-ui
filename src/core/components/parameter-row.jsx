@@ -97,7 +97,7 @@ export default class ParameterRow extends Component {
   }
 
   setDefaultValue = () => {
-    let { specSelectors, pathMethod, rawParam, oas3Selectors } = this.props
+    let { specSelectors, pathMethod, rawParam, oas3Selectors, fn } = this.props
 
     const paramWithMeta = specSelectors.parameterWithMetaByIdentity(pathMethod, rawParam) || Map()
     const { schema } = getParameterSchema(paramWithMeta, { isOAS3: specSelectors.isOAS3() })
@@ -107,7 +107,7 @@ export default class ParameterRow extends Component {
       .first()
 
     // getSampleSchema could return null
-    const generatedSampleValue = schema ? getSampleSchema(schema.toJS(), parameterMediaType, {
+    const generatedSampleValue = schema ? fn.getSampleSchema(schema.toJS(), parameterMediaType, {
 
       includeWriteOnly: true
     }) : null

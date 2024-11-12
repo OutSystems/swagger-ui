@@ -2,6 +2,7 @@ import React, { Component } from "react"
 import PropTypes from "prop-types"
 import { Map, List } from "immutable"
 import ImPropTypes from "react-immutable-proptypes"
+import createHtmlReadyId from "core/utils/create-html-ready-id"
 //OutSystems change - import a new component created by OutSystems
 import RequestUrlOutSystems from "./requestUrlOutSystems"
 
