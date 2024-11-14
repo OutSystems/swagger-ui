@@ -179,7 +179,7 @@ export default class Parameters extends Component {
             <div className="tab-header">
               <h4 className="opblock-title">Parameters</h4>
             </div>
-            )}
+          )}
           {allowTryItOut ? (
             <TryItOutButton
               isOAS3={specSelectors.isOAS3()}

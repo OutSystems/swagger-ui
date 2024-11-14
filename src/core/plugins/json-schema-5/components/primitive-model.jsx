@@ -1,6 +1,8 @@
 import React, { Component } from "react"
 import PropTypes from "prop-types"
 import { getExtensions, sanitizeUrl } from "core/utils"
+//OutSystems change: import a component created by OutSystems in order to get the data type to be displayed
+import DataTypesOutSystems from "../../../components/dataTypesOutSystems"
 
 const propClass = "property primitive"
 
@@ -12,11 +14,16 @@ export default class Primitive extends Component {
     name: PropTypes.string,
     displayName: PropTypes.string,
     depth: PropTypes.number,
-    expandDepth: PropTypes.number
+    expandDepth: PropTypes.number,
+    //OutSystems change: receive 3 new properties, which are needed in the DataTypeOutSystems component
+    specSelectors: PropTypes.object.isRequired,
+    param: PropTypes.object.isRequired,
+    pathMethod: PropTypes.array.isRequired
   }
 
   render() {
-    let { schema, getComponent, getConfigs, name, displayName, depth, expandDepth } = this.props
+    //OutSystems change: passing 3 new properties, which are needed in the DataTypeOutSystems component
+    let { schema, getComponent, getConfigs, name, displayName, depth, expandDepth, specSelectors, param, pathMethod } = this.props
 
     const { showExtensions } = getConfigs()
 
@@ -52,9 +59,16 @@ export default class Primitive extends Component {
     return <span className="model">
       <ModelCollapse title={titleEl} expanded={depth <= expandDepth} collapsedContent="[...]">
         <span className="prop">
-          {name && depth > 1 && <span className="prop-name">{title}</span>}
+        {name && <span className={`${depth === 1 && "model-title"} prop-name`}>{title}</span>}
+          {/* OutSystems change: don't use the Format as Model. Instead, use the returned value of the DataTypesOutSystems component
           <span className="prop-type">{type}</span>
           {format && <span className="prop-format">(${format})</span>}
+          format && <span className="prop-format">(${format})</span> */}
+          <DataTypesOutSystems
+            param={param}
+            specSelectors={specSelectors}
+            schema={schema}
+            pathMethod={pathMethod} />
           {
             properties.size ? properties.entrySeq().map(([key, v]) => <Property key={`${key}-${v}`} propKey={key} propVal={v} propClass={propClass} />) : null
           }

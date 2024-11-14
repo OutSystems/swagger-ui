@@ -47,6 +47,8 @@ const ModelExample = ({
   getComponent,
   getConfigs,
   specSelectors,
+  param,
+  pathMethod
 }) => {
   const { defaultModelRendering, defaultModelExpandDepth } = getConfigs()
   const ModelWrapper = getComponent("ModelWrapper")
@@ -55,6 +57,9 @@ const ModelExample = ({
   const examplePanelId = randomBytes(5).toString("base64")
   const modelTabId = randomBytes(5).toString("base64")
   const modelPanelId = randomBytes(5).toString("base64")
+  //OutSystems change: get the type and the itemType properties
+  const type = schema?.get("type")
+  const itemType = schema?.getIn(["items", "type"])
   const isOAS3 = specSelectors.isOAS3()
   const { activeTab, tabs, onTabChange } = useTabs({
     initialTab: defaultModelRendering,
@@ -65,6 +70,8 @@ const ModelExample = ({
 
   return (
     <div className="model-example">
+      {/*OutSystems change: perform the following logic only when we have type=object or an array[object]. Otherwise we won't display the model with this component(return null) */}
+      { (type == 'object' || (type == 'array' && itemType == 'object')) ?
       <ul className="tab" role="tablist">
         <li
           className={cx("tabitem", { active: activeTab === tabs.example })}
@@ -100,7 +107,7 @@ const ModelExample = ({
             </button>
           </li>
         )}
-      </ul>
+      </ul> : null }
       {activeTab === tabs.example && (
         <div
           aria-hidden={activeTab !== tabs.example}
@@ -127,6 +134,7 @@ const ModelExample = ({
           role="tabpanel"
           tabIndex="0"
         >
+          {/* OutSystems change: Pass the properties param and pathMethod to the ModelWrapper component */}
           <ModelWrapper
             schema={schema}
             getComponent={getComponent}
@@ -136,6 +144,8 @@ const ModelExample = ({
             specPath={specPath}
             includeReadOnly={includeReadOnly}
             includeWriteOnly={includeWriteOnly}
+            param={param}
+            pathMethod={pathMethod}
           />
         </div>
       )}
