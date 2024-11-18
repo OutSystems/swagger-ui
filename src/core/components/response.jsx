@@ -3,12 +3,12 @@ import PropTypes from "prop-types"
 import ImPropTypes from "react-immutable-proptypes"
 import cx from "classnames"
 import { fromJS, Seq, Iterable, List, Map } from "immutable"
-import { getExtensions, getSampleSchema, fromJSOrdered, stringify } from "core/utils"
+import { getExtensions, fromJSOrdered, stringify } from "core/utils"
 import { getKnownSyntaxHighlighterLanguage } from "core/utils/jsonParse"
 import DataTypesOutSystems from "./dataTypesOutSystems"
 
 //OutSystems change: receive the contentType to check if it is binary
-const getExampleComponent = (sampleResponse, HighlightCode, getConfigs, contentType) => {
+const getExampleComponent = (sampleResponse, HighlightCode, getComponent, getConfigs, contentType) => {
   if (
     sampleResponse !== undefined &&
     sampleResponse !== null
@@ -19,12 +19,19 @@ const getExampleComponent = (sampleResponse, HighlightCode, getConfigs, contentT
       language = "json"
     }
 
+    //OutSystems change: if text type and empty - render the word string
+    if (contentType === 'text/plain' && stringify(sampleResponse) === "") {
+      sampleResponse = 'string';
+    }
+
     //OutSystems change: if binary type - render the word DATA
     if (contentType === 'application/octet-stream') {
       sampleResponse = 'DATA';
     }
     return <div>
-      <HighlightCode className="example" getConfigs={ getConfigs } language={ language } value={ stringify(sampleResponse) } />
+      <HighlightCode className="example" getComponent={ getComponent } getConfigs={ getConfigs } language={ language } value={ stringify(sampleResponse)}>
+        {stringify(sampleResponse)}
+      </HighlightCode>
     </div>
   }
   return null
@@ -99,7 +106,7 @@ export default class Response extends React.Component {
       oas3Actions,
     } = this.props
 
-    let { inferSchema } = fn
+    let { inferSchema, getSampleSchema } = fn
     let isOAS3 = specSelectors.isOAS3()
     const { showExtensions } = getConfigs()
 
@@ -108,7 +115,7 @@ export default class Response extends React.Component {
     let links = response.get("links")
     const ResponseExtension = getComponent("ResponseExtension")
     const Headers = getComponent("headers")
-    const HighlightCode = getComponent("highlightCode")
+    const HighlightCode = getComponent("HighlightCode", true)
     const ModelExample = getComponent("modelExample")
     const Markdown = getComponent("Markdown", true)
     const OperationLink = getComponent("operationLink")
@@ -144,7 +151,7 @@ export default class Response extends React.Component {
     // Goal: find an example value for `sampleResponse`
     if(isOAS3) {
       sampleSchema = activeMediaType.get("schema")?.toJS()
-      if(examplesForMediaType) {
+      if(Map.isMap(examplesForMediaType) && !examplesForMediaType.isEmpty()) {
         const targetExamplesKey = this.getTargetExamplesKey()
         const targetExample = examplesForMediaType
           .get(targetExamplesKey, Map({}))
@@ -177,7 +184,7 @@ export default class Response extends React.Component {
       shouldOverrideSchemaExample ? mediaTypeExample : undefined
     )
     //OutSystems change: send the contentType to detect if the response is binary
-    const example = getExampleComponent(sampleResponse, HighlightCode, getConfigs, contentType )
+    const example = getExampleComponent(sampleResponse, HighlightCode, getComponent, getConfigs, contentType )
 
     return (
       <tr className={"response " + (className || "")} data-code={code}>

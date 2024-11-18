@@ -24,7 +24,7 @@ export default class Headers extends React.Component {
     const Property = getComponent("Property")
     const Markdown = getComponent("Markdown", true)
     //OutSystems change - get the HighlightCode component
-    const HighlightCode = getComponent("highlightCode")
+    const HighlightCode = getComponent("HighlightCode", true)
 
     if ( !headers || !headers.size )
       return null
@@ -58,8 +58,13 @@ export default class Headers extends React.Component {
               const format = header.getIn(["schema"]) ? header.getIn(["schema", "format"]) : header.getIn(["format"])
               //OutSystems change - get the dataType to be displayed according to the type and format
               const dataType = getPrimitiveModel(type, format)
-               //OutSystems change - get the example property
-              const example = header.getIn(["example"]) ?? header.getIn(["x-example"]);
+              //OutSystems change - get the example property
+              let example = header.getIn(["example"]) ?? header.getIn(["x-example"]);
+
+              //OutSystems change: if undefined - render the word string
+              if( example == undefined ) {
+                example = 'string'
+              }
 
               return (<tr key={key}>
                 {/* OutSystems change - branding of the table*/}
@@ -75,10 +80,13 @@ export default class Headers extends React.Component {
                   <HighlightCode
                     key={key}
                     className="body-param__example"
+                    getComponent={getComponent}
                     getConfigs={getConfigs}
                     language={null}
                     value={stringify(example)}
-                  />
+                  >
+                    {stringify(example)}
+                  </HighlightCode>
                 </td>
               </tr>)
             }).toArray()

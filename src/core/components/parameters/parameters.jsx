@@ -2,6 +2,7 @@ import React, { Component } from "react"
 import PropTypes from "prop-types"
 import { Map, List } from "immutable"
 import ImPropTypes from "react-immutable-proptypes"
+import createHtmlReadyId from "core/utils/create-html-ready-id"
 //OutSystems change - import a new component created by OutSystems
 import RequestUrlOutSystems from "./requestUrlOutSystems"
 
@@ -178,7 +179,7 @@ export default class Parameters extends Component {
             <div className="tab-header">
               <h4 className="opblock-title">Parameters</h4>
             </div>
-            )}
+          )}
           {allowTryItOut ? (
             <TryItOutButton
               isOAS3={specSelectors.isOAS3()}

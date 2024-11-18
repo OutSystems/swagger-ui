@@ -97,7 +97,7 @@ export default class ParameterRow extends Component {
   }
 
   setDefaultValue = () => {
-    let { specSelectors, pathMethod, rawParam, oas3Selectors } = this.props
+    let { specSelectors, pathMethod, rawParam, oas3Selectors, fn } = this.props
 
     const paramWithMeta = specSelectors.parameterWithMetaByIdentity(pathMethod, rawParam) || Map()
     const { schema } = getParameterSchema(paramWithMeta, { isOAS3: specSelectors.isOAS3() })
@@ -107,7 +107,7 @@ export default class ParameterRow extends Component {
       .first()
 
     // getSampleSchema could return null
-    const generatedSampleValue = schema ? getSampleSchema(schema.toJS(), parameterMediaType, {
+    const generatedSampleValue = schema ? fn.getSampleSchema(schema.toJS(), parameterMediaType, {
 
       includeWriteOnly: true
     }) : null
@@ -184,7 +184,7 @@ export default class ParameterRow extends Component {
     return `${param.get("name")}-${param.get("in")}`
   }
 
-  //OutSystem - get the example text
+  //OutSystems - get the example text
   getExampleText(paramExample, schema, type, param) {
     let exampleText
 
@@ -211,15 +211,18 @@ export default class ParameterRow extends Component {
   //OutSystems change: Customize the Example
   getExample(paramExample, schema, bodyParam, type) {
     const { param, getComponent, getConfigs } = this.props
-    const HighlightCode = getComponent("highlightCode")
+    const HighlightCode = getComponent("HighlightCode", true)
 
     const exampleText = this.getExampleText(paramExample, schema, type, param);
     return (exampleText ? <HighlightCode
                             className="body-param__example"
+                            getComponent={getComponent}
                             getConfigs={getConfigs}
                             language={null}
                             value={exampleText}
-                          /> : bodyParam )
+                          >
+                            {exampleText}
+                          </HighlightCode> : bodyParam )
   }
 
   render() {
@@ -260,7 +263,7 @@ export default class ParameterRow extends Component {
     const ExamplesSelectValueRetainer = getComponent("ExamplesSelectValueRetainer")
     const Example = getComponent("Example")
     //OutSystems change: get highlightCode component
-    const HighlightCode = getComponent("highlightCode")
+    const HighlightCode = getComponent("HighlightCode", true)
 
 
     let { schema } = getParameterSchema(param, { isOAS3 })
@@ -321,10 +324,13 @@ export default class ParameterRow extends Component {
     if (param.get("in") == 'body' && !format && (!consumes || consumes.size == 0)) {
       example = <HighlightCode
         className="body-param__example"
+        getComponent={getComponent}
         getConfigs={getConfigs}
         language={null}
         value={'DATA'}
-      />
+        >
+        {'DATA'}
+      </HighlightCode>
     }
 
     return (
