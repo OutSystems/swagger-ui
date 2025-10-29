@@ -39,13 +39,6 @@
  */
 
 /*!
- * cookie
- * Copyright(c) 2012-2014 Roman Shtylman
- * Copyright(c) 2015 Douglas Christopher Wilson
- * MIT Licensed
- */
-
-/*!
  * https://github.com/Starcounter-Jack/JSON-Patch
  * (c) 2017-2021 Joachim Wester
  * MIT license
@@ -104,9 +97,9 @@
 
 /**
  * @license React
- * use-sync-external-store-with-selector.production.min.js
+ * use-sync-external-store-with-selector.production.js
  *
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
