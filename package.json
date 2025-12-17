@@ -37,7 +37,7 @@
   "license": "Apache-2.0",
   "scripts": {
     "automated-release": "release-it -VV --config ./release/.release-it.json",
-    "build": "npm run build-stylesheets && rimraf ./dist/swagger-ui.js ./dist/swagger-ui.js.map && npm run build-all-bundles && python3 ./release/invalidate_cache.py",
+    "build": "npm run build-stylesheets && rimraf ./dist/swagger-ui.js ./dist/swagger-ui.js.map && npm run build-all-bundles && python3 ./release/update_cache_invalidation_suffixes.py",
     "build-all-bundles": "run-p --aggregate-output build:core build:bundle build:standalone build:es:bundle build:es:bundle:core",
     "build-stylesheets": "cross-env NODE_ENV=production BABEL_ENV=production BROWSERSLIST_ENV=browser-production webpack --color --config webpack/stylesheets.js && shx sed -i \"s/\\*zoom/zoom/g\" ./dist/swagger-ui.css",
     "build:bundle": "cross-env NODE_ENV=production BABEL_ENV=production BROWSERSLIST_ENV=isomorphic-production webpack --color --config webpack/bundle.js",

@@ -44,6 +44,6 @@ def invalidate_cache() -> None:
 
 
 if __name__ == "__main__":
-    print(f"\n\033[93m Running Python script... \033[00m")
+    print(f"\n\033[93mRunning Python script to update cache invalidation suffixes...\033[00m")
     invalidate_cache()
-    print(f"\033[92m Cache invalidated successfully \033[00m\n")
+    print(f"\033[92mCache invalidation suffixes updated successfully\033[00m\n")
