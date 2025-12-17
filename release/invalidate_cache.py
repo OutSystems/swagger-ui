@@ -44,4 +44,6 @@ def invalidate_cache() -> None:
 
 
 if __name__ == "__main__":
+    print(f"\n\033[93m Running Python script... \033[00m")
     invalidate_cache()
+    print(f"\033[92m Cache invalidated successfully \033[00m\n")
