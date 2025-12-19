@@ -36,10 +36,10 @@ def invalidate_cache() -> None:
         with open(TARGET, 'r', encoding='utf-8') as f:
             content = f.read()
 
-            for file in get_files_with_hash():
-                old = rf"{re.escape(file.name)}(\?[^\"'\s>]*)?"
-                new = f"{file.name}?v={file.hash}"
-                content = re.sub(old, new, content)
+        for file in get_files_with_hash():
+            old = rf"{re.escape(file.name)}(\?[^\"'\s>]*)?"
+            new = f"{file.name}?v={file.hash}"
+            content = re.sub(old, new, content)
 
         with open(TARGET, 'w', encoding='utf-8') as f:
             f.write(content)
