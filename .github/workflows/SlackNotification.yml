@@ -1,0 +1,22 @@
+name: Slack Notification
+
+on: 
+  pull_request_target:
+    types:
+      - ready_for_review
+      - opened
+jobs:
+  slackNotification:
+    if: ${{ contains(fromJSON('["OS-miguelfreitas", "OS-joaomurgeiro", "osjlopes", "mvios", "OS-alexandretome", "rmb-guerra", "OS-rodrigolopes", "OS-thiagosiqueira", "OS-luisvendrame", "OS-josecunha"]'), github.event.pull_request.user.login) && !github.event.pull_request.draft  }}
+    runs-on: ubuntu-latest
+    steps:
+    - uses: slackapi/slack-github-action@v2.0.0
+      with:
+        webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
+        webhook-type: webhook-trigger
+        payload: |
+          pr_url: "${{ github.event.pull_request.html_url }}"
+          pr_number : "${{ github.event.pull_request.number }}"
+          pr_title: "${{ github.event.pull_request.title }}"
+          pr_user: "${{ github.event.pull_request.user.login }}"
+          pr_reviewers : "${{ join( github.event.pull_request.requested_reviewers.*.login , ' , ' ) }}"
