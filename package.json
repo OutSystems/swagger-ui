@@ -197,6 +197,10 @@
     },
     "enzyme": {
       "cheerio": "=1.0.0-rc.12"
+    },
+    "axios": ">=1.16.0",
+    "@swagger-api/apidom-reference": {
+      "brace-expansion": ">=5.0.6"
     }
   },
   "config": {
