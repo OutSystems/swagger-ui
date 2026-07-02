@@ -201,10 +201,6 @@
     "axios": ">=1.16.0",
     "@swagger-api/apidom-reference": {
       "brace-expansion": ">=5.0.6"
-    },
-    "form-data": ">=4.0.6",
-    "@istanbuljs/load-nyc-config": {
-      "js-yaml": ">=3.15.0 <4"
     }
   },
   "config": {
