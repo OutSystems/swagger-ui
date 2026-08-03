@@ -38,11 +38,7 @@ class Auths extends React.Component {
     e.preventDefault()
 
     let { authActions, definitions } = this.props
-    let auths = definitions
-      .map((val, key) => {
-        return key
-      })
-      .toArray()
+    let auths = definitions.keySeq().toArray()
 
     this.setState(
       auths.reduce((prev, auth) => {
@@ -99,6 +95,7 @@ class Auths extends React.Component {
                   />
                 )
               })
+              .valueSeq()
               .toArray()}
             <div className="auth-btn-wrapper">
               {nonOauthDefinitions.size === authorizedAuth.size ? (
@@ -154,6 +151,7 @@ class Auths extends React.Component {
                   </div>
                 )
               })
+              .valueSeq()
               .toArray()}
           </div>
         ) : null}
@@ -173,6 +171,7 @@ class Auths extends React.Component {
                   />
                 )
               })
+              .valueSeq()
               .toArray()}
           </div>
         )}
