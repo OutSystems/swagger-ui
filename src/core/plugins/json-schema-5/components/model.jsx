@@ -78,7 +78,10 @@ export default class Model extends ImmutablePureComponent {
       const refName = this.getModelName($ref)
       const refSchema = this.getRefSchema(refName)
       if (Map.isMap(refSchema)) {
-        schema = refSchema.mergeDeep(schema) 
+        // NOTE(immutable-v4): mergeDeep now concatenates Lists instead of replacing them.
+        // If schema or refSchema contain List properties (e.g. required, enum, allOf),
+        // verify behavior is correct after the immutable v3→v4 upgrade.
+        schema = refSchema.mergeDeep(schema)
         if (!$$ref) {
           schema = schema.set("$$ref", $ref) 
           $$ref = $ref
