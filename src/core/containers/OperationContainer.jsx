@@ -8,10 +8,7 @@ export default class OperationContainer extends PureComponent {
   constructor(props, context) {
     super(props, context)
 
-    const { tryItOutEnabled } = props.getConfigs()
-
     this.state = {
-      tryItOutEnabled,
       executeInProgress: false
     }
   }
@@ -26,6 +23,7 @@ export default class OperationContainer extends PureComponent {
     isShown: PropTypes.bool.isRequired,
     jumpToKey: PropTypes.string.isRequired,
     allowTryItOut: PropTypes.bool,
+    tryItOutEnabled: PropTypes.bool,
     displayOperationId: PropTypes.bool,
     isAuthorized: PropTypes.bool,
     displayRequestDuration: PropTypes.bool,
@@ -57,7 +55,7 @@ export default class OperationContainer extends PureComponent {
 
   mapStateToProps(nextState, props) {
     const { op, layoutSelectors, getConfigs } = props
-    const { docExpansion, deepLinking, displayOperationId, displayRequestDuration, supportedSubmitMethods } = getConfigs()
+    const { docExpansion, deepLinking, displayOperationId, displayRequestDuration, supportedSubmitMethods, tryItOutEnabled: configTryItOutEnabled } = getConfigs()
     const showSummary = layoutSelectors.showSummary()
     const operationId = op.getIn(["operation", "__originalOperationId"]) || op.getIn(["operation", "operationId"]) || opId(op.get("operation"), props.path, props.method) || op.get("id")
     const isShownKey = ["operations", props.tag, operationId]
@@ -75,6 +73,7 @@ export default class OperationContainer extends PureComponent {
       security,
       isAuthorized: props.authSelectors.isAuthorized(security),
       isShown: layoutSelectors.isShown(isShownKey, docExpansion === "full" ),
+      tryItOutEnabled: layoutSelectors.isShown([...isShownKey, "try-it-out"], configTryItOutEnabled),
       jumpToKey: `paths.${props.path}.${props.method}`,
       response: props.specSelectors.responseFor(props.path, props.method),
       request: props.specSelectors.requestFor(props.path, props.method)
@@ -90,15 +89,15 @@ export default class OperationContainer extends PureComponent {
     }
   }
 
-  UNSAFE_componentWillReceiveProps(nextProps) {
-    const { response, isShown } = nextProps
+  componentDidUpdate(prevProps) {
+    const { response, isShown } = this.props
     const resolvedSubtree = this.getResolvedSubtree()
 
-    if(response !== this.props.response) {
+    if (response !== prevProps.response) {
       this.setState({ executeInProgress: false })
     }
 
-    if(isShown && resolvedSubtree === undefined) {
+    if (isShown && resolvedSubtree === undefined) {
       this.requestResolvedSubtree()
     }
   }
@@ -114,11 +113,13 @@ export default class OperationContainer extends PureComponent {
   }
 
   onCancelClick=() => {
-    this.setState({tryItOutEnabled: !this.state.tryItOutEnabled})
+    const { layoutActions, tag, operationId } = this.props
+    layoutActions.show(["operations", tag, operationId, "try-it-out"], false)
   }
 
   onTryoutClick =() => {
-    this.setState({tryItOutEnabled: !this.state.tryItOutEnabled})
+    const { layoutActions, tag, operationId } = this.props
+    layoutActions.show(["operations", tag, operationId, "try-it-out"], true)
   }
 
   onResetClick = (pathMethod) => {
@@ -132,7 +133,7 @@ export default class OperationContainer extends PureComponent {
           jsonRequestBodyValue[key] = jsonRequestBodyValue[key].map((val) => {
             if (typeof val === "object") {
               return JSON.stringify(val, null, 2)
-            } 
+            }
             return val
           })
         } else if (typeof value === "object") {
@@ -236,7 +237,7 @@ export default class OperationContainer extends PureComponent {
       displayRequestDuration,
       isDeepLinkingEnabled,
       executeInProgress: this.state.executeInProgress,
-      tryItOutEnabled: this.state.tryItOutEnabled
+      tryItOutEnabled: this.props.tryItOutEnabled
     })
 
     return (
