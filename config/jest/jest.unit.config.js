@@ -6,6 +6,8 @@ module.exports = {
   testMatch: [
     '**/test/unit/*.js?(x)',
     '**/test/unit/**/*.js?(x)',
+    '**/test/unit/*.ts?(x)',
+    '**/test/unit/**/*.ts?(x)',
   ],
   setupFiles: ['<rootDir>/test/unit/jest-shim.js'],
   setupFilesAfterEnv: ['<rootDir>/test/unit/setup.js'],
@@ -16,7 +18,8 @@ module.exports = {
     '<rootDir>/test/unit/setup.js',
   ],
   moduleNameMapper: {
-    '^.+\\.svg$': 'jest-transform-stub'
+    '^.+\\.svg$': 'jest-transform-stub',
+    '^standalone/(.*)$': '<rootDir>/src/standalone/$1',
   },
   transformIgnorePatterns: ['/node_modules/(?!(sinon|react-syntax-highlighter|@asamuzakjp/css-color)/)'],
   silent: true, // set to `false` to allow console.* calls to be printed
