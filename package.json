@@ -78,7 +78,7 @@
     "classnames": "^2.5.1",
     "css.escape": "1.5.1",
     "deep-extend": "0.6.0",
-    "dompurify": "=3.4.13",
+    "dompurify": "=3.4.17",
     "ieee754": "^1.2.1",
     "immutable": "=4.3.9",
     "js-file-download": "^0.4.12",
@@ -197,10 +197,6 @@
     },
     "enzyme": {
       "cheerio": "=1.0.0-rc.12"
-    },
-    "axios": ">=1.18.0",
-    "@swagger-api/apidom-reference": {
-      "brace-expansion": ">=5.0.9"
     }
   },
   "config": {
