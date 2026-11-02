@@ -44,7 +44,7 @@ jobs:
   slackNotification:
     needs: resolveReviewers
     if: ${{ always() }}
-    uses: OutSystems/O11FrontendRuntimeUtils/.github/workflows/O11FrontendRuntimeSlackNotificationTemplate.yml@main
+    uses: ./.github/workflows/O11FrontendRuntimeSlackNotificationTemplate.yml
     with:
       pr_url: ${{ github.event.pull_request.html_url }}
       pr_number: ${{ github.event.pull_request.number }}

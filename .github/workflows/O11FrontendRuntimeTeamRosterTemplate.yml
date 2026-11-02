@@ -1,0 +1,43 @@
+name: O11 Frontend Runtime - Team Roster (Template)
+
+# Single source of truth for the O11 Frontend Runtime team roster - one call, one
+# unified output. Other templates in this repo call this as their first job and
+# read needs.<job>.outputs.roster - no variables, no org settings, no extra token.
+# Consumer workflows in this repo call this via:
+#
+#   jobs:
+#     loadRoster:
+#       uses: ./.github/workflows/O11FrontendRuntimeTeamRosterTemplate.yml
+#     someOtherJob:
+#       needs: loadRoster
+#       if: ${{ contains(fromJSON(needs.loadRoster.outputs.roster).*.login, inputs.some_login) }}
+#       ...
+#
+# In a script step, get the plain login list with:
+#   const roster = ${{ needs.loadRoster.outputs.roster }};
+#   const logins = roster.map(m => m.login);
+# ...or look up a member's Slack ID with:
+#   roster.find(m => m.login === someLogin)?.slackId
+#
+# Edit ONLY here - one JSON array, one entry per team member:
+#   [{ "login": "<GitHub login>", "slackId": "<Slack member ID>" }, ...]
+# Slack member ID: Slack profile > "..." menu > "Copy member ID" (format "U0123ABCDE").
+# A missing/empty slackId just means that person's Slack notifications omit their
+# ID silently, not an error.
+
+on:
+  workflow_call:
+    outputs:
+      roster:
+        description: "JSON array of { login, slackId } for every O11 Frontend Runtime team member"
+        value: ${{ jobs.roster.outputs.roster }}
+
+jobs:
+  roster:
+    runs-on: ubuntu-latest
+    outputs:
+      roster: ${{ steps.roster.outputs.roster }}
+    steps:
+    - id: roster
+      run: |
+        echo 'roster=[{"login": "OS-miguelfreitas", "slackId": "U07MMPF7LKA"}, {"login": "OS-joaomurgeiro", "slackId": "U07LYQP7ZTM"}, {"login": "osjlopes", "slackId": "U07M1CGB2MS"}, {"login": "mvios", "slackId": "U07M1CQH3AQ"}, {"login": "OS-alexandretome", "slackId": "U07LJERJ5N3"}, {"login": "rmb-guerra", "slackId": "U07LJERKRL7"}, {"login": "OS-rodrigolopes", "slackId": "U09S12LU0DN"}, {"login": "OS-thiagosiqueira", "slackId": "U08L957JTLY"}, {"login": "OS-luisvendrame", "slackId": "U09BVB56C6N"}, {"login": "OS-josecunha", "slackId": "U09QAB255FA"}, {"login": "OS-tfonseca", "slackId": "U0A9RC4LE6L"}]' >> "$GITHUB_OUTPUT"

@@ -1,0 +1,97 @@
+name: O11 Frontend Runtime - Slack Notification (Template)
+
+# Shared PR-opened Slack notification, called locally by the other workflows in this repo.
+# Consumer workflows in this repo call this via:
+#
+#   jobs:
+#     slackNotification:
+#       uses: ./.github/workflows/O11FrontendRuntimeSlackNotificationTemplate.yml
+#       with:
+#         pr_url: ${{ github.event.pull_request.html_url }}
+#         pr_number: ${{ github.event.pull_request.number }}
+#         pr_title: ${{ github.event.pull_request.title }}
+#         pr_user: ${{ github.event.pull_request.user.login }}
+#         pr_reviewers: ${{ join(github.event.pull_request.requested_reviewers.*.login, ' , ') }}
+#         pr_draft: ${{ github.event.pull_request.draft }}
+#       secrets:
+#         SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+#
+# The team roster (a unified { login, slackId } array) is loaded from
+# O11FrontendRuntimeTeamRosterTemplate.yml (single source of truth) as a first job.
+# Two payload fields are resolved through it:
+#  - pr_slack_author: inputs.pr_user's slackId (the PR author - always a roster member,
+#    since the job's own if: gate already requires that).
+#  - pr_slack_reviewer: the slackId of the first login in inputs.pr_reviewers that is
+#    in the roster (the reviewers GitHub's native team review assignment resolved for
+#    this run). Falls back to the first roster Slack ID if none resolved, since the Slack
+#    workflow variables are mandatory and reject empty strings.
+
+on:
+  workflow_call:
+    inputs:
+      pr_url:
+        required: true
+        type: string
+      pr_number:
+        required: true
+        type: string
+      pr_title:
+        required: true
+        type: string
+      pr_user:
+        required: true
+        type: string
+      pr_reviewers:
+        required: false
+        type: string
+        default: ""
+      pr_draft:
+        required: false
+        type: boolean
+        default: false
+    secrets:
+      SLACK_WEBHOOK_URL:
+        required: true
+
+jobs:
+  loadRoster:
+    uses: ./.github/workflows/O11FrontendRuntimeTeamRosterTemplate.yml
+
+  slackNotification:
+    needs: loadRoster
+    if: ${{ contains(fromJSON(needs.loadRoster.outputs.roster).*.login, inputs.pr_user) && !inputs.pr_draft }}
+    runs-on: ubuntu-latest
+    steps:
+    - name: Resolve author's and assigned reviewer's Slack IDs
+      id: resolveSlackId
+      uses: actions/github-script@v9
+      with:
+        script: |
+          const roster = ${{ needs.loadRoster.outputs.roster }};
+
+          const prUser = '${{ inputs.pr_user }}';
+          const author = roster.find(m => m.login === prUser);
+          core.setOutput('slack_author', author?.slackId || '');
+
+          // First requested reviewer that is a roster member with a known Slack ID.
+          const prReviewers = '${{ inputs.pr_reviewers }}'.split(',').map(s => s.trim()).filter(Boolean);
+          const reviewer = prReviewers.map(login => roster.find(m => m.login === login)).find(m => m?.slackId);
+
+          // All Slack workflow variables are mandatory and user-typed ones reject empty
+          // strings (invalid_workflow_input), so fall back to the first roster Slack ID.
+          const fallbackReviewerSlackId = roster.find(m => m.slackId)?.slackId || '';
+          const payload = {
+            pr_url: '${{ inputs.pr_url }}',
+            pr_number: '${{ inputs.pr_number }}',
+            pr_title: ${{ toJSON(inputs.pr_title) }},
+            pr_user: prUser,
+            pr_slack_author: author?.slackId || '',
+            pr_reviewers: '${{ inputs.pr_reviewers }}',
+            pr_slack_reviewer: reviewer?.slackId || fallbackReviewerSlackId
+          };
+          core.setOutput('payload', JSON.stringify(payload));
+    - uses: slackapi/slack-github-action@v4.0.0
+      with:
+        webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
+        webhook-type: webhook-trigger
+        payload: ${{ steps.resolveSlackId.outputs.payload }}
