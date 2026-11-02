@@ -197,6 +197,9 @@
     },
     "enzyme": {
       "cheerio": "=1.0.0-rc.12"
+    },
+    "@swagger-api/apidom-reference": {
+      "minimatch": "=11.0.3"
     }
   },
   "config": {
